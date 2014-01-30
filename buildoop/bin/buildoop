@@ -1,17 +1,35 @@
 #!/usr/bin/env groovy
-# vim: ts=4:sw=4:et:sts=4:ai:tw=80
-#
-#
+# vim:set ts=4:sw=4:et:sts=4:ai:tw=80
 
 class Buildoop {
 
-    def parseOpt(name) {
-        println("Hello $name!")
+    def parseOpt(args) {
+
+        def cli = new CliBuilder(usage: 'buildoop -s[dh] "server"') 
+
+        cli.h(longOpt: 'help', 'usage information', required: false)  
+        cli.d(longOpt: 'debug', 'enable debugging', required: false)  
+
+        OptionAccessor opt = cli.parse(args)  
+        if(!opt) {  
+            return  
+        }  
+
+        // print usage if -h, --help, or no argument is given  
+        if(opt.h || opt.arguments().isEmpty()) {  
+            cli.usage()  
+        }  
+        if(opt.d) {  
+            connectToServer.debug = true  
+        }  
+        if(opt.s) {  
+            connectToServer.server = opt.s  
+        }  
+
     }
 
     static def main(args) {
         Buildoop buildoop = new Buildoop()
-        def name = 'parse'
-        buildoop.parseOpt(name)
+        buildoop.parseOpt(args)
     }
 }
