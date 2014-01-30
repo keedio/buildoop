@@ -1,0 +1,2 @@
+$ buildoop [bom name] [info | build | listtasks]
+$ buildoop [bom name] [package name] [info | build | listtasks]
