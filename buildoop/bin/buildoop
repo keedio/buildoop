@@ -1,5 +1,6 @@
 #!/usr/bin/env groovy
-# vim:set ts=4:sw=4:et:sts=4:ai:tw=80
+
+/* vim:set ts=4:sw=4:et:sts=4:ai:tw=80 */
 
 class Buildoop {
 
