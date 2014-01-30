@@ -1,2 +1,42 @@
-$ buildoop [bom name] [info | build | listtasks]
-$ buildoop [bom name] [package name] [info | build | listtasks]
+General commands:
+~~~~~~~~~~~~~~~~
+
+$ buildoop --version
+	Show buildoop version information and git hash.
+
+$ buildoop --help
+ 	Simple help of buildroop commands.
+
+$ buildoop --targets
+	List availables targets.
+
+BOM and package level commands:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$ buildoop <bom name> [package name] --info  
+	Show general info of BOM package. Or info about package name.
+
+$ buildoop <bom name> [package name] --build 
+	Build all packages listed in BOM. Or build the package name.
+
+$ buildoop <bom name> [package name] --clean 
+	Clean all "build objects" of packages listed in BOM. 
+	Or all "build objects" of package name.
+
+$ buildoop <bom name> [package name] --cleanall 
+	Clean all "build objects", metadata, and download files of packages 
+	listed in BOM. Or the same only for the package name.
+
+$ buildoop <bom name> <package-name> --listtasks 
+	List tasks availables in the package name.
+
+
+Integration Tests level commands:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO
+
+Deployment level commands:
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO
