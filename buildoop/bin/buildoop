@@ -6,27 +6,45 @@ class Buildoop {
 
     def parseOpt(args) {
 
-        def cli = new CliBuilder(usage: 'buildoop [options] | <bom-name> <[options]>') 
+        def cli = new CliBuilder(usage: 'buildoop [options] | <bom-name> <[options]>',
+								stopAtNonOption:false,
+								posix: false,
+								header:'Options:') 
 
-        cli.v(longOpt: 'version', 'usage information', required: false)  
-        cli.h(longOpt: 'help', 'enable debugging', required: false)  
-        cli.t(longOpt: 'targets', 'enable debugging', required: false)  
+        cli.version('version information', required: false)  
+        cli.help('this help', args: 0, required: false)  
+        cli.checkenv('check minimal enviroment and host tools', required: false)  
+        cli.targets('list platforms target available', required: false)  
+        cli.b(longOpt: 'bom', args:2, valueSeparator:' ', argName:'bom-file', 'list platforms target available', required: false)  
+        cli.p(longOpt: 'package', args:2, valueSeparator:' ', argName:'package', 'list platforms target available', required: false)  
+		cli.info('
 
-        OptionAccessor opt = cli.parse(args)  
+        def opt = cli.parse(args)  
         if(!opt) {  
+			// the parse failed, the usage will be shown automatically
             return  
         }  
 
         // print usage if -h, --help, or no argument is given  
-        if(opt.h || opt.arguments().isEmpty()) {  
+        if (opt.help) {  
             cli.usage()  
+			return
         }  
-        if(opt.d) {  
-            connectToServer.debug = true  
+        if (opt.version) {  
+			println "version"
+			return
         }  
-        if(opt.s) {  
-            connectToServer.server = opt.s  
+  		if (opt.checkenv) {  
+			println "checkenv"
+			return
         }  
+  		if (opt.targets) {  
+			println "targets"
+			return
+        }  
+  		if (opt.b && !opt.p) {  
+			println "List BOM file information"
+        } 
 
     }
 
