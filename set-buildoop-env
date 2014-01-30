@@ -18,10 +18,10 @@
 #  See the License for the specific language governing permissions and
 #  limitations under the License.
 #
-# Call as '. ./buildoop.env' or 'source buildoop.env'
+# Call as '. ./set-buildoop-env' or 'source set-buildoop-env'
 #
-if [ -z "$ZSH_NAME" ] && [ "x$0" = "x./buildoop.env" ]; then
-   echo "Error: This script needs to be sourced. Please run as '. ./buildoop.env'"
+if [ -z "$ZSH_NAME" ] && [ "x$0" = "x./set-buildoop-env" ]; then
+   echo "Error: This script needs to be sourced. Please run as '. ./set-buildoop-env'"
    exit 1
 else
    if [ -n "$BASH_SOURCE" ]; then
