@@ -6,10 +6,11 @@ class Buildoop {
 
     def parseOpt(args) {
 
-        def cli = new CliBuilder(usage: 'buildoop -s[dh] "server"') 
+        def cli = new CliBuilder(usage: 'buildoop [options] | <bom-name> <[options]>') 
 
-        cli.h(longOpt: 'help', 'usage information', required: false)  
-        cli.d(longOpt: 'debug', 'enable debugging', required: false)  
+        cli.v(longOpt: 'version', 'usage information', required: false)  
+        cli.h(longOpt: 'help', 'enable debugging', required: false)  
+        cli.t(longOpt: 'targets', 'enable debugging', required: false)  
 
         OptionAccessor opt = cli.parse(args)  
         if(!opt) {  

@@ -1,25 +1,27 @@
+usage: buildoop [options] | <bom-name> <[options]>
+
 General commands:
 ~~~~~~~~~~~~~~~~
 
-$ buildoop --version
+$ buildoop -v, --version
 	Show buildoop version information and git hash.
 
-$ buildoop --help
+$ buildoop -h, --help
  	Simple help of buildroop commands.
 
-$ buildoop --targets
+$ buildoop -t, --targets
 	List availables targets.
 
 BOM and package level commands:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$ buildoop <bom name> [package name] --info  
+$ buildoop <bom name> [package name] -i, --info  
 	Show general info of BOM package. Or info about package name.
 
-$ buildoop <bom name> [package name] --build 
+$ buildoop <bom name> [package name] -b, --build 
 	Build all packages listed in BOM. Or build the package name.
 
-$ buildoop <bom name> [package name] --clean 
+$ buildoop <bom name> [package name] -c, --clean 
 	Clean all "build objects" of packages listed in BOM. 
 	Or all "build objects" of package name.
 
