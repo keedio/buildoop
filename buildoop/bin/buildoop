@@ -1,4 +1,17 @@
 #!/usr/bin/env groovy
+# vim: ts=4:sw=4:et:sts=4:ai:tw=80
+#
+#
 
-println "Buildoop"
+class Buildoop {
 
+    def parseOpt(name) {
+        println("Hello $name!")
+    }
+
+    static def main(args) {
+        Buildoop buildoop = new Buildoop()
+        def name = 'parse'
+        buildoop.parseOpt(name)
+    }
+}
