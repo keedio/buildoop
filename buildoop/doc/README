@@ -3,33 +3,36 @@ usage: buildoop [options] | <bom-name> <[options]>
 General commands:
 ~~~~~~~~~~~~~~~~
 
-$ buildoop -v, --version
+$ buildoop -v, -version
 	Show buildoop version information and git hash.
 
-$ buildoop -h, --help
+$ buildoop -h, -help
  	Simple help of buildroop commands.
 
-$ buildoop -t, --targets
+$ buildoop -t, -targets
 	List availables targets.
+
+$ buildoop -b, -boms
+	List all BOM files availables
 
 BOM and package level commands:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-$ buildoop <bom name> [package name] -i, --info  
+$ buildoop <bom name> [package name] -i, -info  
 	Show general info of BOM package. Or info about package name.
 
-$ buildoop <bom name> [package name] -b, --build 
+$ buildoop <bom name> [package name] -b, -build 
 	Build all packages listed in BOM. Or build the package name.
 
-$ buildoop <bom name> [package name] -c, --clean 
+$ buildoop <bom name> [package name] -c, -clean 
 	Clean all "build objects" of packages listed in BOM. 
 	Or all "build objects" of package name.
 
-$ buildoop <bom name> [package name] --cleanall 
+$ buildoop <bom name> [package name] -cleanall 
 	Clean all "build objects", metadata, and download files of packages 
 	listed in BOM. Or the same only for the package name.
 
-$ buildoop <bom name> <package-name> --listtasks 
+$ buildoop <bom name> <package-name> -listtasks 
 	List tasks availables in the package name.
 
 
@@ -42,3 +45,24 @@ Deployment level commands:
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
 TODO
+
+Examples:
+~~~~~~~~
+
+$ buildoop -version
+$ buildoop -info
+$ buildoop -targets
+$ buildoop -boms
+
+$ buildoop stable -info
+$ buildoop stable -build
+$ buildoop stable -clean
+
+$ buildoop stable hadoop -info
+$ buildoop stable hadoop -build
+$ buildoop stable hadoop -clean
+
+$ buildoop hadoop-2.2.0 -info
+$ buildoop hadoop-2.2.0 -build
+$ buildoop hadoop-2.2.0 -clean
+

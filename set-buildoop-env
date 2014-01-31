@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh 
 # Buildoop Build Environment Setup Script
 #
 # Copyright (C) 2014 Javi Roman <javiroman@kernel-labs.org>
@@ -22,7 +22,7 @@
 #
 if [ -z "$ZSH_NAME" ] && [ "x$0" = "x./set-buildoop-env" ]; then
    echo "Error: This script needs to be sourced. Please run as '. ./set-buildoop-env'"
-   exit 1
+   return 1
 else
    if [ -n "$BASH_SOURCE" ]; then
       BDROOT="`dirname $BASH_SOURCE`"
@@ -40,17 +40,17 @@ fi
 
 if [ -z "$JAVA_HOME" ]; then
 	echo "JAVA_HOME is not set"
-	exit 1
+	return 1
 fi
 
 if [ -z "$GRADLE_HOME" ]; then
 	echo "GRADLE_HOME is not set"
-	exit 1
+	return 1
 fi
 
 if [ -z "$GROOVY_HOME" ]; then
 	echo "GROOVY_HOME is not set"
-	exit 1
+	return 1
 fi
 
 PATH=$PATH:$BDROOT/buildoop/bin

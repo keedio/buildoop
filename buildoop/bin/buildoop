@@ -4,6 +4,11 @@
 
 
 class Buildoop {
+
+	def Buildoop() {
+		println "Buildoop v0.0.1-alpha (c) 2014"
+	}
+
 	def usage() {
 		println """usage: buildoop [options] | <bom-name> <[options]> 
 Options: 
@@ -11,24 +16,21 @@ Options:
  	-version    version information
  	-checkenv   check minimal enviroment and host tools
 BOM Options:
- 	-i, -info   list platforms target available 
- 	-b, -build  list platforms target available
-	-c, -clean
-	-cleanall
+ 	-i, -info   Show information about the BOM file
+ 	-b, -build  Buuild all package of the BOM file
+	-c, -clean  Clean build object of all packages of BOM file
+	-cleanall   Clean all staging, download and object files
 Package Options:
- 	-i, -info   list platforms target available 
- 	-b, -build  list platforms target available
-	-c, -clean
-	-cleanall
+ 	-i, -info   Show info about package from BOM
+ 	-b, -build  Build the package from BOM
+	-c, -clean  Clean build objects form package 
+	-cleanall   Clean all staging, download and object files
 	"""
 	}
 
     def parseOpt(args) {
-
 		usage()
 		println args
-
-
     }
 
     static def main(args) {
