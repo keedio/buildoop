@@ -32,17 +32,22 @@ From the technology point of view Buildoop is based on:
 Folder scheme
 -------------
 
-buildoop:
+*buildoop:
 	Main folder for Buildoop main controler.
-conf:
+	
+*conf:
 	Buildoop configuration folder, POM definitions, targets definitions.
-deploy:
+	
+*deploy:
 	Folder for deploy in VM and Baremetal systems. Based on Puppet and Chef.
-itests:
+	
+*itests:
 	Integration tests for VM pseudo-cluster system.
-recipes:
+	
+*recipes:
 	Download, build and packaging recipes.
-toolchain:
+	
+*toolchain:
 	Tools for cross-compiling for diferent targets.
 	
 --
