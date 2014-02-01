@@ -36,7 +36,7 @@ Folder scheme
 	Main folder for Buildoop main controler.
 	
 * conf:
-	Buildoop configuration folder, POM definitions, targets definitions.
+	Buildoop configuration folder, BOM definitions, targets definitions.
 	
 * deploy:
 	Folder for deploy in VM and Baremetal systems. Based on Puppet and Chef.
