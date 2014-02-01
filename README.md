@@ -28,3 +28,22 @@ From the technology point of view Buildoop is based on:
 3. iTest Framework: based on Groovy test scripts, and **Vagrant** for
    virtual development enviroment.
 4. Set of **Kickstart**, **Cheff** and **Puppet** files for baremetal deployment.
+
+Folder scheme
+-------------
+
+buildoop:
+	Main folder for Buildoop main controler.
+conf:
+	Buildoop configuration folder, POM definitions, targets definitions.
+deploy:
+	Folder for deploy in VM and Baremetal systems. Based on Puppet and Chef.
+itests:
+	Integration tests for VM pseudo-cluster system.
+recipes:
+	Download, build and packaging recipes.
+toolchain:
+	Tools for cross-compiling for diferent targets.
+	
+--
+Javi Roman <javiroman@kernel-labs.org>
