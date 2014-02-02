@@ -30,13 +30,16 @@ class ParseOptions {
 	def bomName = ""
 	def validArgs = ["arg":"", "pkg":"", "bom":""]
 	def env
+	def LOG
 
 	def ParseOptions(log) {
-        log.info "ParseOption constructor, checking enviroment"
+		LOG = log
+        LOG.info "ParseOption constructor, checking enviroment"
 		env = System.getenv()
 	}
 
 	def usage() {
+        LOG.warn "Printing usage info"
 		println """usage: buildoop [options] | <bom-name> <[options]> 
 Options: 
 	-help       this help
@@ -99,6 +102,7 @@ Package Options:
 	}
 
     def parseOpt(args) {
+		LOG.info "parseOpt method invoked"
 		if (args.size() == 0) {
 			usage()
 			System.exit(1)

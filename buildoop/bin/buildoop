@@ -30,6 +30,7 @@ import groovy.util.logging.*
 class Buildoop {
 
 	def Buildoop() {
+		System.setProperty("log4j.ignoreTCL", "true");
 	}
 
 	def get_version() {
@@ -38,6 +39,7 @@ class Buildoop {
 		def config = new ConfigSlurper().parse(new File('buildoop/conf/log4jconfig.groovy').toURL())
         PropertyConfigurator.configure(config.toProperties()) 
 
+		
 		log.info "\nLOG4J Logging (${log.name}: ${log.class}):"
 	}
 
@@ -57,7 +59,7 @@ class Buildoop {
 		// 2. Host tools and BOM file sanity checking
         log.info  "Sanity checking bits"
 		def SanityCheckingClass = engine.loadScriptByName('SanityChecking.groovy')
-		def sanityChecking = SanityCheckingClass.newInstance()
+		def sanityChecking = SanityCheckingClass.newInstance(log)
 
 		// 3. Real works with the working options from user
 		println "BOM file: " + wo["bom"]

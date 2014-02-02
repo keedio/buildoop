@@ -16,9 +16,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+@Grab('log4j:log4j:1.2.17')
 
+import org.apache.log4j.*
+import groovy.util.logging.*
+
+@Log4j
 class SanityChecking {
-	SanityChecking() {
-		println "SanityChecking constructor"
+	def LOG
+
+	SanityChecking(log) {
+		LOG = log
+        LOG.info "SanityChecking constructor"
 	}
 }
