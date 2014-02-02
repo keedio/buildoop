@@ -18,6 +18,15 @@
  * limitations under the License.
  */
 
+/* 
+ * Add maven slf4j with Logback logger repository dependencies to our classpath
+ */
+@Grab('log4j:log4j:1.2.17')
+
+import org.apache.log4j.*
+import groovy.util.logging.*
+
+@Log4j
 class Buildoop {
 
 	def Buildoop() {
@@ -25,6 +34,17 @@ class Buildoop {
 
 	def get_version() {
 		println "Buildoop v0.0.1-alpha (c) 2014\n"
+		println "\nLOG4J Logging (${log.name}: ${log.class}):"
+
+		def config = new ConfigSlurper().parse(new File('buildoop/conf/log4jconfig.groovy').toURL())
+        PropertyConfigurator.configure(config.toProperties()) 
+
+		//log.level = Level.INFO
+        log.trace "Hello world"
+        log.debug "Hello world"
+        log.warn  "Hello world"
+        log.info  "Hello world"
+        log.error "Hello world"
 	}
 
     static def main(args) {
