@@ -18,13 +18,12 @@
  * limitations under the License.
  */
 
-/* 
- * Add maven slf4j with Logback logger repository dependencies to our classpath
- */
+// Add maven LOG4J logger repository dependencies to our classpath
 @Grab('log4j:log4j:1.2.17')
 
 import org.apache.log4j.*
 import groovy.util.logging.*
+import static Constants.*
 
 @Log4j
 class Buildoop {
@@ -34,20 +33,31 @@ class Buildoop {
 	}
 
 	def get_version() {
-		println "Buildoop v0.0.1-alpha (c) 2014\n"
+		println VERSION
+	}
 
-		def config = new ConfigSlurper().parse(new File('buildoop/conf/log4jconfig.groovy').toURL())
+	def create_logfolder() {
+		new File('build/log').mkdir()
+	}
+
+	def loadLog4jLogger() {
+		def config = new ConfigSlurper(). \
+				parse(new File(LOG4JCONF).toURL())
+
         PropertyConfigurator.configure(config.toProperties()) 
-
-		
-		log.info "\nLOG4J Logging (${log.name}: ${log.class}):"
+		log.info "\n-- LOG4J Logging (${log.name}: ${log.class}) --"
 	}
 
     static def main(args) {
         def buildoop = new Buildoop()
+
         buildoop.get_version()
 
-		String[] roots = ['./buildoop/lib']
+		buildoop.create_logfolder()
+
+        buildoop.loadLog4jLogger()
+
+		String[] roots = [GROOVYCLASS]
 		def engine = new GroovyScriptEngine(roots)
 
 		// 1. Parsing the command line
@@ -69,3 +79,9 @@ class Buildoop {
     }
 }
 
+class Constants {
+	final static def VERSION     = "Buildoop v0.0.1-alpha (c) 2014\n"
+	final static def LOG4JCONF   = "buildoop/conf/log4jconfig.groovy"
+	final static def GROOVYCLASS = "buildoop/lib"
+}
+ 
