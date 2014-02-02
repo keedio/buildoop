@@ -62,9 +62,9 @@ class Buildoop {
 		def sanityChecking = SanityCheckingClass.newInstance(log)
 
 		// 3. Real works with the working options from user
-		println "BOM file: " + wo["bom"]
-		println "Pkg file: " + wo["pkg"]
-		println "Options : " + wo["arg"]
+		log.info "Main controller"
+		def MainControllerClass = engine.loadScriptByName('MainController.groovy')
+		def mainController = MainControllerClass.newInstance(wo, log)
 
     }
 }

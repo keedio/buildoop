@@ -1,3 +1,4 @@
+#!/usr/bin/env groovy 
 /* vim:set ts=4:sw=4:et:sts=4:ai:tw=80
  *
  * Licensed to the Apache Software Foundation (ASF) under one
@@ -19,11 +20,14 @@
 import org.apache.log4j.*
 import groovy.util.logging.*
 
-class SanityChecking {
+class MainController {
 	def LOG
+	def wo
 
-	SanityChecking(log) {
+	def MainController(wo, log) {
 		LOG = log
-        LOG.info "SanityChecking constructor"
+		log.info "BOM file: " + wo["bom"]
+		log.info "Pkg file: " + wo["pkg"]
+		log.info "Options : " + wo["arg"]
 	}
 }
