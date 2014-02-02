@@ -34,17 +34,11 @@ class Buildoop {
 
 	def get_version() {
 		println "Buildoop v0.0.1-alpha (c) 2014\n"
-		println "\nLOG4J Logging (${log.name}: ${log.class}):"
 
 		def config = new ConfigSlurper().parse(new File('buildoop/conf/log4jconfig.groovy').toURL())
         PropertyConfigurator.configure(config.toProperties()) 
 
-		//log.level = Level.INFO
-        log.trace "Hello world"
-        log.debug "Hello world"
-        log.warn  "Hello world"
-        log.info  "Hello world"
-        log.error "Hello world"
+		log.info "\nLOG4J Logging (${log.name}: ${log.class}):"
 	}
 
     static def main(args) {
@@ -55,11 +49,13 @@ class Buildoop {
 		def engine = new GroovyScriptEngine(roots)
 
 		// 1. Parsing the command line
+        log.info  "Parsing command line"
 		def ParseOptionsClass = engine.loadScriptByName('ParseOptions.groovy')
-		def parseOptions = ParseOptionsClass.newInstance()
+		def parseOptions = ParseOptionsClass.newInstance(log)
 		def wo = parseOptions.parseOpt(args)
 
 		// 2. Host tools and BOM file sanity checking
+        log.info  "Sanity checking bits"
 		def SanityCheckingClass = engine.loadScriptByName('SanityChecking.groovy')
 		def sanityChecking = SanityCheckingClass.newInstance()
 
