@@ -37,7 +37,7 @@ class Buildoop {
 	}
 
 	def create_logfolder() {
-		new File('build/log').mkdir()
+		new File(LOGFOLDER).mkdir()
 	}
 
 	def loadLog4jLogger() {
@@ -83,5 +83,6 @@ class Constants {
 	final static def VERSION     = "Buildoop v0.0.1-alpha (c) 2014\n"
 	final static def LOG4JCONF   = "buildoop/conf/log4jconfig.groovy"
 	final static def GROOVYCLASS = "buildoop/lib"
+	final static def LOGFOLDER   = "build/log"
 }
  
