@@ -4,3 +4,4 @@ TODO Lists
 [TODO] - cache config files, and objects with Serializable
 [TODO] - getTargets, getVersion, getBoms, checkEnv, getInfo
 [TODO] - singlenton pattern for global object share.
+[TODO] - ConfigSlurper for configurations

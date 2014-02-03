@@ -23,41 +23,43 @@
 
 import org.apache.log4j.*
 import groovy.util.logging.*
-import static Constants.*
 
 @Log4j
 class Buildoop {
+	def globalConfig
+	final static def GENCONFIG  = "buildoop/conf/buildoop.conf"
 
 	def Buildoop() {
 		System.setProperty("log4j.ignoreTCL", "true");
-	}
 
-	def get_version() {
-		println VERSION
-	}
+		// load general configuration properties
+		globalConfig = new ConfigSlurper(). \
+				parse(new File(GENCONFIG).toURL())
 
-	def create_logfolder() {
-		new File(LOGFOLDER).mkdir()
-	}
-
-	def loadLog4jLogger() {
-		def config = new ConfigSlurper(). \
-				parse(new File(LOG4JCONF).toURL())
+		// load Log4j configuration properties
+	   def config = new ConfigSlurper(). \
+				parse(new File(globalConfig.buildoop.log4jconf).toURL())
 
         PropertyConfigurator.configure(config.toProperties()) 
 		log.info "\n-- LOG4J Logging (${log.name}: ${log.class}) --"
 	}
 
+	def getVersion() {
+		println globalConfig.buildoop.version 
+	}
+
+	def createLogfolder() {
+		new File(globalConfig.buildoop.logfolder).mkdir()
+	}
+
     static def main(args) {
         def buildoop = new Buildoop()
 
-        buildoop.get_version()
+        buildoop.getVersion()
 
-		buildoop.create_logfolder()
+		buildoop.createLogfolder()
 
-        buildoop.loadLog4jLogger()
-
-		String[] roots = [GROOVYCLASS]
+		String[] roots = [buildoop.globalConfig.buildoop.classfolder]
 		def engine = new GroovyScriptEngine(roots)
 
 		// 1. Parsing the command line
@@ -79,10 +81,3 @@ class Buildoop {
     }
 }
 
-class Constants {
-	final static def VERSION     = "Buildoop v0.0.1-alpha (c) 2014\n"
-	final static def LOG4JCONF   = "buildoop/conf/log4jconfig.groovy"
-	final static def GROOVYCLASS = "buildoop/lib"
-	final static def LOGFOLDER   = "build/log"
-}
- 
