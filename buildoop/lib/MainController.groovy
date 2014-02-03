@@ -23,11 +23,71 @@ import groovy.util.logging.*
 class MainController {
 	def LOG
 	def wo
+	def env
+	def BDROOT
+
+	def getTargets() {
+		println "Available build targets:\n"
+		new File(BDROOT + "/conf/targets/targets.conf").eachLine { 
+			line -> 
+			if (!((line.trim().size() == 0) || (line[0] == '#'))) {
+					println line
+			}
+		}
+	}
+
+	def getVersion() {
+		new File(BDROOT + "/VERSION").eachLine { 
+			line -> println line
+		}
+	}
+
+	def getBoms() {
+		println "Available build targets:\n"
+
+	}
+
+	def checkEnv() {
+		println "Check minimal system tools for buildoop"
+
+	}
+
+	def getInfo() {
+		println "information about this buildoop version"
+
+	}
 
 	def MainController(wo, log) {
 		LOG = log
-		log.info "BOM file: " + wo["bom"]
-		log.info "Pkg file: " + wo["pkg"]
-		log.info "Options : " + wo["arg"]
+		env = System.getenv()
+		BDROOT = env["BDROOT"]
+
+		switch (wo["arg"]) {
+			case "-version":
+				getVersion()
+				break
+
+			case "-targets":
+				getTargets()
+				break
+
+			case "-boms":
+				getBoms()
+				break
+
+			case "-checkenv":
+				checkEnv()
+				break
+
+			case "-info":
+				if ((wo["bom"] == "") && (wo["pkg"] == "")) {
+					getInfo()
+				}
+				break
+
+			default:
+				break
+		}
+
 	}
 }

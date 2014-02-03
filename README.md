@@ -7,8 +7,8 @@ Hadoop based system.
 
 With Buildoop you can build a complete set of Hadoop ecosystem components based
 on RPM or DEB packages, make integration tests for this tools on a RedHat/CentOS,
-or Debian/Ubunto virtual system, and maintain a set of configuration files for
-baremetal depolyment.
+or Debian/Ubuntu virtual system, and maintain a set of configuration files for
+baremetal deployment.
 
 Fundations
 ----------

@@ -149,6 +149,8 @@ Package Options:
 
 
 		if (validArgs["bom"] == "" && validArgs["pkg"] == "") {
+			if (!validArgs["arg"] in ["-targets", "-boms", 
+										"-version", "-info", "-checkenv"])
 			parseError("You have to put BOM file and/or package name file")
 		}
 
