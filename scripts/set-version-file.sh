@@ -9,7 +9,7 @@ fi
 
 conffile=${BDROOT}/buildoop/conf/buildoop.conf
 string="Buildoop v0.0.1-alpha"
-hash=$(git rev-parse --short HEAD)
+hash=build-$(date +%s)
 
 version=$string-$hash 
 echo $version > ${BDROOT}/VERSION

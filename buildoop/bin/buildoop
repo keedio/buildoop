@@ -48,8 +48,8 @@ class Buildoop {
 		log.info "\n-- LOG4J Logging (${log.name}: ${log.class}) --"
 	}
 
-	def getVersion() {
-		println globalConfig.buildoop.version 
+	def getBanner() {
+		println "Buildoop: Hadoop Ecosystem Builder\n"
 	}
 
 	def createLogfolder() {
@@ -59,7 +59,7 @@ class Buildoop {
     static def main(args) {
         def buildoop = new Buildoop()
 
-        buildoop.getVersion()
+        buildoop.getBanner()
 
 		buildoop.createLogfolder()
 
