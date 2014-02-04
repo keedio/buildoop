@@ -1,5 +1,7 @@
 #!/bin/sh
 
+#
+
 if [ -z "$BDROOT" ]; then
 	echo "BDROOT is not set"
 	return 1
