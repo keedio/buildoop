@@ -68,7 +68,7 @@ class MainController {
 					getBomInfo(wo["bom"])
 				} else {
 					// info for the package in BOM file
-					getBomPkgInfo()
+					getBomPkgInfo(wo)
 				}
 				break
 
@@ -165,7 +165,7 @@ class MainController {
 	 *
 	 * @param bom The BOM file from user arguments
 	 */
-	def getBomPkgInfo(pkg) {
+	def getBomPkgInfo(wo) {
 		println "information about package from BOM file"
 	}
 

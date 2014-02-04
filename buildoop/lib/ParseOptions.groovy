@@ -35,6 +35,7 @@ class ParseOptions {
 	def validArgs = ["arg":"", "pkg":"", "bom":""]
 	def BDROOT
 	def LOG
+	def globalConfig
 
 	/**
 	 * ParseOptions constructor.
@@ -43,11 +44,12 @@ class ParseOptions {
 	 * @param root Top folder of buildoop program
 	 *
 	 */
-	def ParseOptions(log, root) {
-		LOG = log
-		BDROOT = root
+	def ParseOptions(l, r, g) {
+		LOG = l
+		BDROOT = r
+		globalConfig = g
         LOG.info "ParseOption constructor, checking enviroment"
-        LOG.info "Buildoop top dir: $root"
+        LOG.info "Buildoop top dir: $BDROOT"
 	}
 
 	/**
@@ -95,7 +97,23 @@ Package Options:
 	}
 
 	def packageBomFile(pkg, bom) {
-		return "recipe/hadoop/" + pkg
+
+		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
+							   "/" + bom
+
+		def recipe = ""
+		new File(bomfile).eachLine { 
+			line -> 
+			switch(line){
+				case {line.contains(pkg.toUpperCase())}:
+					recipe = line.split("=")[1].trim()
+					break
+				default:
+					break
+			}
+		}
+
+		return recipe
 	}
 
 	def packageDirectFile(pkg) {

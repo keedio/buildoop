@@ -84,7 +84,8 @@ class Buildoop {
 		// 1. Parsing the command line
         log.info  "Parsing command line"
 		def ParseOptionsClass = engine.loadScriptByName('ParseOptions.groovy')
-		def parseOptions = ParseOptionsClass.newInstance(log, buildoop.ROOT)
+		def parseOptions = ParseOptionsClass.newInstance(log, buildoop.ROOT, 
+											buildoop.globalConfig)
 		def wo = parseOptions.parseOpt(args)
 
 		// 2. Host tools and BOM file sanity checking
