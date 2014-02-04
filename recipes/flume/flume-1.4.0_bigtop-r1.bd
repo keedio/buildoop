@@ -1,25 +1,28 @@
-DESCRIPTION = "Apache Flume"
-HOMEPAGE = "http://flume.apache.org/"
-LICENSE = "Apache-2.0"
-
-SRC_URI = "http://ftp.cixug.es/apache/${PN}/${PV}/apache-${PN}-${PV}-src.tar.gz"
-SRC_URI[md5sum] = "a932da09b9edb95b0c4bf52e6480fe21"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=657aeee4a6d889e1a326b4d75b0593e0"
-
-do_fetch () {
-	wget 
-}
-
-do_compile () {
-	mvn compile -DskipTests
-	mvn package -DskipTests -Ddist -Dtar
-}
-
-do_tests () {
-
-}
+{
+	"do_info": {
+		"description": "Apache Flume", 
+		"homepage":    "http://flume.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "flume-json.bd"
+	},
 	
-do_package () {
-	rpmbuild -ba ....
-}
+	"do_download": {
+		"src_uri":    "http://ftp.cixug.es/apache/${PN}/${PV}/apache-${PN}-${PV}-src.tar.gz",
+		"src_md5sum": "a932da09b9edb95b0c4bf52e6480fe21"
+	},
 
+	"do_fetch": {
+		"download_cmd": "wget algo"
+	},
+
+	"do_compile": {
+		"commands": ["mvn compile -DskipTests",
+			     "mvn check"],
+		"_commands_coment" : "comentario libre"
+	},
+
+	"do_package": {
+		"commands": ["rpmbuild hadoop",
+			     "rpmbuild otra cosa"]
+	}
+}

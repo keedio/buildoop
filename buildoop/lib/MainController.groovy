@@ -19,6 +19,7 @@
  */
 import org.apache.log4j.*
 import groovy.util.logging.*
+import groovy.json.JsonSlurper;
 
 class MainController {
 	def LOG
@@ -57,6 +58,21 @@ class MainController {
 
 	}
 
+	def makeBuild(wo) {
+		def jsonRecipe = new JsonSlurper().\
+				parse(new File(wo["pkg"]).toURL())
+
+		println "Recipe name : " + jsonRecipe.do_info.filename
+		println "Description : " + jsonRecipe.do_info.description
+		println "Home site   : " + jsonRecipe.do_info.homepage
+		println "License     : " + jsonRecipe.do_info.license
+		println "URL base    : " + jsonRecipe.do_download.src_uri
+		println "MD5SUM hash : " + jsonRecipe.do_download.src_md5sum
+		println "Download cmd: " + jsonRecipe.do_fetch.download_cmd
+		println "Build cmds  : " + jsonRecipe.do_compile.commands
+		println "Build pkg   : " + jsonRecipe.do_package.commands
+	}
+
 	def MainController(wo, log) {
 		LOG = log
 		env = System.getenv()
@@ -85,6 +101,10 @@ class MainController {
 				}
 				break
 
+			case "-build":
+				wo["pkg"] = "recipes/flume/flume-1.4.0_bigtop-r1.bd"
+				makeBuild(wo)
+				break
 			default:
 				break
 		}
