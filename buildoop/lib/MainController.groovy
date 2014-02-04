@@ -39,6 +39,7 @@ class MainController {
 	def MainController(wo, log, root) {
 		LOG = log
 		BDROOT = root
+		wo = wo
 
 		switch (wo["arg"]) {
 			case "-version":
@@ -60,10 +61,15 @@ class MainController {
 			case "-info":
 				if ((wo["bom"] == "") && (wo["pkg"] == "")) {
 					getInfo()
+				} else if ((wo["bom"] != "") && (wo["pkg"] == "")) {
+					getBomInfo(wo["bom"])
+				} else {
+					getBomPkgInfo()
 				}
 				break
 
 			case "-build":
+				// FIXME: hardcoded for testing
 				wo["pkg"] = "recipes/flume/flume-1.4.0_bigtop-r1.bd"
 				makeBuild(wo)
 				break
@@ -73,8 +79,18 @@ class MainController {
 
 	}
 
+	/**
+     * List targets from file targets.conf
+	 *
+	 * List targets ready to use stored in the file targets.conf.
+	 * Example: $ buildoop -targets
+	 *
+	 *
+	 * @param bom The BOM file from user arguments
+	 */
 	def getTargets() {
 		println "Available build targets:\n"
+	    // FIXME: hardcoded path
 		new File(BDROOT + "/conf/targets/targets.conf").eachLine { 
 			line -> 
 			if (!((line.trim().size() == 0) || (line[0] == '#'))) {
@@ -103,6 +119,51 @@ class MainController {
 		println "information about this buildoop version"
 
 	}
+
+	/**
+     * Parse BOM file from user input.
+	 *
+	 * List the versions of tools and the target stored
+	 * in the BOM file from conf/bom/<BOMFILE>.bom.
+	 * Example: $ buildoop stable -info
+	 *
+	 *
+	 * @param bom The BOM file from user arguments
+	 */
+	def getBomInfo(bom) {
+		def bomfile = BDROOT + "/conf/bom/" + bom
+		new File(bomfile).eachLine { 
+			line -> 
+			switch(line){
+				case {line.contains("TARGET")}:
+					println "Target Platform:\n"
+					println line.split("=")[1].trim()
+					println "\nEcosystem versions:\n"
+					break
+				case {line.contains("VERSION")}:
+					print line.split("_")[0].trim() + ": "
+					println line.split("=")[1].trim()
+					break
+				default:
+					break
+			}
+		}
+	}
+
+	/**
+     * Parse package file (json recipe) from user input.
+	 *
+	 * List information about json package file. For list
+     * information from package "hadoop" in the BOM file
+	 * "stable.bom" this is the command:
+	 * Example: $ buildoop stable hadoop -info
+	 *
+	 * @param bom The BOM file from user arguments
+	 */
+	def getBomPkgInfo(pkg) {
+		println "information about package from BOM file"
+	}
+		
 
 	def makeBuild(wo) {
 		def jsonRecipe = new JsonSlurper().\
