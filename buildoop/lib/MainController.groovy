@@ -33,13 +33,14 @@ import groovy.json.JsonSlurper;
 class MainController {
 	def LOG
 	def wo
-	def env
 	def BDROOT
+	def globalConfig
 
-	def MainController(wo, log, root) {
-		LOG = log
-		BDROOT = root
-		wo = wo
+	def MainController(w, l, r, g) {
+		wo = w
+		LOG = l
+		BDROOT = r
+		globalConfig = g
 
 		switch (wo["arg"]) {
 			case "-version":
@@ -60,10 +61,13 @@ class MainController {
 
 			case "-info":
 				if ((wo["bom"] == "") && (wo["pkg"] == "")) {
+					// info for the buildoop in general
 					getInfo()
 				} else if ((wo["bom"] != "") && (wo["pkg"] == "")) {
+					// info for the BOM file
 					getBomInfo(wo["bom"])
 				} else {
+					// info for the package in BOM file
 					getBomPkgInfo()
 				}
 				break
@@ -90,8 +94,8 @@ class MainController {
 	 */
 	def getTargets() {
 		println "Available build targets:\n"
-	    // FIXME: hardcoded path
-		new File(BDROOT + "/conf/targets/targets.conf").eachLine { 
+		new File(BDROOT + "/" + globalConfig.buildoop.targetfiles + 
+											"/targets.conf").eachLine { 
 			line -> 
 			if (!((line.trim().size() == 0) || (line[0] == '#'))) {
 					println line
@@ -131,7 +135,8 @@ class MainController {
 	 * @param bom The BOM file from user arguments
 	 */
 	def getBomInfo(bom) {
-		def bomfile = BDROOT + "/conf/bom/" + bom
+		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
+							   "/" + bom
 		new File(bomfile).eachLine { 
 			line -> 
 			switch(line){
@@ -163,7 +168,6 @@ class MainController {
 	def getBomPkgInfo(pkg) {
 		println "information about package from BOM file"
 	}
-		
 
 	def makeBuild(wo) {
 		def jsonRecipe = new JsonSlurper().\

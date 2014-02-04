@@ -95,7 +95,8 @@ class Buildoop {
 		// 3. Real works with the working options from user
 		log.info "Main controller"
 		def MainControllerClass = engine.loadScriptByName('MainController.groovy')
-		def mainController = MainControllerClass.newInstance(wo, log, buildoop.ROOT)
+		def mainController = MainControllerClass.newInstance(wo, log, 
+											buildoop.ROOT, buildoop.globalConfig)
 
     }
 }
