@@ -24,13 +24,28 @@
 import org.apache.log4j.*
 import groovy.util.logging.*
 
+/**
+ * Main class for Buildoop system.
+ *
+ * @author Javi Roman <javiroman@kernel-labs.org>
+ *
+ */
 @Log4j
 class Buildoop {
 	def globalConfig
 	final static def GENCONFIG  = "buildoop/conf/buildoop.conf"
+	def ROOT 
 
+	/**
+ 	 * Print header with provided text.
+ 	 *
+ 	 * @param textForHeader Text to be included in the header.
+ 	 * @param sizeOfHeader Number of characters in each row of header.
+ 	 */
 	def Buildoop() {
 		loadConfigurations()
+		def env = System.getenv()
+		ROOT = env["BDROOT"]
 	}
 
 	def loadConfigurations() {
@@ -69,7 +84,7 @@ class Buildoop {
 		// 1. Parsing the command line
         log.info  "Parsing command line"
 		def ParseOptionsClass = engine.loadScriptByName('ParseOptions.groovy')
-		def parseOptions = ParseOptionsClass.newInstance(log)
+		def parseOptions = ParseOptionsClass.newInstance(log, buildoop.ROOT)
 		def wo = parseOptions.parseOpt(args)
 
 		// 2. Host tools and BOM file sanity checking
@@ -80,7 +95,7 @@ class Buildoop {
 		// 3. Real works with the working options from user
 		log.info "Main controller"
 		def MainControllerClass = engine.loadScriptByName('MainController.groovy')
-		def mainController = MainControllerClass.newInstance(wo, log)
+		def mainController = MainControllerClass.newInstance(wo, log, buildoop.ROOT)
 
     }
 }

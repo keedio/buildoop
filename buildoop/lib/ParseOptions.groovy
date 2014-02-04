@@ -19,6 +19,12 @@
 import org.apache.log4j.*
 import groovy.util.logging.*
 
+/**
+ * Class for command line parse checking.
+ *
+ * @author Javi Roman <javiroman@kernel-labs.org>
+ *
+ */
 class ParseOptions {
 	def arguments = ["-help", "-version", "-checkenv", 
 					"-i", "-info", "-b", "-build",
@@ -27,15 +33,26 @@ class ParseOptions {
 	def packageName = ""
 	def bomName = ""
 	def validArgs = ["arg":"", "pkg":"", "bom":""]
-	def env
+	def BDROOT
 	def LOG
 
-	def ParseOptions(log) {
+	/**
+	 * ParseOptions constructor.
+	 *
+	 * @param log Global log for Log4J
+	 * @param root Top folder of buildoop program
+	 *
+	 */
+	def ParseOptions(log, root) {
 		LOG = log
+		BDROOT = root
         LOG.info "ParseOption constructor, checking enviroment"
-		env = System.getenv()
+        LOG.info "Buildoop top dir: $root"
 	}
 
+	/**
+	 * Show usage and exit
+	 */
 	def usage() {
         LOG.warn "Printing usage info"
 		println """usage: buildoop [options] | <bom-name> <[options]> 
@@ -82,7 +99,7 @@ Package Options:
 	}
 
 	def packageDirectFile(pkg) {
-		def searchpath = env["BDROOT"] + "/recipes"
+		def searchpath = BDROOT + "/recipes"
 		if (fileExists(searchpath, pkg + ".bd")) {
 			return searchpath + "/" + pkg + ".bd"
 		} else {
@@ -91,7 +108,7 @@ Package Options:
 	}
 
 	def bomFile(bom) {
-		def searchpath = env["BDROOT"] + "/conf"
+		def searchpath = BDROOT + "/conf"
 		if (fileExists(searchpath, bom + ".bom")) {
 			return true
 		} else {

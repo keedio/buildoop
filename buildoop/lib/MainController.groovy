@@ -21,11 +21,57 @@ import org.apache.log4j.*
 import groovy.util.logging.*
 import groovy.json.JsonSlurper;
 
+/**
+ * The task controller class.
+ *
+ * This class check the arguments passed by the
+ * user and runs the real buildoop commands.
+ *
+ * @author Javi Roman <javiroman@kernel-labs.org>
+ *
+ */
 class MainController {
 	def LOG
 	def wo
 	def env
 	def BDROOT
+
+	def MainController(wo, log, root) {
+		LOG = log
+		BDROOT = root
+
+		switch (wo["arg"]) {
+			case "-version":
+				getVersion()
+				break
+
+			case "-targets":
+				getTargets()
+				break
+
+			case "-boms":
+				getBoms()
+				break
+
+			case "-checkenv":
+				checkEnv()
+				break
+
+			case "-info":
+				if ((wo["bom"] == "") && (wo["pkg"] == "")) {
+					getInfo()
+				}
+				break
+
+			case "-build":
+				wo["pkg"] = "recipes/flume/flume-1.4.0_bigtop-r1.bd"
+				makeBuild(wo)
+				break
+			default:
+				break
+		}
+
+	}
 
 	def getTargets() {
 		println "Available build targets:\n"
@@ -73,41 +119,4 @@ class MainController {
 		println "Build pkg   : " + jsonRecipe.do_package.commands
 	}
 
-	def MainController(wo, log) {
-		LOG = log
-		env = System.getenv()
-		BDROOT = env["BDROOT"]
-
-		switch (wo["arg"]) {
-			case "-version":
-				getVersion()
-				break
-
-			case "-targets":
-				getTargets()
-				break
-
-			case "-boms":
-				getBoms()
-				break
-
-			case "-checkenv":
-				checkEnv()
-				break
-
-			case "-info":
-				if ((wo["bom"] == "") && (wo["pkg"] == "")) {
-					getInfo()
-				}
-				break
-
-			case "-build":
-				wo["pkg"] = "recipes/flume/flume-1.4.0_bigtop-r1.bd"
-				makeBuild(wo)
-				break
-			default:
-				break
-		}
-
-	}
 }
