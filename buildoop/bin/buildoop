@@ -30,6 +30,10 @@ class Buildoop {
 	final static def GENCONFIG  = "buildoop/conf/buildoop.conf"
 
 	def Buildoop() {
+		loadConfigurations()
+	}
+
+	def loadConfigurations() {
 		System.setProperty("log4j.ignoreTCL", "true");
 
 		// load general configuration properties
