@@ -43,11 +43,6 @@ if [ -z "$JAVA_HOME" ]; then
 	return 1
 fi
 
-if [ -z "$GRADLE_HOME" ]; then
-	echo "GRADLE_HOME is not set"
-	return 1
-fi
-
 if [ -z "$GROOVY_HOME" ]; then
 	echo "GROOVY_HOME is not set"
 	return 1

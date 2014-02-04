@@ -1,3 +1,7 @@
 target/
 build
 *.swp
+cscope.files
+cscope.out
+tags
+

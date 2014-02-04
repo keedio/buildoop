@@ -24,7 +24,7 @@ Technology
 From the technology point of view Buildoop is based on:
 
 1. Command line "buildoop" based on **Groovy**.
-2. Packaging reciypes based on **Gradle**.
+2. Packaging recipes based on **Groovy**.
 3. iTest Framework: based on Groovy test scripts, and **Vagrant** for
    virtual development enviroment.
 4. Set of **Kickstart**, **Cheff** and **Puppet** files for baremetal deployment.
