@@ -109,9 +109,20 @@ class MainController {
 		}
 	}
 
+	/**
+	 * List the available "bill of materials" files.
+	 *
+	 * @return Listing of file names *.bom in conf/boms
+	 */
 	def getBoms() {
-		println "Available build targets:\n"
+		println "Available BOM targets:\n"
+		def p = ~/.*\.bom/
 
+		LOG.info "[getBoms] BOM file listing"
+
+		new File(globalConfig.buildoop.bomfiles).eachFileMatch(p) {
+			f -> println f.getName()
+		}
 	}
 
 	def checkEnv() {
@@ -156,6 +167,20 @@ class MainController {
 	}
 
 	/**
+	 * Load the recipe file based on JSON
+	 *
+	 * @param file The full path of the recipe
+	 *
+	 * @return The JSON formated data
+	 */
+	def loadJsonRecipe(file) {
+		def ret = new JsonSlurper().\
+				parse(new File(file).toURL())
+
+		return ret
+	}
+
+	/**
      * Parse package file (json recipe) from user input.
 	 *
 	 * List information about json package file. For list
@@ -166,12 +191,10 @@ class MainController {
 	 * @param bom The BOM file from user arguments
 	 */
 	def getBomPkgInfo(wo) {
-		println "information about package from BOM file"
-	}
+		LOG.info "[getBomPkgInfo] Information about " +
+				 wo["pkg"]
 
-	def makeBuild(wo) {
-		def jsonRecipe = new JsonSlurper().\
-				parse(new File(wo["pkg"]).toURL())
+		def jsonRecipe = loadJsonRecipe(wo["pkg"])
 
 		println "Recipe name : " + jsonRecipe.do_info.filename
 		println "Description : " + jsonRecipe.do_info.description
@@ -182,6 +205,14 @@ class MainController {
 		println "Download cmd: " + jsonRecipe.do_fetch.download_cmd
 		println "Build cmds  : " + jsonRecipe.do_compile.commands
 		println "Build pkg   : " + jsonRecipe.do_package.commands
+
+	}
+
+	def makeBuild(wo) {
+		LOG.info "[makeBuild] Building " +
+				 wo["pkg"]
+
+		def jsonRecipe = loadJsonRecipe(wo["pkg"])
 	}
 
 }

@@ -3,16 +3,16 @@
 		"description": "Apache Flume", 
 		"homepage":    "http://flume.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "flume-json.bd"
+		"filename":    "flume-1.4.0_bigtop-r1.bd"
 	},
 	
 	"do_download": {
-		"src_uri":    "http://ftp.cixug.es/apache/${PN}/${PV}/apache-${PN}-${PV}-src.tar.gz",
+		"src_uri":    "http://ftp.cixug.es/apache/flume/1.4.0/apache-flume-1.4.0-src.tar.gz",
 		"src_md5sum": "a932da09b9edb95b0c4bf52e6480fe21"
 	},
 
 	"do_fetch": {
-		"download_cmd": "wget algo"
+		"download_cmd": "wget"
 	},
 
 	"do_compile": {

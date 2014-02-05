@@ -71,12 +71,22 @@ class Buildoop {
 		new File(globalConfig.buildoop.logfolder).mkdir()
 	}
 
+	def createBuildFolders() {
+		new File(globalConfig.buildoop.logfolder).mkdir()
+		new File(globalConfig.buildoop.cache).mkdir()
+		new File(globalConfig.buildoop.stamps).mkdir()
+		new File(globalConfig.buildoop.downloads).mkdir()
+		new File(globalConfig.buildoop.work).mkdir()
+	}
+
     static def main(args) {
         def buildoop = new Buildoop()
 
         buildoop.getBanner()
 
 		buildoop.createLogfolder()
+
+		buildoop.createBuildFolders()
 
 		String[] roots = [buildoop.globalConfig.buildoop.classfolder]
 		def engine = new GroovyScriptEngine(roots)
