@@ -12,7 +12,9 @@ string="Buildoop v0.0.1-alpha"
 hash=build-$(date +%s)
 
 version=$string-$hash 
-echo $version > ${BDROOT}/VERSION
+a=$(cat ${BDROOT}/VERSION | cut -d'-' -f5)
+sum=$(($a + 1))
+echo ${version}-$sum > ${BDROOT}/VERSION
 
-sed -i -r "s/buildoop.version.*/buildoop.version=\"$version\"/g" ${conffile}
+sed -i -r "s/buildoop.version.*/buildoop.version=\"$version-$sum\"/g" ${conffile}
 

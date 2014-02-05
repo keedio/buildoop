@@ -11,6 +11,9 @@ General:
 [TODO] - getVersionPkg, getInfoPkg, checkEnv, 
 [TODO] - Sanity checking for host tools
 [TODO] - Sanity checking for BOM file
+[TODO] - parameter -continue for fail tolerant BOM building
+[TODO] - progress info for user
+[TODO] - BOM building logic
 
 Refactoring:
 
