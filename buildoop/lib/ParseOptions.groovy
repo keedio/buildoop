@@ -36,14 +36,12 @@ class ParseOptions {
 	def BDROOT
 	def LOG
 	def globalConfig
-	def fileDownloader
 
 	/**
 	 * ParseOptions constructor.
 	 *
 	 * @param log Global log for Log4J (root)
 	 * @param root Top folder of buildoop program
-	 *
 	 */
 	def ParseOptions(l, r, g) {
 		LOG = l
@@ -52,12 +50,6 @@ class ParseOptions {
 
         LOG.info "[ParseOptions] constructor, checking enviroment"
         LOG.info "[ParseOptions] Buildoop top dir: $BDROOT"
-
-		String[] roots = [globalConfig.buildoop.classfolder]
-		def engine = new GroovyScriptEngine(roots)
-
-		def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
-		fileDownloader = FileDownloaderClass.newInstance(l, r, g)
 	}
 
 	/**

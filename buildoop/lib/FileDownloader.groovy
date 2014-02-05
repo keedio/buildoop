@@ -45,7 +45,6 @@ class FileDownloader {
 		File f = new File(file)
 		if (!f.exists() || !f.isFile()) {
 				println "Invalid file $f provided"
-				println "Usage: groovy sha1.groovy <file_to_hash>"
 		}
 
 		def messageDigest = MessageDigest.getInstance("MD5")
@@ -60,15 +59,15 @@ class FileDownloader {
 
 		//long delta = System.currentTimeMillis()-start
 
-		println "$sha1Hex $file"
+		return "$sha1Hex"
 	}
 
-	def downloadFromURL(address) {
+	def downloadFromURL(address, outFile) {
 		def contentLength
 
-		strUrl = address
-		url = new URL(strUrl)
-		connection = url.openConnection()
+		def strUrl = address
+		def url = new URL(strUrl)
+		def connection = url.openConnection()
 		connection.connect()
 
 		// Check if the request is handled successfully  
@@ -77,12 +76,11 @@ class FileDownloader {
 				contentLength = connection.getContentLength()
 		}
 
-		println "Downloading " + address.split("/")[-1] +
-				" ($contentLength bytes)"
-
-		def file = new FileOutputStream(address.tokenize("/")[-1])
+		def file = new FileOutputStream(outFile)
 		def out = new BufferedOutputStream(file)
+
 		out << new URL(address).openStream()
+
 		out.close()
 
 		return contentLength

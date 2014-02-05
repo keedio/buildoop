@@ -35,12 +35,19 @@ class MainController {
 	def wo
 	def BDROOT
 	def globalConfig
+	def fileDownloader
 
 	def MainController(w, l, r, g) {
 		wo = w
 		LOG = l
 		BDROOT = r
 		globalConfig = g
+
+		String[] roots = [globalConfig.buildoop.classfolder]
+		def engine = new GroovyScriptEngine(roots)
+
+		def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
+		fileDownloader = FileDownloaderClass.newInstance(l, r, g)
 
 		switch (wo["arg"]) {
 			case "-version":
@@ -213,6 +220,15 @@ class MainController {
 				 wo["pkg"]
 
 		def jsonRecipe = loadJsonRecipe(wo["pkg"])
+		
+		def outFile = BDROOT + "/" + 
+					globalConfig.buildoop.downloads + "/" +
+					jsonRecipe.do_download.src_uri.tokenize("/")[-1]
+
+		def size = fileDownloader.downloadFromURL(jsonRecipe.do_download.src_uri, 
+													outFile)
+		println fileDownloader.getMD5sum(outFile, size)
+		println jsonRecipe.do_download.src_md5sum
 	}
 
 }
