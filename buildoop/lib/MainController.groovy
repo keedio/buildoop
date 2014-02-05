@@ -46,6 +46,7 @@ class MainController {
 		String[] roots = [globalConfig.buildoop.classfolder]
 		def engine = new GroovyScriptEngine(roots)
 
+		// Load of helpers groovy classes.
 		def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
 		fileDownloader = FileDownloaderClass.newInstance(l, r, g)
 
@@ -215,20 +216,60 @@ class MainController {
 
 	}
 
-	def makeBuild(wo) {
-		LOG.info "[makeBuild] Building " +
-				 wo["pkg"]
+	def downloadSourceFile(uri, outFile) {
+		return fileDownloader.downloadFromURL(uri, outFile)
+	}
 
+	/**
+     * Package building phases.
+	 *
+	 * 1. Load the recipe JSON data
+	 * 2. Download file from JSON URI data and md5sum checking.
+	 * 3. Extract the source code and.
+	 * 4. Build de tool from source (Makefile, CMake, Maven)
+	 * 5. Build the package (RPM, DEB).
+	 *
+	 * @param wo Command line validated parameters
+	 **/
+	def makeBuild(wo) {
+		LOG.info "[makeBuild] build stages for " + wo["pkg"]
+
+		// 1. load json
 		def jsonRecipe = loadJsonRecipe(wo["pkg"])
 		
+	    // 2. download and checksum
 		def outFile = BDROOT + "/" + 
 					globalConfig.buildoop.downloads + "/" +
 					jsonRecipe.do_download.src_uri.tokenize("/")[-1]
 
-		def size = fileDownloader.downloadFromURL(jsonRecipe.do_download.src_uri, 
-													outFile)
-		println fileDownloader.getMD5sum(outFile, size)
-		println jsonRecipe.do_download.src_md5sum
-	}
+		def f = new File(outFile + ".done")
+		if (!f.exists()) {
+			//long start = System.currentTimeMillis()
+			def size = downloadSourceFile(jsonRecipe.do_download.src_uri, outFile)
+			def md5Calculated = fileDownloader.getMD5sum(outFile, size)
+		    //long delta = System.currentTimeMillis()-start
+			if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
+				// create done file
+				f.createNewFile() 
+			} else {
+				LOG.error "[makeBuild] md5sum fails!!!"
+				LOG.error "[makeBuild] md5sum calculated: $md5Calculated" 
+				LOG.error "[makeBuild] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
+				println "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:"
+				println "Calculated : $md5Calculated"
+				println "From recipe: $jsonRecipe.do_download.src_md5sum\n"
+				println "Aborting program!"
+				System.exit(1)
+			}
+		} else {
+			LOG.info "[makeBuild] download .done file exits" 
+		}
+		
+		// 3. extract source
 
+		// 4. build the sources
+
+		// 5. package building
+
+	}
 }

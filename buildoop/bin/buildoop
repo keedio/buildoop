@@ -32,8 +32,8 @@ import groovy.util.logging.*
  */
 @Log4j
 class Buildoop {
-	def globalConfig
 	final static def GENCONFIG  = "buildoop/conf/buildoop.conf"
+	def globalConfig
 	def ROOT 
 
 	/**
