@@ -50,4 +50,7 @@ fi
 
 PATH=$PATH:$BDROOT/buildoop/bin
 
+echo "Downloading dependencies ...."
+buildoop -version
+echo "ready!"
 export BDROOT BUILDDIR PATH

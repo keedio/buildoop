@@ -18,11 +18,16 @@
  * limitations under the License.
  */
 
-// Add maven LOG4J logger repository dependencies to our classpath
+/*
+ * Grape for add maven repository dependencies to your classpath
+ */
+
+// Add maven LOG4J logger dependencies
 @Grab('log4j:log4j:1.2.17')
 
 import org.apache.log4j.*
 import groovy.util.logging.*
+import groovy.grape.Grape
 
 /**
  * Main class for Buildoop system.
