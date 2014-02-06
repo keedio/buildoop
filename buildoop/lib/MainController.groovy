@@ -148,7 +148,7 @@ class MainController {
 	}
 
 	def getVersion() {
-		new File(BDROOT + "/VERSION").eachLine { 
+		new File("VERSION").eachLine { 
 			line -> println line
 		}
 	}
