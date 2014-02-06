@@ -254,7 +254,8 @@ class MainController {
 	}
 
 	/**
-     * Package building phases.
+     * Package building phases. Probably the most importatnt
+     * class in Buildoop.
 	 *
 	 * 1. Load the recipe JSON data
 	 * 2. Download file from JSON URI data and md5sum checking.
@@ -267,10 +268,19 @@ class MainController {
 	def makePhases(pkg) {
 		LOG.info "[MainController:makePhases] build stages for " + pkg
 
-		// 1. load json
+		/*
+         * 1. Load JSON recipe
+         *
+		 *    FIXME: pending validate JSON schema.
+		 */
 		def jsonRecipe = loadJsonRecipe(pkg)
 		
-	    // 2. download and checksum
+		/*
+         * 2. download and checksum:
+		 *
+	     *    do_download
+         *    do_fetch
+		 */
 		def outFile = BDROOT + "/" + 
 					globalConfig.buildoop.downloads + "/" +
 					jsonRecipe.do_download.src_uri.tokenize("/")[-1]
@@ -298,16 +308,18 @@ class MainController {
 				System.exit(1)
 			}
 		} else {
-			println "$outFile"
-			println "... Skipped"
-			LOG.info "[makePhases] download .done file exits" 
+			LOG.info "[makePhases] download .done file exits skipped" 
 		}
 		
 		// 3. extract source
 
 		// 4. build the sources
 
-		// 5. package building
+		/* 
+	     * 5. package building:
+         *
+	     *    do_package
+	     */
 
 	}
 }
