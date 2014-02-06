@@ -1,0 +1,22 @@
+{
+	"do_info": {
+		"description": "Apache Sqoop", 
+		"homepage":    "http://sqoop.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "sqoop-1.4.4_openbus-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://ftp.cixug.es/apache/sqoop/1.4.4/sqoop-1.4.4.tar.gz",
+		"src_md5sum": "1ede1f9d397f1a372db7f017bc836816"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+
+	"do_package": {
+		"commands": ["rpmbuild hadoop",
+			     "rpmbuild otra cosa"]
+	}
+}

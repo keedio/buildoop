@@ -1,0 +1,22 @@
+{
+	"do_info": {
+		"description": "Apache Oozie", 
+		"homepage":    "https://oozie.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "oozie-4.0.0_openbus-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://ftp.cixug.es/apache/oozie/4.0.0/oozie-4.0.0.tar.gz",
+		"src_md5sum": "51d2a76b101d0d8da541ad04144b3160"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+
+	"do_package": {
+		"commands": ["rpmbuild hadoop",
+			     "rpmbuild otra cosa"]
+	}
+}

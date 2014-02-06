@@ -81,14 +81,50 @@ class MainController {
 				break
 
 			case "-build":
-				// FIXME: hardcoded for testing
-				wo["pkg"] = "recipes/flume/flume-1.4.0_bigtop-r1.bd"
-				makePhases(wo)
+				if (wo["pkg"]) {
+					makePhases(wo["pkg"])
+				} else {
+					def pkgList = getPkgList(wo["bom"])
+					for (i in pkgList) {
+						makePhases(i)
+					}
+				}
 				break
 			default:
 				break
 		}
 
+	}
+
+	/**
+     * Get the list of package recipes to build
+     *
+     * @param bom BOM filename
+	 *
+	 * @return A list with the full recipe names
+     */
+	def getPkgList(bom) {
+		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
+							   "/" + bom
+		def list = []
+        new File(bomfile).eachLine {
+            line ->
+            switch(line){
+                case {line.contains("TARGET")}:
+                    break
+                case {line.contains("#")}:
+                    break
+                case {line.contains("VERSION")}:
+					def capitalname = line.split("_VERSION")[0]
+					def name = capitalname.toLowerCase()
+                    list << globalConfig.buildoop.recipes + "/" + name + "/" + name + 
+							"-" + line.split("=")[1].trim() + ".bd"
+                    break
+                default:
+                    break
+            }
+        }
+        return list
 	}
 
 	/**
@@ -175,7 +211,7 @@ class MainController {
 	}
 
 	/**
-	 * Load the recipe file based on JSON
+	 * Load the rmecipe file based on JSON
 	 *
 	 * @param file The full path of the recipe
 	 *
@@ -228,11 +264,11 @@ class MainController {
 	 *
 	 * @param wo Command line validated parameters
 	 **/
-	def makePhases(wo) {
-		LOG.info "[makePhases] build stages for " + wo["pkg"]
+	def makePhases(pkg) {
+		LOG.info "[MainController:makePhases] build stages for " + pkg
 
 		// 1. load json
-		def jsonRecipe = loadJsonRecipe(wo["pkg"])
+		def jsonRecipe = loadJsonRecipe(pkg)
 		
 	    // 2. download and checksum
 		def outFile = BDROOT + "/" + 
@@ -241,10 +277,13 @@ class MainController {
 
 		def f = new File(outFile + ".done")
 		if (!f.exists()) {
-			//long start = System.currentTimeMillis()
+			println "Downloading $outFile ..."
+			long start = System.currentTimeMillis()
 			def size = downloadSourceFile(jsonRecipe.do_download.src_uri, outFile)
+			println "Downloaded: $size bytes"
 			def md5Calculated = fileDownloader.getMD5sum(outFile, size)
-		    //long delta = System.currentTimeMillis()-start
+		    long end = System.currentTimeMillis()
+			println "Elapsed time: " + ((end - start) / 1000) + " seconds";
 			if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
 				// create done file
 				f.createNewFile() 
@@ -259,6 +298,8 @@ class MainController {
 				System.exit(1)
 			}
 		} else {
+			println "$outFile"
+			println "... Skipped"
 			LOG.info "[makePhases] download .done file exits" 
 		}
 		
