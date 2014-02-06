@@ -15,6 +15,10 @@
 		"download_cmd": "wget"
 	},
 
+	"do_dependecies": {
+		"packages": ["protobuf"]
+	},
+
 	"do_package": {
 		"commands": ["rpmbuild hadoop",
 			     "rpmbuild otra cosa"]

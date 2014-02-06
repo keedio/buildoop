@@ -1,0 +1,36 @@
+{
+	"do_info": {
+		"description": "Protocol Buffers - Google's data interchange format", 
+		"homepage":    "https://code.google.com/p/protobuf/",
+		"license":     "BSD 3-Clause",
+		"filename":    "protobuf-2.5.0_r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.bz2",
+		"src_md5sum": "a72001a9067a4c2c4e0e836d0f92ece4"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+
+	"do_compile": {
+		"commands": ["./configure", "make"],
+		"_commands_coment" : "comentario libre"
+	},
+
+	"do_install": {
+		"commands": "make install",
+		"destination": "stage",
+	},
+
+	"do_clean": {
+		"command": "make clean"
+	},
+
+	"do_package": {
+		"commands": ["rpmbuild hadoop",
+			     "rpmbuild otra cosa"]
+	}
+}

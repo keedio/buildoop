@@ -3,7 +3,7 @@
 		"description": "Apache Flume", 
 		"homepage":    "http://flume.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "flume-1.4.0_bigtop-r1.bd"
+		"filename":    "flume-1.5.0_openbus-r1.bd"
 	},
 	
 	"do_download": {
