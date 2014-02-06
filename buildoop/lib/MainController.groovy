@@ -31,24 +31,26 @@ import groovy.json.JsonSlurper;
  *
  */
 class MainController {
-	def LOG
+    def _buildoop
 	def wo
+	def LOG
 	def BDROOT
 	def globalConfig
 	def fileDownloader
 
-	def MainController(w, l, r, g) {
-		wo = w
-		LOG = l
-		BDROOT = r
-		globalConfig = g
+	def MainController(buildoop) {
+        _buildoop = buildoop
+		wo = buildoop.wo
+		LOG = buildoop.log
+		BDROOT = buildoop.ROOT
+		globalConfig = buildoop.globalConfig
 
 		String[] roots = [globalConfig.buildoop.classfolder]
 		def engine = new GroovyScriptEngine(roots)
 
 		// Load of helpers groovy classes.
 		def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
-		fileDownloader = FileDownloaderClass.newInstance(l, r, g)
+		fileDownloader = FileDownloaderClass.newInstance(buildoop)
 
 		switch (wo["arg"]) {
 			case "-version":
@@ -293,7 +295,8 @@ class MainController {
 			println "Downloaded: $size bytes"
 			def md5Calculated = fileDownloader.getMD5sum(outFile, size)
 		    long end = System.currentTimeMillis()
-			println "Elapsed time: " + ((end - start) / 1000) + " seconds";
+			print "Elapsed time: " + ((end - start) / 1000) + " seconds ";
+            _buildoop.userMessage("OK", "[OK]")
 			if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
 				// create done file
 				f.createNewFile() 
@@ -301,10 +304,14 @@ class MainController {
 				LOG.error "[makePhases] md5sum fails!!!"
 				LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
 				LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
-				println "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:"
-				println "Calculated : $md5Calculated"
-				println "From recipe: $jsonRecipe.do_download.src_md5sum\n"
-				println "Aborting program!"
+				_buildoop.userMessage("ERROR",
+                    "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:")
+				_buildoop.userMessage("ERROR",
+                    "Calculated : $md5Calculated")
+				_buildoop.userMessage("ERROR",
+                    "From recipe: $jsonRecipe.do_download.src_md5sum")
+				_buildoop.userMessage("ERROR",
+                    "Aborting program!")
 				System.exit(1)
 			}
 		} else {

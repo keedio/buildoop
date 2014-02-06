@@ -34,10 +34,10 @@ class FileDownloader {
 	def LOG
 	def globalConfig
 
-	def FileDownloader(l, r, g) {
-		LOG = l
-		BDROOT = r
-		globalConfig = g
+	def FileDownloader(buildoop) {
+		LOG = buildoop.log
+		BDROOT = buildoop.ROOT
+		globalConfig = buildoop.globalConfig
         LOG.info "[FileDownloader] constructor, checking enviroment"
 	}
 

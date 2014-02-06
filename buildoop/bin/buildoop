@@ -40,6 +40,7 @@ class Buildoop {
 	final static def GENCONFIG  = "buildoop/conf/buildoop.conf"
 	def globalConfig
 	def ROOT 
+    def wo = []
 
 	/**
  	 * Print header with provided text.
@@ -115,9 +116,9 @@ class Buildoop {
 		// 1. Parsing the command line
         log.info  "Parsing command line"
 		def ParseOptionsClass = engine.loadScriptByName('ParseOptions.groovy')
-		def parseOptions = ParseOptionsClass.newInstance(log, buildoop.ROOT, 
-											buildoop.globalConfig)
-		def wo = parseOptions.parseOpt(args)
+		def parseOptions = ParseOptionsClass.newInstance(buildoop)
+
+		buildoop.wo = parseOptions.parseOpt(args)
 
 		// 2. Host tools and BOM file sanity checking
         log.info  "Sanity checking bits"
@@ -127,9 +128,7 @@ class Buildoop {
 		// 3. Real works with the working options from user
 		log.info "Main controller"
 		def MainControllerClass = engine.loadScriptByName('MainController.groovy')
-		def mainController = MainControllerClass.newInstance(wo, log, 
-											buildoop.ROOT, buildoop.globalConfig)
-
+		def mainController = MainControllerClass.newInstance(buildoop)
     }
 }
 

@@ -26,6 +26,7 @@ import groovy.util.logging.*
  *
  */
 class ParseOptions {
+    def _buildoop
 	def arguments = ["-help", "-version", "-checkenv", 
 					"-i", "-info", "-b", "-build",
 					"-c", "-clean", "-cleanall",
@@ -43,10 +44,11 @@ class ParseOptions {
 	 * @param log Global log for Log4J (root)
 	 * @param root Top folder of buildoop program
 	 */
-	def ParseOptions(l, r, g) {
-		LOG = l
-		BDROOT = r
-		globalConfig = g
+	def ParseOptions(buildoop) {
+        _buildoop = buildoop
+		LOG = buildoop.log
+		BDROOT = buildoop.ROOT
+		globalConfig = buildoop.globalConfig
 
         LOG.info "[ParseOptions] constructor, checking enviroment"
         LOG.info "[ParseOptions] Buildoop top dir: $BDROOT"
@@ -98,7 +100,7 @@ Package Options:
 	 * @param msg The error message to display user.
 	 */
 	def parseError(msg) {
-		println "ERROR: " + msg + "\n"
+        _buildoop.userMessage("ERROR", "ERROR: " + msg)
 		LOG.error "ERROR: " + msg
 		usage()
 		System.exit(1)
