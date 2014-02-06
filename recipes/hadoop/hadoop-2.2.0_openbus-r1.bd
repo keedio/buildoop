@@ -1,14 +1,14 @@
 {
 	"do_info": {
-		"description": "Apache Flume", 
-		"homepage":    "http://flume.apache.org/",
-		"license":     "Apache-2.0",
-		"filename":    "flume-1.4.0_bigtop-r1.bd"
+		"description": "Apache Hadoop software library", 
+		"homepage": "http://hadoop.apache.org/",
+		"license": "Apache-2.0",
+		"filename": "hadoop-2.2.0_openbus-r1.bd"
 	},
 	
 	"do_download": {
-		"src_uri":    "http://ftp.cixug.es/apache/flume/1.4.0/apache-flume-1.4.0-src.tar.gz",
-		"src_md5sum": "a932da09b9edb95b0c4bf52e6480fe21"
+		"src_uri": "http://ftp.cixug.es/apache/hadoop/common/stable/hadoop-2.2.0-src.tar.gz",
+		"src_md5sum": "23141829750f739677ae839faf392647"
 	},
 
 	"do_fetch": {

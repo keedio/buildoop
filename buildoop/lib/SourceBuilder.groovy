@@ -19,6 +19,15 @@
 import org.apache.log4j.*
 import groovy.util.logging.*
 
+/**
+ * This class is for building native or stagging tools
+ * which are not necessaries to fecth in a RPM/DEB package.
+ *
+ * If you have to make a RPM/DEB package you have to use
+ * the class PackageBuilder.
+ *
+ * @author Javi Roman <javiroman@kernel-labs.org>
+ */
 class SourceBuilder {
 	def LOG
 

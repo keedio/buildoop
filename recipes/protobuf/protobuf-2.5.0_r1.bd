@@ -22,7 +22,7 @@
 
 	"do_install": {
 		"commands": "make install",
-		"destination": "stage",
+		"destination": "stage"
 	},
 
 	"do_clean": {

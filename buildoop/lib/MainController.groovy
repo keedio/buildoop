@@ -83,7 +83,7 @@ class MainController {
 			case "-build":
 				// FIXME: hardcoded for testing
 				wo["pkg"] = "recipes/flume/flume-1.4.0_bigtop-r1.bd"
-				makeBuild(wo)
+				makePhases(wo)
 				break
 			default:
 				break
@@ -194,6 +194,7 @@ class MainController {
 	 * List information about json package file. For list
      * information from package "hadoop" in the BOM file
 	 * "stable.bom" this is the command:
+     *
 	 * Example: $ buildoop stable hadoop -info
 	 *
 	 * @param bom The BOM file from user arguments
@@ -210,10 +211,6 @@ class MainController {
 		println "License     : " + jsonRecipe.do_info.license
 		println "URL base    : " + jsonRecipe.do_download.src_uri
 		println "MD5SUM hash : " + jsonRecipe.do_download.src_md5sum
-		println "Download cmd: " + jsonRecipe.do_fetch.download_cmd
-		println "Build cmds  : " + jsonRecipe.do_compile.commands
-		println "Build pkg   : " + jsonRecipe.do_package.commands
-
 	}
 
 	def downloadSourceFile(uri, outFile) {
@@ -231,8 +228,8 @@ class MainController {
 	 *
 	 * @param wo Command line validated parameters
 	 **/
-	def makeBuild(wo) {
-		LOG.info "[makeBuild] build stages for " + wo["pkg"]
+	def makePhases(wo) {
+		LOG.info "[makePhases] build stages for " + wo["pkg"]
 
 		// 1. load json
 		def jsonRecipe = loadJsonRecipe(wo["pkg"])
@@ -252,9 +249,9 @@ class MainController {
 				// create done file
 				f.createNewFile() 
 			} else {
-				LOG.error "[makeBuild] md5sum fails!!!"
-				LOG.error "[makeBuild] md5sum calculated: $md5Calculated" 
-				LOG.error "[makeBuild] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
+				LOG.error "[makePhases] md5sum fails!!!"
+				LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
+				LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
 				println "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:"
 				println "Calculated : $md5Calculated"
 				println "From recipe: $jsonRecipe.do_download.src_md5sum\n"
@@ -262,7 +259,7 @@ class MainController {
 				System.exit(1)
 			}
 		} else {
-			LOG.info "[makeBuild] download .done file exits" 
+			LOG.info "[makePhases] download .done file exits" 
 		}
 		
 		// 3. extract source
