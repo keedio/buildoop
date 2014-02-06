@@ -69,7 +69,7 @@ class Buildoop {
 	}
 
 	def displayBanner() {
-		println "Buildoop: Hadoop Ecosystem Builder\n"
+        userMessage("INFO", "Buildoop: Hadoop Ecosystem Builder")
 	}
 
 	def createLogfolder() {
@@ -83,6 +83,24 @@ class Buildoop {
 		new File(globalConfig.buildoop.downloads).mkdir()
 		new File(globalConfig.buildoop.work).mkdir()
 	}
+
+    def userMessage(type, msg) {
+        def ANSI_RESET = "0m"
+        def ANSI_RED = "31;1m"
+        def ANSI_GREEN = "32;1m"
+        def ANSI_YELLOW = "33;1m"
+        def ANSI_PURPLE = "35;1m"
+        def ANSI_CYAN = "36;1m"
+        def ANSI_BLUE = "34;1m"
+        def CSI="\u001B["
+
+        def colors = ["OK":ANSI_GREEN,
+                      "ERROR":ANSI_RED,
+                      "WARNING":ANSI_YELLOW,
+                      "INFO":ANSI_BLUE]
+
+        println CSI + colors[type] + msg + CSI + ANSI_RESET
+    }
 
     static def main(args) {
         def buildoop = new Buildoop()
