@@ -50,6 +50,11 @@ class ParseOptions {
 		BDROOT = buildoop.ROOT
 		globalConfig = buildoop.globalConfig
 
+        assert _buildoop != null, 'parameter must not be null'
+        assert LOG != null, 'parameter must not be null'
+        assert BDROOT != null, 'parameter must not be null'
+        assert globalConfig != null, 'parameter must not be null'
+
         LOG.info "[ParseOptions] constructor, checking enviroment"
         LOG.info "[ParseOptions] Buildoop top dir: $BDROOT"
 	}

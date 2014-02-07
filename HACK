@@ -18,6 +18,7 @@ Refactoring:
 
 [TODO] - singlenton pattern for global object share.
 [TODO] - JSON Schema validator http://searchcode.com/codesearch/view/14870526
+[TODO] - Introduce defensive programming with preconditions-postconditons assertions.
 
 DONE List
 ~~~~~~~~

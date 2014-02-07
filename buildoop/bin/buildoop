@@ -52,6 +52,7 @@ class Buildoop {
 		loadConfigurations()
 		def env = System.getenv()
 		ROOT = env["BDROOT"]
+        assert ROOT != null, 'Enviroment must not be null'
 	}
 
 	def loadConfigurations() {
@@ -119,6 +120,7 @@ class Buildoop {
 		def parseOptions = ParseOptionsClass.newInstance(buildoop)
 
 		buildoop.wo = parseOptions.parseOpt(args)
+        assert buildoop.wo != null, 'must not be null'
 
 		// 2. Host tools and BOM file sanity checking
         log.info  "Sanity checking bits"
