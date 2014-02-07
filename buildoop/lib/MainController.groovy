@@ -315,6 +315,8 @@ class MainController {
 				System.exit(1)
 			}
 		} else {
+            print "Recipe: " + outFile.tokenize('/').last() + " ready to build "
+            _buildoop.userMessage("OK", "[OK]")
 			LOG.info "[makePhases] download .done file exits skipped" 
 		}
 		
@@ -327,6 +329,5 @@ class MainController {
          *
 	     *    do_package
 	     */
-
 	}
 }
