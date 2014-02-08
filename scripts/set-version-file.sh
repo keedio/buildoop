@@ -4,7 +4,7 @@
 
 if [ -z "$BDROOT" ]; then
 	echo "BDROOT is not set"
-	return 1
+	exit 1
 fi
 
 conffile=${BDROOT}/buildoop/conf/buildoop.conf
