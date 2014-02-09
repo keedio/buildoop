@@ -52,5 +52,5 @@ PATH=$PATH:$BDROOT/buildoop/bin
 export BDROOT BUILDDIR PATH
 
 echo "Downloading dependencies ...."
-buildoop -version
+groovy -Dgroovy.grape.report.downloads=true buildoop/bin/buildoop -version
 echo "ready!"
