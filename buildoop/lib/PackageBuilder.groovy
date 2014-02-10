@@ -41,9 +41,66 @@ class PackageBuilder {
 		new File(basefolder + "/rpmbuild/BUILD").mkdir()
     }
 
+
+	def copyFile(src,dest) {
+ 
+		def input = src.newDataInputStream()
+		def output = dest.newDataOutputStream()
+ 
+		output << input 
+ 
+		input.close()
+		output.close()
+	}
+
+	def runCommand(strList)  { 
+		assert (strList instanceof String ||
+            (strList instanceof List && strList.each{ it instanceof String }))
+
+  		def proc = strList.execute()
+  			proc.in.eachLine { 
+				line -> println line 
+  		}
+
+  		proc.out.close()
+  		proc.waitFor()
+
+  		print "[INFO] ( "
+  		if(strList instanceof List) {
+    		strList.each { print "${it} " }
+  		} else {
+    		print "command: " + strList
+  		}
+  		println " )"
+
+  		if (proc.exitValue()) {
+    	println "gave the following error: "
+    	println "[ERROR] ${proc.getErrorStream()}"
+  		}
+  		assert !proc.exitValue()
+	}
+
     def copyBuildFiles(basefolder) {
         println "copy source code to " + basefolder + "/rpmbuild/SOURCES"
         println "copy spec file to " + basefolder + "/rpmbuild/SPECS"
+ 
+		def folderIn = 'buildoop.git/recipes/flume/flume-1.4.0_openbus-0.0.1-r1/rpm/sources/'
+		def folderOut = 'work/rpmbuild/SOURCES/'
+
+		new File(folderIn).eachFileRecurse { 
+			copyFile(new File(folderIn + it.name), 
+				 new File(folderOut + it.name))
+		}
+
+		srcFile  = new File("buildoop.git/build/downloads/apache-flume-1.4.0-src.tar.gz") 
+		destFile = new File("work/rpmbuild/SOURCES/apache-flume-1.4.0-src.tar.gz")
+
+		copyFile(srcFile, destFile)
+
+		srcFile  = new File("buildoop.git/recipes/flume/flume-1.4.0_openbus-0.0.1-r1/rpm/specs/flume.spec") 
+		destFile = new File("work/rpmbuild/SPECS/flume.spec")
+
+		copyFile(srcFile, destFile)
     }
 
     def execRpmBuild(basefolder) {
@@ -51,8 +108,9 @@ class PackageBuilder {
             basefolder + "/rpmbuild" + "' " +
             basefolder + "/rpmbuild/SPECS" + "/flume.spec"
                 
-
-
+		runCommand(["bash", "-c", 
+			"rpmbuild -ba -D\'_topdir /home/jroman/work/rpmbuild\' work/rpmbuild/SPECS/flume.spec"])
+		runCommand(["bash", "-c", command])
     }
 }
 
