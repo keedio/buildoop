@@ -20,11 +20,55 @@ import org.apache.log4j.*
 import groovy.util.logging.*
 
 class PackageBuilder {
+	def BDROOT
 	def LOG
+	def globalConfig
 
     // rpmbuild -ba -D'_topdir /home/jroman/javi' javi/SPECS/flume.spec
-	def PackageBuilder(log) {
-		LOG = log
-        	LOG.info "[PackageBuilder] constructor"
+	def PackageBuilder(buildoop) {
+		LOG = buildoop.log
+		BDROOT = buildoop.ROOT
+		globalConfig = buildoop.globalConfig
+        LOG.info "[PackageBuilder] constructor"
 	}
+
+    def makeWorkingFolders(basefolder) {
+        LOG.info "[PackageBuilder:makeWorkingFolders] making folders"
+		new File(basefolder).mkdir()
+		new File(basefolder + "/rpmbuild").mkdir()
+		new File(basefolder + "/rpmbuild/SPECS").mkdir()
+		new File(basefolder + "/rpmbuild/SOURCES").mkdir()
+		new File(basefolder + "/rpmbuild/BUILD").mkdir()
+    }
+
+    def copyBuildFiles(basefolder) {
+        println "copy source code to " + basefolder + "/rpmbuild/SOURCES"
+        println "copy spec file to " + basefolder + "/rpmbuild/SPECS"
+    }
+
+    def execRpmBuild(basefolder) {
+        println "executing rpmbuild -ba -D'_topdir " +
+            basefolder + "/rpmbuild" + "' " +
+            basefolder + "/rpmbuild/SPECS" + "/flume.spec"
+                
+
+
+    }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

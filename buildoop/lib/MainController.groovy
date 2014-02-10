@@ -37,6 +37,7 @@ class MainController {
 	def BDROOT
 	def globalConfig
 	def fileDownloader
+    def packageBuilder
 
 	def MainController(buildoop) {
         _buildoop = buildoop
@@ -51,6 +52,9 @@ class MainController {
 		// Load of helpers groovy classes.
 		def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
 		fileDownloader = FileDownloaderClass.newInstance(buildoop)
+
+		def PackageBuilderClass = engine.loadScriptByName('PackageBuilder.groovy')
+		packageBuilder = PackageBuilderClass.newInstance(buildoop)
 
 		switch (wo["arg"]) {
 			case "-version":
@@ -328,5 +332,12 @@ class MainController {
          *
 	     *    do_package
 	     */
+         def baseFolder = globalConfig.buildoop.work + "/" + 
+                jsonRecipe.do_info.filename.split('.bd')[0]
+
+         packageBuilder.makeWorkingFolders(baseFolder)
+         packageBuilder.copyBuildFiles(baseFolder)
+         packageBuilder.execRpmBuild(baseFolder)
+
 	}
 }
