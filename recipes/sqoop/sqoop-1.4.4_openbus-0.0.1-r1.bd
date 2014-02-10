@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://ftp.cixug.es/apache/sqoop/1.4.4/sqoop-1.4.4.tar.gz",
+		"src_uri":    "http://www.eu.apache.org/dist/sqoop/1.4.4/sqoop-1.4.4.tar.gz",
 		"src_md5sum": "1ede1f9d397f1a372db7f017bc836816"
 	},
 

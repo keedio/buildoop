@@ -289,14 +289,14 @@ class MainController {
 
 		def f = new File(outFile + ".done")
 		if (!f.exists()) {
-			println "Downloading $outFile ..."
+			println "Downloading $jsonRecipe.do_download.src_uri ..."
 			long start = System.currentTimeMillis()
 			def size = downloadSourceFile(jsonRecipe.do_download.src_uri, outFile)
 			println "Downloaded: $size bytes"
 			def md5Calculated = fileDownloader.getMD5sum(outFile, size)
 		    long end = System.currentTimeMillis()
-			print "Elapsed time: " + ((end - start) / 1000) + " seconds ";
-            _buildoop.userMessage("OK", "[OK]")
+            _buildoop.userMessage("OK", "[OK] ")
+			println "Elapsed time: " + ((end - start) / 1000) + " seconds ";
 			if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
 				// create done file
 				f.createNewFile() 
@@ -305,18 +305,17 @@ class MainController {
 				LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
 				LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
 				_buildoop.userMessage("ERROR",
-                    "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:")
+                    "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:\n")
 				_buildoop.userMessage("ERROR",
-                    "Calculated : $md5Calculated")
+                    "Calculated : $md5Calculated\n")
 				_buildoop.userMessage("ERROR",
-                    "From recipe: $jsonRecipe.do_download.src_md5sum")
-				_buildoop.userMessage("ERROR",
-                    "Aborting program!")
+                    "From recipe: $jsonRecipe.do_download.src_md5sum\n")
+				_buildoop.userMessage("ERROR", "Aborting program!\n")
 				System.exit(1)
 			}
 		} else {
-            print "Recipe: " + outFile.tokenize('/').last() + " ready to build "
             _buildoop.userMessage("OK", "[OK]")
+            println " Recipe: " + outFile.tokenize('/').last() + " ready to build "
 			LOG.info "[makePhases] download .done file exits skipped" 
 		}
 		

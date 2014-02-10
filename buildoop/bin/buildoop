@@ -71,7 +71,7 @@ class Buildoop {
 	}
 
 	def displayBanner() {
-        userMessage("INFO", "Buildoop: Hadoop Ecosystem Builder")
+        userMessage("INFO", "Buildoop: Hadoop Ecosystem Builder\n")
 	}
 
 	def createLogfolder() {
@@ -101,7 +101,7 @@ class Buildoop {
                       "WARNING":ANSI_YELLOW,
                       "INFO":ANSI_BLUE]
 
-        println CSI + colors[type] + msg + CSI + ANSI_RESET
+        print CSI + colors[type] + msg + CSI + ANSI_RESET
     }
 
     static def main(args) {

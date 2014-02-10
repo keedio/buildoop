@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri": "http://ftp.cixug.es/apache/hadoop/common/stable/hadoop-2.2.0-src.tar.gz",
+		"src_uri": "http://www.eu.apache.org/dist/hadoop/common/hadoop-2.2.0/hadoop-2.2.0-src.tar.gz",
 		"src_md5sum": "23141829750f739677ae839faf392647"
 	},
 
