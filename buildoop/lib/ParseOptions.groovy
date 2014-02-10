@@ -105,7 +105,7 @@ Package Options:
 	 * @param msg The error message to display user.
 	 */
 	def parseError(msg) {
-        _buildoop.userMessage("ERROR", "ERROR: " + msg)
+        _buildoop.userMessage("ERROR", "ERROR: " + msg + "\n")
 		LOG.error "ERROR: " + msg
 		usage()
 		System.exit(1)

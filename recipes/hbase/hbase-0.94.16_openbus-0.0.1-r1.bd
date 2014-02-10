@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://ftp.cixug.es/apache/hbase/hbase-0.94.16/hbase-0.94.16.tar.gz",
+		"src_uri":    "http://www.eu.apache.org/dist/hbase/hbase-0.94.16/hbase-0.94.16.tar.gz",
 		"src_md5sum": "9080bf960ec0194881d6889e4be90701"
 	},
 

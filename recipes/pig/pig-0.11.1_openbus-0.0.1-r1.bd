@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://ftp.cixug.es/apache/pig/pig-0.11.1/pig-0.11.1-src.tar.gz",
+		"src_uri":    "http://www.eu.apache.org/dist/pig/pig-0.11.1/pig-0.11.1-src.tar.gz",
 		"src_md5sum": "83d2d7386b05ca4616849b26a85ac1ab"
 	},
 
