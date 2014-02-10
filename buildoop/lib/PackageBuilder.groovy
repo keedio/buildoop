@@ -108,8 +108,8 @@ class PackageBuilder {
             basefolder + "/rpmbuild" + "' " +
             basefolder + "/rpmbuild/SPECS" + "/flume.spec"
                 
-		runCommand(["bash", "-c", 
-			"rpmbuild -ba -D\'_topdir /home/jroman/work/rpmbuild\' work/rpmbuild/SPECS/flume.spec"])
+		def command = "rpmbuild -ba -D\'_topdir /home/jroman/work/rpmbuild\' work/rpmbuild/SPECS/flume.spec"
+
 		runCommand(["bash", "-c", command])
     }
 }
