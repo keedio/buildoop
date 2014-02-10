@@ -71,7 +71,7 @@ class Buildoop {
 	}
 
 	def displayBanner() {
-        userMessage("INFO", "Buildoop: Hadoop Ecosystem Builder\n")
+        userMessage("INFO", "Buildoop: Hadoop Ecosystem Builder\n\n")
 	}
 
 	def createLogfolder() {
@@ -79,10 +79,6 @@ class Buildoop {
 	}
 
 	def createBuildFolders() {
-        userMessage("INFO", "[INFO] ")
-        println "Checking for for build folders"
-        userMessage("OK", "[OK] ")
-        println "Minimal folders created"
 		new File(globalConfig.buildoop.logfolder).mkdir()
 		new File(globalConfig.buildoop.cache).mkdir()
 		new File(globalConfig.buildoop.stamps).mkdir()
