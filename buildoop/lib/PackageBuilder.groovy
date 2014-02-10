@@ -22,6 +22,7 @@ import groovy.util.logging.*
 class PackageBuilder {
 	def LOG
 
+    // rpmbuild -ba -D'_topdir /home/jroman/javi' javi/SPECS/flume.spec
 	def PackageBuilder(log) {
 		LOG = log
         	LOG.info "[PackageBuilder] constructor"

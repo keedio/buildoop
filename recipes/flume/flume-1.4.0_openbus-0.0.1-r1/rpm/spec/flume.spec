@@ -70,7 +70,7 @@ Buildroot: %{_topdir}/INSTALL/%{name}-%{version}
 BuildArch: noarch
 License: APL2
 Source0: apache-%{name}-%{flume_base_version}-src.tar.gz
-Source1: do-component-build
+Source1: rpm-build-stage
 Source2: install_%{name}.sh
 Source3: %{name}-agent.init
 Source4: flume-agent.default
@@ -124,7 +124,7 @@ Flume is a reliable, scalable, and manageable distributed data collection applic
 sh %{SOURCE1}
 
 %install
-%__rm -rf $base_BUILD_ROOT
+#%__rm -rf $base_BUILD_ROOT
 sh %{SOURCE2} \
           --build-dir=$PWD \
           --prefix=$RPM_BUILD_ROOT \
