@@ -332,12 +332,21 @@ class MainController {
          *
 	     *    do_package
 	     */
-         def baseFolder = globalConfig.buildoop.work + "/" + 
+
+         // [src:recipes/pig/pig-0.11.1_openbus-r1, 
+         //  dest:build/work/pig-0.11.1_openbus-r1]
+         def baseFolders = ["src":"", "dest":""]
+
+         baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
+                    jsonRecipe.do_info.filename.split('-')[0] + "/" +
+                    jsonRecipe.do_info.filename.split('.bd')[0]
+
+         baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
                 jsonRecipe.do_info.filename.split('.bd')[0]
 
-         packageBuilder.makeWorkingFolders(baseFolder)
-         packageBuilder.copyBuildFiles(baseFolder)
-         packageBuilder.execRpmBuild(baseFolder)
+         packageBuilder.makeWorkingFolders(baseFolders)
+         packageBuilder.copyBuildFiles(baseFolders)
+         //packageBuilder.execRpmBuild(baseFolders)
 
 	}
 }

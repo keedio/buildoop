@@ -32,13 +32,13 @@ class PackageBuilder {
         LOG.info "[PackageBuilder] constructor"
 	}
 
-    def makeWorkingFolders(basefolder) {
+    def makeWorkingFolders(basefolders) {
         LOG.info "[PackageBuilder:makeWorkingFolders] making folders"
-		new File(basefolder).mkdir()
-		new File(basefolder + "/rpmbuild").mkdir()
-		new File(basefolder + "/rpmbuild/SPECS").mkdir()
-		new File(basefolder + "/rpmbuild/SOURCES").mkdir()
-		new File(basefolder + "/rpmbuild/BUILD").mkdir()
+		new File(basefolders["dest"]).mkdir()
+		new File(basefolders["dest"] + "/rpmbuild").mkdir()
+		new File(basefolders["dest"] + "/rpmbuild/SPECS").mkdir()
+		new File(basefolders["dest"] + "/rpmbuild/SOURCES").mkdir()
+		new File(basefolders["dest"] + "/rpmbuild/BUILD").mkdir()
     }
 
 
@@ -80,12 +80,12 @@ class PackageBuilder {
   		assert !proc.exitValue()
 	}
 
-    def copyBuildFiles(basefolder) {
-        println "copy source code to " + basefolder + "/rpmbuild/SOURCES"
-        println "copy spec file to " + basefolder + "/rpmbuild/SPECS"
+    def copyBuildFiles(basefolders) {
+        println "copy source code to " + basefolders["dest"] + "/rpmbuild/SOURCES"
+        println "copy spec file to " + basefolders["dest"] + "/rpmbuild/SPECS"
  
-		def folderIn = 'buildoop.git/recipes/flume/flume-1.4.0_openbus-0.0.1-r1/rpm/sources/'
-		def folderOut = 'work/rpmbuild/SOURCES/'
+		def folderIn = basefolders["src"] + "/rpm/sources"
+		def folderOut = basefolders["dest"] + "/rpmbuild/SOURCES"
 
 		new File(folderIn).eachFileRecurse { 
 			copyFile(new File(folderIn + it.name), 
