@@ -49,6 +49,12 @@ Folder scheme
 	
 * toolchain:
 	Tools for cross-compiling for diferent targets.
+
+Read More
+---------
+
+http://buildoop.github.io/
+
 	
 --
-Javi Roman <javiroman@kernel-labs.org>
+Javi Roman <javiroman@redoop.org>
