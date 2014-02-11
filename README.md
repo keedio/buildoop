@@ -41,8 +41,8 @@ Folder scheme
 * deploy:
 	Folder for deploy in VM and Baremetal systems. Based on Puppet and Chef.
 	
-* itests:
-	Integration tests for VM pseudo-cluster system.
+* sit:
+	System Integration Testing tests for VM pseudo-cluster system.
 	
 * recipes:
 	Download, build and packaging recipes.
