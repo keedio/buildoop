@@ -3,7 +3,7 @@
 		"description": "Apache Zookeeper", 
 		"homepage":    "http://zookeeper.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "zookeeper-3.4.5_openbus-r1.bd"
+		"filename":    "zookeeper-3.4.5_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {

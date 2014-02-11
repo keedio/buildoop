@@ -3,7 +3,7 @@
 		"description": "Apache Sqoop", 
 		"homepage":    "http://sqoop.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "sqoop-1.4.4_openbus-r1.bd"
+		"filename":    "sqoop-1.4.4_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {

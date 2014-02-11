@@ -3,7 +3,7 @@
 		"description": "Apache Oozie", 
 		"homepage":    "https://oozie.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "oozie-4.0.0_openbus-r1.bd"
+		"filename":    "oozie-4.0.0_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {

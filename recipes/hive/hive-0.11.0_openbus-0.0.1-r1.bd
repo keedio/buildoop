@@ -3,7 +3,7 @@
 		"description": "Apache Hive", 
 		"homepage":    "http://hive.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "hive-0.11.0_openbus-r1.bd"
+		"filename":    "hive-0.11.0_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {

@@ -3,7 +3,7 @@
 		"description": "Apache Kafka", 
 		"homepage":    "https://kafka.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "kafka-0.8.0_openbus-r1.bd"
+		"filename":    "kafka-0.8.0_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {

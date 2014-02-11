@@ -23,6 +23,7 @@ class PackageBuilder {
 	def BDROOT
 	def LOG
 	def globalConfig
+	def specfile
 
     // rpmbuild -ba -D'_topdir /home/jroman/javi' javi/SPECS/flume.spec
 	def PackageBuilder(buildoop) {
@@ -42,8 +43,10 @@ class PackageBuilder {
     }
 
 
-	def copyFile(src,dest) {
+	def copyFile(src, dest) {
  
+		println "copying " + src
+		println " to " + dest
 		def input = src.newDataInputStream()
 		def output = dest.newDataOutputStream()
  
@@ -84,34 +87,68 @@ class PackageBuilder {
         println "copy source code to " + basefolders["dest"] + "/rpmbuild/SOURCES"
         println "copy spec file to " + basefolders["dest"] + "/rpmbuild/SPECS"
  
-		def folderIn = basefolders["src"] + "/rpm/sources"
-		def folderOut = basefolders["dest"] + "/rpmbuild/SOURCES"
+		// rpm/sources staff copy to work folder
+		def folderIn = basefolders["src"] + "/rpm/sources/"
+		def folderOut = basefolders["dest"] + "/rpmbuild/SOURCES/"
 
 		new File(folderIn).eachFileRecurse { 
 			copyFile(new File(folderIn + it.name), 
 				 new File(folderOut + it.name))
 		}
 
-		srcFile  = new File("buildoop.git/build/downloads/apache-flume-1.4.0-src.tar.gz") 
-		destFile = new File("work/rpmbuild/SOURCES/apache-flume-1.4.0-src.tar.gz")
+		// source code package from download area to work folder
+		def srcFile  = new File(basefolders["srcpkg"])
+		def destFile = new File(basefolders["dest"]  + 
+							"/rpmbuild/SOURCES/" +  
+							basefolders["srcpkg"].split('/')[-1])
 
 		copyFile(srcFile, destFile)
 
-		srcFile  = new File("buildoop.git/recipes/flume/flume-1.4.0_openbus-0.0.1-r1/rpm/specs/flume.spec") 
-		destFile = new File("work/rpmbuild/SPECS/flume.spec")
+		// copy SPEC file
+		folderIn = basefolders["src"] + "/rpm/specs/"
+		folderOut = basefolders["dest"] + "/rpmbuild/SPECS/"
 
-		copyFile(srcFile, destFile)
+		new File(folderIn).eachFileRecurse { 
+			specfile = it.name
+			copyFile(new File(folderIn + it.name), 
+				 new File(folderOut + it.name))
+		}
     }
 
-    def execRpmBuild(basefolder) {
-        println "executing rpmbuild -ba -D'_topdir " +
-            basefolder + "/rpmbuild" + "' " +
-            basefolder + "/rpmbuild/SPECS" + "/flume.spec"
+    def execRpmBuild(basefolders, buildoop) {
+        def command = "rpmbuild -ba -D'_topdir " + buildoop.ROOT + "/" +
+            	basefolders["dest"] + "/rpmbuild" + "' " +
+            	basefolders["dest"] + "/rpmbuild/SPECS/" + specfile.split('/')[-1]
                 
-		def command = "rpmbuild -ba -D\'_topdir /home/jroman/work/rpmbuild\' work/rpmbuild/SPECS/flume.spec"
-
+		println "Executing: " +  command
 		runCommand(["bash", "-c", command])
     }
+
+	def moveToDeploy(basefolders, buildoop) {
+		// RPMS folder
+		def folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
+				"/rpmbuild/RPMS/noarch/"
+
+		def folderOut = buildoop.ROOT + "/" + 
+					buildoop.globalConfig.buildoop.bomdeploybin + "/"
+
+		new File(folderIn).eachFileRecurse { 
+			new File(folderIn + "/" + it.name).
+				renameTo(new File(folderOut + "/" + it.name))
+		}
+
+		// SRPMS folder
+		folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
+				"/rpmbuild/SRPMS/"
+
+		folderOut = buildoop.ROOT + "/" + 
+					buildoop.globalConfig.buildoop.bomdeploysrc + "/"
+
+		new File(folderIn).eachFileRecurse { 
+			new File(folderIn + "/" + it.name).
+				renameTo(new File(folderOut + "/" + it.name))
+		}
+	}
 }
 
 

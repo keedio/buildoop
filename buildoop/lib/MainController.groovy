@@ -287,6 +287,7 @@ class MainController {
 	     *    do_download
          *    do_fetch
 		 */
+		// outFile the source package full path
 		def outFile = BDROOT + "/" + 
 					globalConfig.buildoop.downloads + "/" +
 					jsonRecipe.do_download.src_uri.tokenize("/")[-1]
@@ -331,11 +332,11 @@ class MainController {
 	     * 5. package building:
          *
 	     *    do_package
+         *
+         * [src:recipes/pig/pig-0.11.1_openbus-0.0.1-r1, 
+         *	 dest:build/work/pig-0.11.1_openbus0.0.1-r1]
 	     */
-
-         // [src:recipes/pig/pig-0.11.1_openbus-r1, 
-         //  dest:build/work/pig-0.11.1_openbus-r1]
-         def baseFolders = ["src":"", "dest":""]
+         def baseFolders = ["src":"", "dest":"", "srcpkg":""]
 
          baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
                     jsonRecipe.do_info.filename.split('-')[0] + "/" +
@@ -344,9 +345,12 @@ class MainController {
          baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
                 jsonRecipe.do_info.filename.split('.bd')[0]
 
+		 baseFolders["srcpkg"] = outFile
+
          packageBuilder.makeWorkingFolders(baseFolders)
          packageBuilder.copyBuildFiles(baseFolders)
-         //packageBuilder.execRpmBuild(baseFolders)
+         packageBuilder.execRpmBuild(baseFolders, _buildoop)
+         packageBuilder.moveToDeploy(baseFolders, _buildoop)
 
 	}
 }
