@@ -42,20 +42,6 @@ class PackageBuilder {
 		new File(basefolders["dest"] + "/rpmbuild/BUILD").mkdir()
     }
 
-
-	def copyFile(src, dest) {
- 
-		println "copying " + src
-		println " to " + dest
-		def input = src.newDataInputStream()
-		def output = dest.newDataOutputStream()
- 
-		output << input 
- 
-		input.close()
-		output.close()
-	}
-
 	def runCommand(strList)  { 
 		assert (strList instanceof String ||
             (strList instanceof List && strList.each{ it instanceof String }))
@@ -84,34 +70,30 @@ class PackageBuilder {
 	}
 
     def copyBuildFiles(basefolders) {
-        println "copy source code to " + basefolders["dest"] + "/rpmbuild/SOURCES"
-        println "copy spec file to " + basefolders["dest"] + "/rpmbuild/SPECS"
- 
 		// rpm/sources staff copy to work folder
 		def folderIn = basefolders["src"] + "/rpm/sources/"
 		def folderOut = basefolders["dest"] + "/rpmbuild/SOURCES/"
-
-		new File(folderIn).eachFileRecurse { 
-			copyFile(new File(folderIn + it.name), 
-				 new File(folderOut + it.name))
+		new AntBuilder().copy(todir:folderOut) {
+  				fileset(dir:folderIn)
 		}
 
 		// source code package from download area to work folder
-		def srcFile  = new File(basefolders["srcpkg"])
-		def destFile = new File(basefolders["dest"]  + 
-							"/rpmbuild/SOURCES/" +  
-							basefolders["srcpkg"].split('/')[-1])
-
-		copyFile(srcFile, destFile)
+        println "copy source code to " + basefolders["dest"] + "/rpmbuild/SOURCES"
+		def srcFile = basefolders["srcpkg"]
+		def destFile = basefolders["dest"] + "/rpmbuild/SOURCES/" +
+							basefolders["srcpkg"].split('/')[-1]
+		new AntBuilder().copy(file:srcFile, tofile:destFile)
 
 		// copy SPEC file
+        println "copy spec file to " + basefolders["dest"] + "/rpmbuild/SPECS"
 		folderIn = basefolders["src"] + "/rpm/specs/"
 		folderOut = basefolders["dest"] + "/rpmbuild/SPECS/"
+		new AntBuilder().copy(todir:folderOut) {
+  				fileset(dir:folderIn)
+		}
 
 		new File(folderIn).eachFileRecurse { 
 			specfile = it.name
-			copyFile(new File(folderIn + it.name), 
-				 new File(folderOut + it.name))
 		}
     }
 
