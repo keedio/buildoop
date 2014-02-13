@@ -111,6 +111,12 @@ class PackageBuilder {
 		def folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
 				"/rpmbuild/RPMS/noarch/"
 
+		def folderExits = new File(folderIn)
+		if (!folderExits.exists()) {
+			folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
+				"/rpmbuild/RPMS/x86_64/"
+		}
+
 		def folderOut = buildoop.ROOT + "/" + 
 					buildoop.globalConfig.buildoop.bomdeploybin + "/"
 
