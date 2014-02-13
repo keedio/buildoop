@@ -52,8 +52,8 @@ mkdir -p build/share
 # Copy fuse output to the build directory
 cp hadoop-hdfs-project/hadoop-hdfs/target/native/main/native/fuse-dfs/fuse_dfs build/bin/
 
-mkdir /home/jroman/rpmbuild/BUILD/hadoop-2.2.0-src/source_tar/
-#Copying the Hadoop binary tarball to the hdp-output folder
+mkdir ${tar_output_folder}/source_tar/
+#Copying the Hadoop binary tarball to the output folder
 cp ${base_path}/hadoop-dist/target/hadoop-${hadoop_jar_version}.tar.gz ${tar_output_folder}/
 cp ${base_path}/hadoop-dist/target/hadoop-${hadoop_jar_version}-src.tar.gz ${tar_output_folder}/source_tar/
 
