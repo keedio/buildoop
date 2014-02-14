@@ -351,6 +351,7 @@ class MainController {
          packageBuilder.copyBuildFiles(baseFolders)
          packageBuilder.execRpmBuild(baseFolders, _buildoop)
          packageBuilder.moveToDeploy(baseFolders, _buildoop)
+         packageBuilder.createRepo(baseFolders, _buildoop)
 
 	}
 }

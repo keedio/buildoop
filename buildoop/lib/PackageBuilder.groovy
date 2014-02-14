@@ -136,6 +136,12 @@ class PackageBuilder {
 			new File(folderIn + "/" + it.name).
 				renameTo(new File(folderOut + "/" + it.name))
 		}
+
+		
+	}
+
+	def createRepo(basefolders, buildoop) {
+		println "createrepo --simple-md-filenames ."
 	}
 }
 
