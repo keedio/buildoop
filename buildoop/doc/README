@@ -19,35 +19,28 @@ BOM and package level commands:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 $ buildoop <bom name> [package name] -i, -info  
+
 	Show general info of BOM package. Or info about package name.
 
 $ buildoop <bom name> [package name] -b, -build 
+
 	Build all packages listed in BOM. Or build the package name.
 
 $ buildoop <bom name> [package name] -c, -clean 
+
 	Clean all "build objects" of packages listed in BOM. 
 	Or all "build objects" of package name.
 
 $ buildoop <bom name> [package name] -cleanall 
+
 	Clean all "build objects", metadata, and download files of packages 
 	listed in BOM. Or the same only for the package name.
 
 $ buildoop <bom name> <package-name> -listtasks 
+
 	List tasks availables in the package name.
 
-
-Integration Tests level commands:
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-TODO
-
-Deployment level commands:
-~~~~~~~~~~~~~~~~~~~~~~~~~
-
-TODO
-
 Examples:
-~~~~~~~~
 
 $ buildoop -version
 $ buildoop -info
@@ -62,7 +55,35 @@ $ buildoop stable hadoop -info
 $ buildoop stable hadoop -build
 $ buildoop stable hadoop -clean
 
-$ buildoop hadoop-2.2.0 -info
-$ buildoop hadoop-2.2.0 -build
-$ buildoop hadoop-2.2.0 -clean
+
+Integration Tests level commands:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Examples:
+
+$ buildoop cluster -up
+$ buildoop cluster -halt
+$ buildoop cluster -deploy
+
+$ buildoop -tests
+openbus
+other-set-of-tests
+minimal-test
+
+$ buildoop openbus all -info
+Available tests for openbus set:
+hdfs-test
+zookeeper-test
+
+$ buildoop openbus hdfs-test -info
+$ buildoop openbus zookepper-test -info
+
+$ buildoop openbus hdfs-test -run
+$ buildoop openbus all-test -run
+
+
+Deployment level commands:
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+TODO
 
