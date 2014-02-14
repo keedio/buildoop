@@ -48,6 +48,11 @@ if [ -z "$GROOVY_HOME" ]; then
 	return 1
 fi
 
+if [ -z "$MAVEN_HOME" ]; then
+	echo "MAVEN_HOME is not set"
+	return 1
+fi
+
 PATH=$PATH:$BDROOT/buildoop/bin
 export BDROOT BUILDDIR PATH
 
