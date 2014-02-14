@@ -1,0 +1,5 @@
+deploy/
+├── cm                  ====> Configuration Management
+│   └── manifests
+└── vm                  =====> Vagrant cluster staff
+    └── buildoop-cluster

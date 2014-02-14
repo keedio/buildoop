@@ -1,0 +1,5 @@
+vagrant box add buildoop-centos http://asterix.cloud.cediant.es/buildoop/boxes/buildoop-centos.box
+vagrant box list
+
+vagrant up --no-provision
+vagrant provision
