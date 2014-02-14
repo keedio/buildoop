@@ -32,7 +32,7 @@ import groovy.grape.Grape
 /**
  * Main class for Buildoop system.
  *
- * @author Javi Roman <javiroman@kernel-labs.org>
+ * @author Javi Roman <javiroman@redoop.org>
  *
  */
 @Log4j

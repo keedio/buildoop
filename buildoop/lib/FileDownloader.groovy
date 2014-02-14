@@ -26,7 +26,7 @@ import java.security.MessageDigest
  * This class implements methods for HTTP, FTP,
  * GIT, SVN source code downloads.
  *
- * @author Javi Roman <javiroman@kernel-labs.org>
+ * @author Javi Roman <javiroman@redoop.org>
  *
  */
 class FileDownloader {

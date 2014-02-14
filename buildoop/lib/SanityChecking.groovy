@@ -19,6 +19,13 @@
 import org.apache.log4j.*
 import groovy.util.logging.*
 
+/**
+ * Class for ...
+ *
+ *
+ * @author Javi Roman <javiroman@redoop.org>
+ *
+ */
 class SanityChecking {
 	def LOG
 

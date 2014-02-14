@@ -22,7 +22,7 @@ import groovy.util.logging.*
 /**
  * Class for command line parse checking.
  *
- * @author Javi Roman <javiroman@kernel-labs.org>
+ * @author Javi Roman <javiroman@redoop.org>
  *
  */
 class ParseOptions {

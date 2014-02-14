@@ -27,7 +27,7 @@ import groovy.json.JsonSlurper;
  * This class check the arguments passed by the
  * user and runs the real buildoop commands.
  *
- * @author Javi Roman <javiroman@kernel-labs.org>
+ * @author Javi Roman <javiroman@redoop.org>
  *
  */
 class MainController {

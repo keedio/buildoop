@@ -26,7 +26,7 @@ import groovy.util.logging.*
  * If you have to make a RPM/DEB package you have to use
  * the class PackageBuilder.
  *
- * @author Javi Roman <javiroman@kernel-labs.org>
+ * @author Javi Roman <javiroman@redoop.org>
  */
 class SourceBuilder {
 	def LOG
