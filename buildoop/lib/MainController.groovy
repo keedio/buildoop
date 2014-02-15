@@ -352,7 +352,7 @@ class MainController {
          // build/stamps/pig-0.11.1_openbus0.0.1-r1.done
          def stampFile = globalConfig.buildoop.stamps + '/' +
                 baseFolders["dest"].tokenize('/').last() + ".done"
-         def f = new File(stampFile)
+         f = new File(stampFile)
          if (!f.exists()) {
             packageBuilder.copyBuildFiles(baseFolders)
             packageBuilder.execRpmBuild(baseFolders, _buildoop)
@@ -360,6 +360,8 @@ class MainController {
             packageBuilder.createRepo(baseFolders, _buildoop)
             f.createNewFile() 
         }
+        _buildoop.userMessage("OK", "[OK]")
+        println " Package built with success"
         println "TODO .................."
     }
 }
