@@ -32,87 +32,87 @@ import groovy.json.JsonSlurper;
  */
 class MainController {
     def _buildoop
-	def wo
-	def LOG
-	def BDROOT
-	def globalConfig
-	def fileDownloader
+    def wo
+    def LOG
+    def BDROOT
+    def globalConfig
+    def fileDownloader
     def packageBuilder
 
-	def MainController(buildoop) {
+    def MainController(buildoop) {
         _buildoop = buildoop
-		wo = buildoop.wo
-		LOG = buildoop.log
-		BDROOT = buildoop.ROOT
-		globalConfig = buildoop.globalConfig
+        wo = buildoop.wo
+        LOG = buildoop.log
+        BDROOT = buildoop.ROOT
+        globalConfig = buildoop.globalConfig
 
-		String[] roots = [globalConfig.buildoop.classfolder]
-		def engine = new GroovyScriptEngine(roots)
+        String[] roots = [globalConfig.buildoop.classfolder]
+        def engine = new GroovyScriptEngine(roots)
 
-		// Load of helpers groovy classes.
-		def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
-		fileDownloader = FileDownloaderClass.newInstance(buildoop)
+        // Load of helpers groovy classes.
+        def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
+        fileDownloader = FileDownloaderClass.newInstance(buildoop)
 
-		def PackageBuilderClass = engine.loadScriptByName('PackageBuilder.groovy')
-		packageBuilder = PackageBuilderClass.newInstance(buildoop)
+        def PackageBuilderClass = engine.loadScriptByName('PackageBuilder.groovy')
+        packageBuilder = PackageBuilderClass.newInstance(buildoop)
 
-		switch (wo["arg"]) {
-			case "-version":
-				getVersion()
-				break
+        switch (wo["arg"]) {
+            case "-version":
+                getVersion()
+                break
 
-			case "-targets":
-				getTargets()
-				break
+            case "-targets":
+                getTargets()
+                break
 
-			case "-boms":
-				getBoms()
-				break
+            case "-boms":
+                getBoms()
+                break
 
-			case "-checkenv":
-				checkEnv()
-				break
+            case "-checkenv":
+                checkEnv()
+                break
 
-			case "-info":
-				if ((wo["bom"] == "") && (wo["pkg"] == "")) {
-					// info for the buildoop in general
-					getInfo()
-				} else if ((wo["bom"] != "") && (wo["pkg"] == "")) {
-					// info for the BOM file
-					getBomInfo(wo["bom"])
-				} else {
-					// info for the package in BOM file
-					getBomPkgInfo(wo)
-				}
-				break
+            case "-info":
+                if ((wo["bom"] == "") && (wo["pkg"] == "")) {
+                    // info for the buildoop in general
+                    getInfo()
+                } else if ((wo["bom"] != "") && (wo["pkg"] == "")) {
+                    // info for the BOM file
+                    getBomInfo(wo["bom"])
+                } else {
+                    // info for the package in BOM file
+                    getBomPkgInfo(wo)
+                }
+                break
 
-			case "-build":
-				if (wo["pkg"]) {
-					makePhases(wo["pkg"])
-				} else {
-					def pkgList = getPkgList(wo["bom"])
-					for (i in pkgList) {
-						makePhases(i)
-					}
-				}
-				break
-			default:
-				break
-		}
+            case "-build":
+                if (wo["pkg"]) {
+                    makePhases(wo["pkg"])
+                } else {
+                    def pkgList = getPkgList(wo["bom"])
+                    for (i in pkgList) {
+                        makePhases(i)
+                    }
+                }
+                break
+            default:
+                break
+        }
 
-	}
+    }
 
-	/**
+    /**
      * Get the list of package recipes to build
      *
      * @param bom BOM filename
-	 *
-	 * @return A list with the full recipe names
+     *
+     * @return A list with the full recipe names
      */
-	def getPkgList(bom) {
-		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
-							   "/" + bom
-		def list = []
+    def getPkgList(bom) {
+        def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
+                               "/" + bom
+        def list = []
         new File(bomfile).eachLine {
             line ->
             switch(line){
@@ -121,221 +121,221 @@ class MainController {
                 case {line.contains("#")}:
                     break
                 case {line.contains("VERSION")}:
-					def capitalname = line.split("_VERSION")[0]
-					def name = capitalname.toLowerCase()
+                    def capitalname = line.split("_VERSION")[0]
+                    def name = capitalname.toLowerCase()
                     list << globalConfig.buildoop.recipes + "/" + name + "/" + name + 
-							"-" + line.split("=")[1].trim() + ".bd"
+                            "-" + line.split("=")[1].trim() + ".bd"
                     break
                 default:
                     break
             }
         }
         return list
-	}
+    }
 
-	/**
+    /**
      * List targets from file targets.conf
-	 *
-	 * List targets ready to use stored in the file targets.conf.
-	 * Example: $ buildoop -targets
-	 *
-	 *
-	 * @param bom The BOM file from user arguments
-	 */
-	def getTargets() {
-		println "Available build targets:\n"
-		new File(BDROOT + "/" + globalConfig.buildoop.targetfiles + 
-											"/targets.conf").eachLine { 
-			line -> 
-			if (!((line.trim().size() == 0) || (line[0] == '#'))) {
-					println line
-			}
-		}
-	}
-
-	def getVersion() {
-		new File("VERSION").eachLine { 
-			line -> println line
-		}
-	}
-
-	/**
-	 * List the available "bill of materials" files.
-	 *
-	 * @return Listing of file names *.bom in conf/boms
-	 */
-	def getBoms() {
-		println "Available BOM targets:\n"
-		def p = ~/.*\.bom/
-
-		LOG.info "[getBoms] BOM file listing"
-
-		new File(globalConfig.buildoop.bomfiles).eachFileMatch(p) {
-			f -> println f.getName()
-		}
-	}
-
-	def checkEnv() {
-		println "Check minimal system tools for buildoop"
-
-	}
-
-	def getInfo() {
-		println "information about this buildoop version"
-
-	}
-
-	/**
-     * Parse BOM file from user input.
-	 *
-	 * List the versions of tools and the target stored
-	 * in the BOM file from conf/bom/<BOMFILE>.bom.
-	 * Example: $ buildoop stable -info
-	 *
-	 *
-	 * @param bom The BOM file from user arguments
-	 */
-	def getBomInfo(bom) {
-		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
-							   "/" + bom
-		new File(bomfile).eachLine { 
-			line -> 
-			switch(line){
-				case {line.contains("TARGET")}:
-					println "Target Platform:\n"
-					println line.split("=")[1].trim()
-					println "\nEcosystem versions:\n"
-					break
-				case {line.contains("VERSION")}:
-					print line.split("_")[0].trim() + ": "
-					println line.split("=")[1].trim()
-					break
-				default:
-					break
-			}
-		}
-	}
-
-	/**
-	 * Load the rmecipe file based on JSON
-	 *
-	 * @param file The full path of the recipe
-	 *
-	 * @return The JSON formated data
-	 */
-	def loadJsonRecipe(file) {
-		def ret = new JsonSlurper().\
-				parse(new File(file).toURL())
-
-		return ret
-	}
-
-	/**
-     * Parse package file (json recipe) from user input.
-	 *
-	 * List information about json package file. For list
-     * information from package "hadoop" in the BOM file
-	 * "stable.bom" this is the command:
      *
-	 * Example: $ buildoop stable hadoop -info
-	 *
-	 * @param bom The BOM file from user arguments
-	 */
-	def getBomPkgInfo(wo) {
-		LOG.info "[getBomPkgInfo] Information about " +
-				 wo["pkg"]
+     * List targets ready to use stored in the file targets.conf.
+     * Example: $ buildoop -targets
+     *
+     *
+     * @param bom The BOM file from user arguments
+     */
+    def getTargets() {
+        println "Available build targets:\n"
+        new File(BDROOT + "/" + globalConfig.buildoop.targetfiles + 
+                                            "/targets.conf").eachLine { 
+            line -> 
+            if (!((line.trim().size() == 0) || (line[0] == '#'))) {
+                    println line
+            }
+        }
+    }
 
-		def jsonRecipe = loadJsonRecipe(wo["pkg"])
+    def getVersion() {
+        new File("VERSION").eachLine { 
+            line -> println line
+        }
+    }
 
-		println "Recipe name : " + jsonRecipe.do_info.filename
-		println "Description : " + jsonRecipe.do_info.description
-		println "Home site   : " + jsonRecipe.do_info.homepage
-		println "License     : " + jsonRecipe.do_info.license
-		println "URL base    : " + jsonRecipe.do_download.src_uri
-		println "MD5SUM hash : " + jsonRecipe.do_download.src_md5sum
-	}
+    /**
+     * List the available "bill of materials" files.
+     *
+     * @return Listing of file names *.bom in conf/boms
+     */
+    def getBoms() {
+        println "Available BOM targets:\n"
+        def p = ~/.*\.bom/
 
-	def downloadSourceFile(uri, outFile) {
-		return fileDownloader.downloadFromURL(uri, outFile)
-	}
+        LOG.info "[getBoms] BOM file listing"
 
-	/**
+        new File(globalConfig.buildoop.bomfiles).eachFileMatch(p) {
+            f -> println f.getName()
+        }
+    }
+
+    def checkEnv() {
+        println "Check minimal system tools for buildoop"
+
+    }
+
+    def getInfo() {
+        println "information about this buildoop version"
+
+    }
+
+    /**
+     * Parse BOM file from user input.
+     *
+     * List the versions of tools and the target stored
+     * in the BOM file from conf/bom/<BOMFILE>.bom.
+     * Example: $ buildoop stable -info
+     *
+     *
+     * @param bom The BOM file from user arguments
+     */
+    def getBomInfo(bom) {
+        def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
+                               "/" + bom
+        new File(bomfile).eachLine { 
+            line -> 
+            switch(line){
+                case {line.contains("TARGET")}:
+                    println "Target Platform:\n"
+                    println line.split("=")[1].trim()
+                    println "\nEcosystem versions:\n"
+                    break
+                case {line.contains("VERSION")}:
+                    print line.split("_")[0].trim() + ": "
+                    println line.split("=")[1].trim()
+                    break
+                default:
+                    break
+            }
+        }
+    }
+
+    /**
+     * Load the rmecipe file based on JSON
+     *
+     * @param file The full path of the recipe
+     *
+     * @return The JSON formated data
+     */
+    def loadJsonRecipe(file) {
+        def ret = new JsonSlurper().\
+                parse(new File(file).toURL())
+
+        return ret
+    }
+
+    /**
+     * Parse package file (json recipe) from user input.
+     *
+     * List information about json package file. For list
+     * information from package "hadoop" in the BOM file
+     * "stable.bom" this is the command:
+     *
+     * Example: $ buildoop stable hadoop -info
+     *
+     * @param bom The BOM file from user arguments
+     */
+    def getBomPkgInfo(wo) {
+        LOG.info "[getBomPkgInfo] Information about " +
+                 wo["pkg"]
+
+        def jsonRecipe = loadJsonRecipe(wo["pkg"])
+
+        println "Recipe name : " + jsonRecipe.do_info.filename
+        println "Description : " + jsonRecipe.do_info.description
+        println "Home site   : " + jsonRecipe.do_info.homepage
+        println "License     : " + jsonRecipe.do_info.license
+        println "URL base    : " + jsonRecipe.do_download.src_uri
+        println "MD5SUM hash : " + jsonRecipe.do_download.src_md5sum
+    }
+
+    def downloadSourceFile(uri, outFile) {
+        return fileDownloader.downloadFromURL(uri, outFile)
+    }
+
+    /**
      * Package building phases. Probably the most importatnt
      * class in Buildoop.
-	 *
-	 * 1. Load the recipe JSON data
-	 * 2. Download file from JSON URI data and md5sum checking.
-	 * 3. Extract the source code and.
-	 * 4. Build de tool from source (Makefile, CMake, Maven)
-	 * 5. Build the package (RPM, DEB).
-	 *
-	 * @param wo Command line validated parameters
-	 **/
-	def makePhases(pkg) {
-		LOG.info "[MainController:makePhases] build stages for " + pkg
+     *
+     * 1. Load the recipe JSON data
+     * 2. Download file from JSON URI data and md5sum checking.
+     * 3. Extract the source code and.
+     * 4. Build de tool from source (Makefile, CMake, Maven)
+     * 5. Build the package (RPM, DEB).
+     *
+     * @param wo Command line validated parameters
+     **/
+    def makePhases(pkg) {
+        LOG.info "[MainController:makePhases] build stages for " + pkg
 
-		/*
+        /*
          * 1. Load JSON recipe
          *
-		 *    FIXME: pending validate JSON schema.
-		 */
-		def jsonRecipe = loadJsonRecipe(pkg)
-		
-		/*
+         *    FIXME: pending validate JSON schema.
+         */
+        def jsonRecipe = loadJsonRecipe(pkg)
+        
+        /*
          * 2. download and checksum:
-		 *
-	     *    do_download
+         *
+         *    do_download
          *    do_fetch
-		 */
-		// outFile the source package full path
-		def outFile = BDROOT + "/" + 
-					globalConfig.buildoop.downloads + "/" +
-					jsonRecipe.do_download.src_uri.tokenize("/")[-1]
+         */
+        // outFile the source package full path
+        def outFile = BDROOT + "/" + 
+                    globalConfig.buildoop.downloads + "/" +
+                    jsonRecipe.do_download.src_uri.tokenize("/")[-1]
 
-		def f = new File(outFile + ".done")
-		if (!f.exists()) {
-			println "Downloading $jsonRecipe.do_download.src_uri ..."
-			long start = System.currentTimeMillis()
-			def size = downloadSourceFile(jsonRecipe.do_download.src_uri, outFile)
-			println "Downloaded: $size bytes"
-			def md5Calculated = fileDownloader.getMD5sum(outFile, size)
-		    long end = System.currentTimeMillis()
+        def f = new File(outFile + ".done")
+        if (!f.exists()) {
+            println "Downloading $jsonRecipe.do_download.src_uri ..."
+            long start = System.currentTimeMillis()
+            def size = downloadSourceFile(jsonRecipe.do_download.src_uri, outFile)
+            println "Downloaded: $size bytes"
+            def md5Calculated = fileDownloader.getMD5sum(outFile, size)
+            long end = System.currentTimeMillis()
             _buildoop.userMessage("OK", "[OK] ")
-			println "Elapsed time: " + ((end - start) / 1000) + " seconds ";
-			if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
-				// create done file
-				f.createNewFile() 
-			} else {
-				LOG.error "[makePhases] md5sum fails!!!"
-				LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
-				LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
-				_buildoop.userMessage("ERROR",
+            println "Elapsed time: " + ((end - start) / 1000) + " seconds ";
+            if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
+                // create done file
+                f.createNewFile() 
+            } else {
+                LOG.error "[makePhases] md5sum fails!!!"
+                LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
+                LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
+                _buildoop.userMessage("ERROR",
                     "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:\n")
-				_buildoop.userMessage("ERROR",
+                _buildoop.userMessage("ERROR",
                     "Calculated : $md5Calculated\n")
-				_buildoop.userMessage("ERROR",
+                _buildoop.userMessage("ERROR",
                     "From recipe: $jsonRecipe.do_download.src_md5sum\n")
-				_buildoop.userMessage("ERROR", "Aborting program!\n")
-				System.exit(1)
-			}
-		} else {
+                _buildoop.userMessage("ERROR", "Aborting program!\n")
+                System.exit(1)
+            }
+        } else {
             _buildoop.userMessage("OK", "[OK]")
             println " Recipe: " + outFile.tokenize('/').last() + " ready to build "
-			LOG.info "[makePhases] download .done file exits skipped" 
-		}
-		
-		// 3. extract source
+            LOG.info "[makePhases] download .done file exits skipped" 
+        }
+        
+        // 3. extract source
 
-		// 4. build the sources
+        // 4. build the sources
 
-		/* 
-	     * 5. package building:
+        /* 
+         * 5. package building:
          *
-	     *    do_package
+         *    do_package
          *
          * [src:recipes/pig/pig-0.11.1_openbus-0.0.1-r1, 
-         *	 dest:build/work/pig-0.11.1_openbus0.0.1-r1]
-	     */
+         *   dest:build/work/pig-0.11.1_openbus0.0.1-r1]
+         */
          def baseFolders = ["src":"", "dest":"", "srcpkg":""]
 
          baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
@@ -345,13 +345,21 @@ class MainController {
          baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
                 jsonRecipe.do_info.filename.split('.bd')[0]
 
-		 baseFolders["srcpkg"] = outFile
+         baseFolders["srcpkg"] = outFile
 
          packageBuilder.makeWorkingFolders(baseFolders)
-         packageBuilder.copyBuildFiles(baseFolders)
-         packageBuilder.execRpmBuild(baseFolders, _buildoop)
-         packageBuilder.moveToDeploy(baseFolders, _buildoop)
-         packageBuilder.createRepo(baseFolders, _buildoop)
-
-	}
+        
+         // build/stamps/pig-0.11.1_openbus0.0.1-r1.done
+         def stampFile = globalConfig.buildoop.stamps + '/' +
+                baseFolders["dest"].tokenize('/').last() + ".done"
+         def f = new File(stampFile)
+         if (!f.exists()) {
+            packageBuilder.copyBuildFiles(baseFolders)
+            packageBuilder.execRpmBuild(baseFolders, _buildoop)
+            packageBuilder.moveToDeploy(baseFolders, _buildoop)
+            packageBuilder.createRepo(baseFolders, _buildoop)
+            f.createNewFile() 
+        }
+        println "TODO .................."
+    }
 }
