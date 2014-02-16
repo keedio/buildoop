@@ -38,6 +38,7 @@ class MainController {
     def globalConfig
     def fileDownloader
     def packageBuilder
+	def hasDoPackage
 
     def MainController(buildoop) {
         _buildoop = buildoop
@@ -45,6 +46,8 @@ class MainController {
 		LOG = buildoop.log
 		BDROOT = buildoop.ROOT
 		globalConfig = buildoop.globalConfig
+	    // custom package by default
+		hasDoPackage = true
 
 		String[] roots = [globalConfig.buildoop.classfolder]
 		def engine = new GroovyScriptEngine(roots)
@@ -336,32 +339,46 @@ class MainController {
          * [src:recipes/pig/pig-0.11.1_openbus-0.0.1-r1, 
          *   dest:build/work/pig-0.11.1_openbus0.0.1-r1]
          */
-         def baseFolders = ["src":"", "dest":"", "srcpkg":""]
+			
+	     // check if custom package building
+		 try {
+			 println jsonRecipe.do_package.commands
+		 } catch(e) {
+  			hasDoPackage = false
+	     }
 
-         baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
+		 if (!hasDoPackage) {
+			// defalt build package
+         	def baseFolders = ["src":"", "dest":"", "srcpkg":""]
+
+         	baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
                     jsonRecipe.do_info.filename.split('-')[0] + "/" +
                     jsonRecipe.do_info.filename.split('.bd')[0]
 
-         baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
+         	baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
                 jsonRecipe.do_info.filename.split('.bd')[0]
 
-         baseFolders["srcpkg"] = outFile
+         	baseFolders["srcpkg"] = outFile
 
-         packageBuilder.makeWorkingFolders(baseFolders)
+         	packageBuilder.makeWorkingFolders(baseFolders)
         
-         // build/stamps/pig-0.11.1_openbus0.0.1-r1.done
-         def stampFile = globalConfig.buildoop.stamps + '/' +
+         	// build/stamps/pig-0.11.1_openbus0.0.1-r1.done
+         	def stampFile = globalConfig.buildoop.stamps + '/' +
                 baseFolders["dest"].tokenize('/').last() + ".done"
-         f = new File(stampFile)
-         if (!f.exists()) {
-            packageBuilder.copyBuildFiles(baseFolders)
-            packageBuilder.execRpmBuild(baseFolders, _buildoop)
-            packageBuilder.moveToDeploy(baseFolders, _buildoop)
-            packageBuilder.createRepo(baseFolders, _buildoop)
-            f.createNewFile() 
-        }
-        _buildoop.userMessage("OK", "[OK]")
-        println " Package built with success"
+         	f = new File(stampFile)
+         	if (!f.exists()) {
+            	packageBuilder.copyBuildFiles(baseFolders)
+            	packageBuilder.execRpmBuild(baseFolders, _buildoop)
+            	packageBuilder.moveToDeploy(baseFolders, _buildoop)
+            	packageBuilder.createRepo(baseFolders, _buildoop)
+            	f.createNewFile() 
+        	}
+        	_buildoop.userMessage("OK", "[OK]")
+        	println " Package built with success"
+		} else {
+			println "Custom package building processing"
+		}
+
         println "TODO .................."
     }
 }

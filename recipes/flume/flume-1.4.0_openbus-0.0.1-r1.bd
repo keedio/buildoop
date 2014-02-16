@@ -14,9 +14,4 @@
 	"do_fetch": {
 		"download_cmd": "wget"
 	},
-
-	"do_package": {
-		"commands": ["rpmbuild hadoop",
-			     "rpmbuild otra cosa"]
-	}
 }
