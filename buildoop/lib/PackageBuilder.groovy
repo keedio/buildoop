@@ -76,6 +76,9 @@ class PackageBuilder {
   		assert !proc.exitValue()
 	}
 
+	/**
+     * Copy sources, spec to build/work folder.
+	 */
     def copyBuildFiles(basefolders) {
 		// rpm/sources staff copy to work folder
 		def folderIn = basefolders["src"] + "/rpm/sources/"
@@ -144,7 +147,6 @@ class PackageBuilder {
 				renameTo(new File(folderOut + "/" + it.name))
 		}
 
-		
 	}
 
 	def createRepo(basefolders, buildoop) {
