@@ -41,7 +41,6 @@ class MainController {
 
     def MainController(buildoop) {
         _buildoop = buildoop
-<<<<<<< HEAD
 		wo = buildoop.wo
 		LOG = buildoop.log
 		BDROOT = buildoop.ROOT
@@ -104,70 +103,6 @@ class MainController {
 	}
 
 	/**
-=======
-        wo = buildoop.wo
-        LOG = buildoop.log
-        BDROOT = buildoop.ROOT
-        globalConfig = buildoop.globalConfig
-
-        String[] roots = [globalConfig.buildoop.classfolder]
-        def engine = new GroovyScriptEngine(roots)
-
-        // Load of helpers groovy classes.
-        def FileDownloaderClass = engine.loadScriptByName('FileDownloader.groovy')
-        fileDownloader = FileDownloaderClass.newInstance(buildoop)
-
-        def PackageBuilderClass = engine.loadScriptByName('PackageBuilder.groovy')
-        packageBuilder = PackageBuilderClass.newInstance(buildoop)
-
-        switch (wo["arg"]) {
-            case "-version":
-                getVersion()
-                break
-
-            case "-targets":
-                getTargets()
-                break
-
-            case "-boms":
-                getBoms()
-                break
-
-            case "-checkenv":
-                checkEnv()
-                break
-
-            case "-info":
-                if ((wo["bom"] == "") && (wo["pkg"] == "")) {
-                    // info for the buildoop in general
-                    getInfo()
-                } else if ((wo["bom"] != "") && (wo["pkg"] == "")) {
-                    // info for the BOM file
-                    getBomInfo(wo["bom"])
-                } else {
-                    // info for the package in BOM file
-                    getBomPkgInfo(wo)
-                }
-                break
-
-            case "-build":
-                if (wo["pkg"]) {
-                    makePhases(wo["pkg"])
-                } else {
-                    def pkgList = getPkgList(wo["bom"])
-                    for (i in pkgList) {
-                        makePhases(i)
-                    }
-                }
-                break
-            default:
-                break
-        }
-
-    }
-
-    /**
->>>>>>> 8f23eff12771997e68c76b5384c4309dc934cc8a
      * Get the list of package recipes to build
      *
      * @param bom BOM filename
@@ -200,7 +135,6 @@ class MainController {
 
     /**
      * List targets from file targets.conf
-<<<<<<< HEAD
 	 *
 	 * List targets ready to use stored in the file targets.conf.
 	 * Example: $ buildoop -targets
@@ -252,59 +186,6 @@ class MainController {
 	}
 
 	/**
-=======
-     *
-     * List targets ready to use stored in the file targets.conf.
-     * Example: $ buildoop -targets
-     *
-     *
-     * @param bom The BOM file from user arguments
-     */
-    def getTargets() {
-        println "Available build targets:\n"
-        new File(BDROOT + "/" + globalConfig.buildoop.targetfiles + 
-                                            "/targets.conf").eachLine { 
-            line -> 
-            if (!((line.trim().size() == 0) || (line[0] == '#'))) {
-                    println line
-            }
-        }
-    }
-
-    def getVersion() {
-        new File("VERSION").eachLine { 
-            line -> println line
-        }
-    }
-
-    /**
-     * List the available "bill of materials" files.
-     *
-     * @return Listing of file names *.bom in conf/boms
-     */
-    def getBoms() {
-        println "Available BOM targets:\n"
-        def p = ~/.*\.bom/
-
-        LOG.info "[getBoms] BOM file listing"
-
-        new File(globalConfig.buildoop.bomfiles).eachFileMatch(p) {
-            f -> println f.getName()
-        }
-    }
-
-    def checkEnv() {
-        println "Check minimal system tools for buildoop"
-
-    }
-
-    def getInfo() {
-        println "information about this buildoop version"
-
-    }
-
-    /**
->>>>>>> 8f23eff12771997e68c76b5384c4309dc934cc8a
      * Parse BOM file from user input.
      *
      * List the versions of tools and the target stored
