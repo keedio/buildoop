@@ -13,6 +13,7 @@ General:
 [TODO] - Sanity checking for BOM file
 [TODO] - parameter -continue for fail tolerant BOM building
 [TODO] - progress info for user
+[TODO] - Add groovy package for tests [BIGTOP-1097]
 
 Refactoring:
 

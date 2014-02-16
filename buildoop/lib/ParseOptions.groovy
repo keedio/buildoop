@@ -128,7 +128,7 @@ Package Options:
 		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
 							   "/" + bom
 
-		LOG.info "[packageBomFile] checking -$pkg- in $bomfile"
+		LOG.info "[ParseOptions:packageBomFile] checking -$pkg- in $bomfile"
 
 		def recipe = ""
 		new File(bomfile).eachLine { 
