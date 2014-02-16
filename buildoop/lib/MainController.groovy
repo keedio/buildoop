@@ -65,7 +65,7 @@ class MainController {
 				getTargets()
 				break
 
-			case "-boms":
+			case "-bom":
 				getBoms()
 				break
 
@@ -162,7 +162,7 @@ class MainController {
 	/**
 	 * List the available "bill of materials" files.
 	 *
-	 * @return Listing of file names *.bom in conf/boms
+	 * @return Listing of file names *.bom in conf/bom
 	 */
 	def getBoms() {
 		println "Available BOM targets:\n"

@@ -30,7 +30,7 @@ class ParseOptions {
 	def arguments = ["-help", "-version", "-checkenv", 
 					"-i", "-info", "-b", "-build",
 					"-c", "-clean", "-cleanall",
-					"-boms", "-targets"]
+					"-bom", "-targets"]
 	def packageName = ""
 	def bomName = ""
 	def validArgs = ["arg":"", "pkg":"", "bom":""]
@@ -68,8 +68,8 @@ class ParseOptions {
 Options: 
 	-help       this help
  	-version    version information
- 	-boms 		list available BOM files
- 	-targest    list available platform targets
+ 	-bom 		list available BOM files
+ 	-target    list available platform targets
  	-checkenv   check minimal enviroment and host tools
 BOM Options:
  	-i, -info   Show information about the BOM file
@@ -224,7 +224,7 @@ Package Options:
 
 
 		if (validArgs["bom"] == "" && validArgs["pkg"] == "") {
-			if (!validArgs["arg"] in ["-targets", "-boms", 
+			if (!validArgs["arg"] in ["-targets", "-bom", 
 										"-version", "-info", "-checkenv"])
 			parseError("You have to put BOM file and/or package name file")
 		}
