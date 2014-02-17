@@ -78,8 +78,8 @@ zookeeper-test
 $ buildoop openbus-tests hdfs-test -info
 $ buildoop openbus-tests zookepper-test -info
 
-$ buildoop openbus hdfs-test -run
-$ buildoop openbus all-test -run
+$ buildoop openbus-tests hdfs-test -run
+$ buildoop openbus-tests all-test -run
 
 
 Deployment level commands:
