@@ -221,7 +221,7 @@ located.
 %package hdfs
 Summary: The Hadoop Distributed File System
 Group: System/Daemons
-Requires: %{name} = %{version}-%{release}, bigtop-jsvc
+Requires: %{name} = %{version}-%{release}
 
 %description hdfs
 Hadoop Distributed File System (HDFS) is the primary storage system used by 
@@ -309,7 +309,7 @@ blocks of data over the network to Hadoop Distributed Filesystem
 %package httpfs
 Summary: HTTPFS for Hadoop
 Group: System/Daemons
-Requires: %{name}-hdfs = %{version}-%{release}, bigtop-tomcat
+Requires: %{name}-hdfs = %{version}-%{release}
 Requires(pre): %{name} = %{version}-%{release}
 
 %description httpfs
@@ -477,7 +477,7 @@ bash %{SOURCE2} \
 %__install -d -m 0755 $RPM_BUILD_ROOT/etc/default
 %__cp $RPM_SOURCE_DIR/hadoop.default $RPM_BUILD_ROOT/etc/default/hadoop
 # FIXME: BIGTOP-463
-echo 'export JSVC_HOME=%{libexecdir}/bigtop-utils' >> $RPM_BUILD_ROOT/etc/default/hadoop
+#echo 'export JSVC_HOME=%{libexecdir}/bigtop-utils' >> $RPM_BUILD_ROOT/etc/default/hadoop
 %__cp $RPM_SOURCE_DIR/%{name}-fuse.default $RPM_BUILD_ROOT/etc/default/%{name}-fuse
 
 # Generate the init.d scripts
