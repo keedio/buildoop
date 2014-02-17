@@ -66,17 +66,17 @@ $ buildoop cluster -halt
 $ buildoop cluster -deploy
 
 $ buildoop -tests
-openbus
-other-set-of-tests
-minimal-test
+openbus-tests
+other-tests
+minimal-tests
 
-$ buildoop openbus all -info
+$ buildoop openbus-tests -info
 Available tests for openbus set:
 hdfs-test
 zookeeper-test
 
-$ buildoop openbus hdfs-test -info
-$ buildoop openbus zookepper-test -info
+$ buildoop openbus-tests hdfs-test -info
+$ buildoop openbus-tests zookepper-test -info
 
 $ buildoop openbus hdfs-test -run
 $ buildoop openbus all-test -run
