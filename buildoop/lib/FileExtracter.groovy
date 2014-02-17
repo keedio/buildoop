@@ -22,6 +22,7 @@ import groovy.util.logging.*
 /**
  * Class for ...
  *
+ * http://ant.apache.org/manual/tasksoverview.html
  *
  * @author Javi Roman <javiroman@redoop.org>
  *
@@ -33,4 +34,6 @@ class FileExtracter {
 		LOG = log
         	LOG.info "[FileExtracter] constructor"
 	}
+    //def ant = new AntBuilder();
+    // ant.unzip(  src:"file.zip", dest:".",  overwrite:"true"){ mapper(type:"flatten")}
 }
