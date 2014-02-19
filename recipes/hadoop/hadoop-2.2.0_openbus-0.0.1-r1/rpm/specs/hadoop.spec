@@ -166,7 +166,9 @@ Source20: hdfs.default
 Source21: yarn.default
 Source22: hadoop-layout.sh
 Source23: hadoop-hdfs-zkfc.svc
+# Issue: HADOOP-10110
 Patch0: start-not-found-mortbay-jetty-server.patch
+
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id} -u -n)
 
 BuildRequires: fuse-devel, fuse, cmake
