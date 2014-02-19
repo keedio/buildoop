@@ -3,12 +3,9 @@ TODO List
 
 Performance:
 
-[TODO] - cache config files, and objects with Serializable
-[TODO] - Add asynchronous logging
 
 General:
 
-[TODO] - getVersionPkg, getInfoPkg, checkEnv, 
 [TODO] - Sanity checking for host tools
 [TODO] - Sanity checking for BOM file
 [TODO] - parameter -continue for fail tolerant BOM building
