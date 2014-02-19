@@ -166,6 +166,7 @@ Source20: hdfs.default
 Source21: yarn.default
 Source22: hadoop-layout.sh
 Source23: hadoop-hdfs-zkfc.svc
+Patch0: start-not-found-mortbay-jetty-server.patch
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id} -u -n)
 
 BuildRequires: fuse-devel, fuse, cmake
@@ -429,6 +430,8 @@ These projects (enumerated below) allow HDFS to be mounted (on most flavors of U
 
 %prep
 %setup -q -n %{name}-%{hadoop_base_version}-src 
+
+%patch0 -p1
 
 %build
 # This assumes that you installed Java JDK 6 and set JAVA_HOME
