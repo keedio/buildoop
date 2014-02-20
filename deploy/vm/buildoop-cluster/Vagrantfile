@@ -3,14 +3,22 @@
 VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+    config.vm.box = "buildoop-cluster"
+    config.vm.box_url = "http://asterix.cloud.cediant.es/buildoop/boxes/buildoop-centos.box"
+
     manager_ram = 1024
     node_ram = 1024
     node_count = 2
 
-    config.vm.box = "buildoop-cluster"
-    config.vm.box_url = "http://asterix.cloud.cediant.es/buildoop/boxes/buildoop-centos.box"
+    # Create /etc/hosts per host
+    hosts = "192.168.33.11 hadoop-manager.buildoop.org hadoop-manager\n"
+    node_count.times do |i|
+    	id = i+1
+    	hosts << "192.168.33.1#{id+1} hadoop-node#{id}.buildoop.org hadoop-node#{id}\n"
+    end
+    config.vm.provision :shell, :inline => "echo \"#{hosts}\" | sudo tee -a /etc/hosts"
 
-    # Hadoop Manager
+    # Create Hadoop Manager
     config.vm.define "manager" do |manager_config|
         manager_config.vm.hostname = "hadoop-manager.buildoop.org"
         manager_config.vm.network :forwarded_port, guest: 7180, host: 7180
@@ -27,14 +35,18 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
     end
 
-     # Create Datanodes
+     # Create Hadoop Datanodes
      node_count.times do |i|
      id = i+1
      config.vm.define "node#{id}" do |node_config|
-         node_config.vm.hostname = "hadoop-node#{id}"
+         node_config.vm.hostname = "hadoop-node#{id}.buildoop.org"
       	 node_config.vm.network :private_network, ip: "192.168.33.1#{id+1}"
       	 node_config.vm.provider :virtualbox do |vb|
              vb.customize ["modifyvm", :id, "--memory", "#{node_ram}"]
+         node_config.vm.provision :puppet do |puppet|
+            puppet.manifests_path = "../../cm/manifests"
+            puppet.manifest_file  = "default.pp"
+	end
       end
     end
   end 
