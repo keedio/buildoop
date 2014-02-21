@@ -141,6 +141,8 @@ Release: %{hadoop_release}
 Summary: Hadoop is a software platform for processing vast amounts of data
 License: Apache License v2.0
 URL: http://hadoop.apache.org/core/
+Vendor: Produban - Santander Group
+Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Source0: %{name}-%{hadoop_base_version}-src.tar.gz 
 Source1: rpm-build-stage

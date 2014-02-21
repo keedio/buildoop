@@ -65,6 +65,8 @@ Version: %{flume_base_version}
 Release: %{flume_release}
 Summary:  Flume is a reliable, scalable, and manageable distributed log collection application for collecting data such as logs and delivering it to data stores such as Hadoop's HDFS.
 URL: http://incubator.apache.org/projects/flume.html
+Vendor: Produban - Santander Group
+Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Buildroot: %{_topdir}/INSTALL/%{name}-%{version}
 BuildArch: noarch
