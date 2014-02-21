@@ -1,0 +1,21 @@
+diff -uprN apache-flume-1.4.0-src-vanilla/pom.xml apache-flume-1.4.0-src/pom.xml
+--- apache-flume-1.4.0-src-vanilla/pom.xml	2013-06-25 02:22:51.000000000 +0200
++++ apache-flume-1.4.0-src/pom.xml	2014-02-21 14:58:28.026991530 +0100
+@@ -666,7 +666,7 @@ limitations under the License.
+       <dependency>
+         <groupId>com.google.guava</groupId>
+         <artifactId>guava</artifactId>
+-        <version>10.0.1</version>
++        <version>11.0.2</version>
+       </dependency>
+ 
+       <dependency>
+@@ -747,7 +747,7 @@ limitations under the License.
+         <groupId>com.google.protobuf</groupId>
+         <artifactId>protobuf-java</artifactId>
+         <scope>compile</scope>
+-        <version>2.4.1</version>
++        <version>2.5.0</version>
+       </dependency>
+ 
+       <dependency>

@@ -74,6 +74,7 @@ Source1: rpm-build-stage
 Source2: install_%{name}.sh
 Source3: %{name}-agent.init
 Source4: flume-agent.default
+Patch0: flume-protobuf-fail.patch
 Requires: /usr/sbin/useradd
 Requires: coreutils
 Requires: hadoop-hdfs
@@ -119,6 +120,8 @@ Flume is a reliable, scalable, and manageable distributed data collection applic
 
 %prep
 %setup -n %{flume_folder}
+
+%patch0 -p1
 
 %build
 sh %{SOURCE1}
