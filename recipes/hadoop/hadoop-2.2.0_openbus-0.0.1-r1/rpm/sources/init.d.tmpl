@@ -160,12 +160,7 @@ if [ -f /etc/default/$DAEMON ] ; then
   . /etc/default/$DAEMON
 fi
 
-# Autodetect JAVA_HOME if not defined
-if [ -e /usr/libexec/bigtop-detect-javahome ]; then
-  . /usr/libexec/bigtop-detect-javahome
-elif [ -e /usr/lib/bigtop-utils/bigtop-detect-javahome ]; then
-  . /usr/lib/bigtop-utils/bigtop-detect-javahome
-fi
+[ -z "$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
 
 RETVAL_SUCCESS=0
 

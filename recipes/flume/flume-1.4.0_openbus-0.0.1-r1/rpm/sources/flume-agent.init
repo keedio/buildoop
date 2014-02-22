@@ -37,12 +37,7 @@ if [ -f /etc/default/flume-agent ] ; then
   . /etc/default/flume-agent
 fi
 
-# Autodetect JAVA_HOME if not defined
-if [ -e /usr/libexec/bigtop-detect-javahome ]; then
-  . /usr/libexec/bigtop-detect-javahome
-elif [ -e /usr/lib/bigtop-utils/bigtop-detect-javahome ]; then
-  . /usr/lib/bigtop-utils/bigtop-detect-javahome
-fi
+[ -z "$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
 
 STATUS_RUNNING=0
 STATUS_DEAD=1
