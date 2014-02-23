@@ -4,7 +4,11 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     config.vm.box = "buildoop-cluster"
-    config.vm.box_url = "http://asterix.cloud.cediant.es/buildoop/boxes/buildoop-centos.box"
+
+    # Internal resource.
+    # config.vm.box_url = "http://asterix.cloud.cediant.es/buildoop/boxes/buildoop-centos.box"
+    # Public resource.
+    config.vm.box_url = "https://www.dropbox.com/s/ody2jezcm4ueu9y/buildoop-centos.box"
 
     manager_ram = 1024
     node_ram = 1024
