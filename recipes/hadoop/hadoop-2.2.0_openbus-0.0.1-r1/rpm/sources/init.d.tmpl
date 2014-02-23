@@ -160,7 +160,7 @@ if [ -f /etc/default/$DAEMON ] ; then
   . /etc/default/$DAEMON
 fi
 
-[ -z "$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
+[ -z "\$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
 
 RETVAL_SUCCESS=0
 

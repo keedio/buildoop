@@ -122,12 +122,8 @@ mkdir -p `dirname $wrapper`
 cat > $wrapper <<EOF
 #!/bin/bash
 
-# Autodetect JAVA_HOME if not defined
-if [ -e /usr/libexec/bigtop-detect-javahome ]; then
-  . /usr/libexec/bigtop-detect-javahome
-elif [ -e /usr/lib/bigtop-utils/bigtop-detect-javahome ]; then
-  . /usr/lib/bigtop-utils/bigtop-detect-javahome
-fi
+# Detect JAVA_HOME if not defined
+[ -z "\$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
 
 if [ -n "\$FLUME_PID_FILE" ]; then
   echo \$$ > \$FLUME_PID_FILE

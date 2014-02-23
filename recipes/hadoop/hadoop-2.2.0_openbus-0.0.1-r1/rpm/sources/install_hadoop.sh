@@ -179,12 +179,8 @@ for component in $HADOOP_DIR/bin/hadoop $HDFS_DIR/bin/hdfs $YARN_DIR/bin/yarn $M
   cat > $wrapper <<EOF
 #!/bin/sh
 
-# Autodetect JAVA_HOME if not defined
-if [ -e /usr/libexec/bigtop-detect-javahome ]; then
-. /usr/libexec/bigtop-detect-javahome
-elif [ -e /usr/lib/bigtop-utils/bigtop-detect-javahome ]; then
-. /usr/lib/bigtop-utils/bigtop-detect-javahome
-fi
+# Detect JAVA_HOME if not defined
+[ -z "\$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
 
 export HADOOP_LIBEXEC_DIR=/${SYSTEM_LIBEXEC_DIR#${PREFIX}}
 
@@ -278,12 +274,8 @@ cat > $fuse_wrapper << EOF
 
 #/sbin/modprobe fuse
 
-# Autodetect JAVA_HOME if not defined
-if [ -e /usr/libexec/bigtop-detect-javahome ]; then
-. /usr/libexec/bigtop-detect-javahome
-elif [ -e /usr/lib/bigtop-utils/bigtop-detect-javahome ]; then
-. /usr/lib/bigtop-utils/bigtop-detect-javahome
-fi
+# Detect JAVA_HOME if not defined
+[ -z "\$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
 
 export HADOOP_HOME=\${HADOOP_HOME:-${HADOOP_DIR#${PREFIX}}}
 
