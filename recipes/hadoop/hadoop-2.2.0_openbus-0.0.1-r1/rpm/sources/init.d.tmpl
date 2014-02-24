@@ -83,7 +83,7 @@ cat <<'__EOT__'
 
 stop() {
   log_success_msg "Stopping ${DESC}: "
-  start_daemon $EXEC_PATH --config "$CONF_DIR" stop $DAEMON_FLAGS
+  start_daemon -u $SVC_USER $EXEC_PATH --config "$CONF_DIR" stop $DAEMON_FLAGS
   RETVAL=$?
 
   [ $RETVAL -eq $RETVAL_SUCCESS ] && rm -f $LOCKFILE $PIDFILE
