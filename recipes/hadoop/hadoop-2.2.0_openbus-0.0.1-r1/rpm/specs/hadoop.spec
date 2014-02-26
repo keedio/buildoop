@@ -65,7 +65,8 @@
 %define static_images_dir src/webapps/static/images
 
 %define hadoop_base_version 2.2.0
-%define hadoop_release openbus0.0.1                                                                                                                    
+%define hadoop_release openbus0.0.1_1
+
 %ifarch i386
 %global hadoop_arch Linux-i386-32
 %endif

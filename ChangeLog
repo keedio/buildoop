@@ -1,3 +1,16 @@
+26-02-2014 Javi Roman <javiroman@redoop.org>
+
+	* Change RPM name nomenclature:
+
+	toolname-toolversion-tag_version.arch.rpm
+
+	Examples:
+	flume-1.4.0-openbus0.0.1_1.noarch.rpm
+	flume-1.4.0-openbus0.0.1_2.noarch.rpm
+	flume-1.4.0-openbus0.0.1_3.noarch.rpm
+
+	hadoop-hdfs-datanode-2.2.0-openbus0.0.1_1.x86_64.rpm
+
 29-01-2014 Javi Roman <javiroman@kernel-labs.org>
 
 	* Initial draft on github.
