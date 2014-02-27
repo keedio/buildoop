@@ -1,0 +1,5 @@
+[buildoop]
+name=Buildoop Hadoop Ecosystem
+baseurl=http://192.168.33.1:8080/
+enabled=1
+gpgcheck=0
