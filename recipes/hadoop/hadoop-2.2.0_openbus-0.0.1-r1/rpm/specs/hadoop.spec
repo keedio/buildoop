@@ -57,7 +57,7 @@
 %define doc_hadoop %{_docdir}/%{name}-%{hadoop_version}
 %define httpfs_services httpfs
 %define mapreduce_services mapreduce-historyserver
-%define hdfs_services hdfs-namenode hdfs-secondarynamenode hdfs-datanode hdfs-zkfc
+%define hdfs_services hdfs-namenode hdfs-secondarynamenode hdfs-datanode hdfs-zkfc hdfs-journalnode
 %define yarn_services yarn-resourcemanager yarn-nodemanager yarn-proxyserver
 %define hadoop_services %{hdfs_services} %{mapreduce_services} %{yarn_services} %{httpfs_services}
 # Hadoop outputs built binaries into %{hadoop_build}
@@ -169,6 +169,7 @@ Source20: hdfs.default
 Source21: yarn.default
 Source22: hadoop-layout.sh
 Source23: hadoop-hdfs-zkfc.svc
+Source24: hadoop-hdfs-journalnode.svc
 Patch0: HADOOP-10110.patch
 
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id} -u -n)
@@ -261,8 +262,6 @@ Group: System/Daemons
 Requires: %{name}-yarn = %{version}-%{release}
 
 %description mapreduce
-Hadoop MapReduce is a programming model and software framework for writing applications 
-that rapidly process vast amounts of data in parallel on large clusters of compute nodes.
 
 
 %package hdfs-namenode
@@ -281,6 +280,7 @@ Summary: Hadoop Secondary namenode
 Group: System/Daemons
 Requires: %{name}-hdfs = %{version}-%{release}
 Requires(pre): %{name} = %{version}-%{release}
+Requires(pre): %{name}-hdfs = %{version}-%{release} 
 
 %description hdfs-secondarynamenode
 The Secondary Name Node periodically compacts the Name Node EditLog
@@ -292,6 +292,7 @@ Summary: Hadoop HDFS failover controller
 Group: System/Daemons
 Requires: %{name}-hdfs = %{version}-%{release}
 Requires(pre): %{name} = %{version}-%{release}
+Requires(pre): %{name}-hdfs = %{version}-%{release}
 
 %description hdfs-zkfc
 The Hadoop HDFS failover controller is a ZooKeeper client which also
@@ -300,11 +301,23 @@ which runs a NameNode also runs a ZKFC, and that ZKFC is responsible
 for: Health monitoring, ZooKeeper session management, ZooKeeper-based
 election.
 
+%package hdfs-journalnode                                               
+Summary: Hadoop HDFS JournalNode
+Group: System/Daemons
+Requires: %{name}-hdfs = %{version}-%{release}
+Requires(pre): %{name} = %{version}-%{release}
+
+%description hdfs-journalnode
+The HDFS JournalNode is responsible for persisting NameNode edit logs.
+In a typical deployment the JournalNode daemon runs on at least three
+separate machines in the cluster.
+
 %package hdfs-datanode
 Summary: Hadoop Data Node
 Group: System/Daemons
 Requires: %{name}-hdfs = %{version}-%{release}
 Requires(pre): %{name} = %{version}-%{release}
+Requires(pre): %{name}-hdfs = %{version}-%{release}
 
 %description hdfs-datanode
 The Data Nodes in the Hadoop Cluster are responsible for serving up
@@ -326,6 +339,7 @@ Summary: YARN Resource Manager
 Group: System/Daemons
 Requires: %{name}-yarn = %{version}-%{release}
 Requires(pre): %{name} = %{version}-%{release}
+Requires(pre): %{name}-yarn = %{version}-%{release}
 
 %description yarn-resourcemanager
 The resource manager manages the global assignment of compute resources to applications
@@ -335,6 +349,7 @@ Summary: YARN Node Manager
 Group: System/Daemons
 Requires: %{name}-yarn = %{version}-%{release}
 Requires(pre): %{name} = %{version}-%{release}
+Requires(pre): %{name}-yarn = %{version}-%{release}
 
 %description yarn-nodemanager
 The NodeManager is the per-machine framework agent who is responsible for
@@ -346,6 +361,7 @@ Summary: YARN Web Proxy
 Group: System/Daemons
 Requires: %{name}-yarn = %{version}-%{release}
 Requires(pre): %{name} = %{version}-%{release}
+Requires(pre): %{name}-yarn = %{version}-%{release}
 
 %description yarn-proxyserver
 The web proxy server sits in front of the YARN application master web UI.
@@ -411,6 +427,13 @@ AutoReq: no
 %description libhdfs
 Hadoop Filesystem Library
 
+%package libhdfs-devel                                                  
+Summary: Development support for libhdfs
+Group: Development/Libraries
+Requires: hadoop = %{version}-%{release}, hadoop-libhdfs = %{version}-%{release}
+
+%description libhdfs-devel
+Includes examples and header files for accessing HDFS from C
 
 %package hdfs-fuse
 Summary: Mountable HDFS
@@ -689,6 +712,7 @@ fi
 %service_macro hdfs-namenode
 %service_macro hdfs-secondarynamenode
 %service_macro hdfs-zkfc
+%service_macro hdfs-journalnode
 %service_macro hdfs-datanode
 %service_macro yarn-resourcemanager
 %service_macro yarn-nodemanager
@@ -716,6 +740,8 @@ fi
 %files libhdfs
 %defattr(-,root,root)
 %{_libdir}/libhdfs*
+
+%files libhdfs-devel
 %{_includedir}/hdfs.h
 %{_includedir}/*.hh
 # -devel should be its own package
