@@ -14,93 +14,94 @@
 -->
 <configuration>
 
-  <property>
-    <description>The address of the applications manager interface in the RM.</description>
-    <name>yarn.resourcemanager.address</name>
-    <value>hadoop-node2.buildoop.org:8032</value>
-  </property>
+    <property>
+        <description>The address of the applications manager interface in the RM.</description>
+        <name>yarn.resourcemanager.address</name>
+        <value>hadoop-node2.buildoop.org:8032</value>
+    </property>
 
-  <property>
-    <description>The address of the resource tracker interface.</description>
-    <name>yarn.resourcemanager.resource-tracker.address</name>
-    <value>hadoop-node2.buildoop.org:8031</value>
-  </property>
+    <property>
+        <description>The address of the resource tracker interface.</description>
+        <name>yarn.resourcemanager.resource-tracker.address</name>
+        <value>hadoop-node2.buildoop.org:8031</value>
+    </property>
 
-  <property>
-    <description>The address of the scheduler interface.</description>
-    <name>yarn.resourcemanager.scheduler.address</name>
-    <value>hadoop-node2.buildoop.org:8030</value>
-  </property>
+    <property>
+        <description>The address of the scheduler interface.</description>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>hadoop-node2.buildoop.org:8030</value>
+    </property>
 
-  <property>
-    <description>The address of the RM admin interface.</description>
-    <name>yarn.resourcemanager.admin.address</name>
-    <value>hadoop-node2.buildoop.org:8033</value>
-  </property>
+    <property>
+        <description>The address of the RM admin interface.</description>
+        <name>yarn.resourcemanager.admin.address</name>
+        <value>hadoop-node2.buildoop.org:8033</value>
+    </property>
 
-  <property>
-    <description>The address of the RM web application.</description>
-    <name>yarn.resourcemanager.webapp.address</name>
-    <value>hadoop-node2.buildoop.org:8088</value>
-  </property>
+    <property>
+        <description>The address of the RM web application.</description>
+        <name>yarn.resourcemanager.webapp.address</name>
+        <value>hadoop-node2.buildoop.org:8088</value>
+    </property>
 
-  <property>
-    <description>Classpath for typical applications.</description>
-    <name>yarn.application.classpath</name>
-    <value>
-        $HADOOP_CONF_DIR,
-        $HADOOP_COMMON_HOME/*,$HADOOP_COMMON_HOME/lib/*,
-        $HADOOP_HDFS_HOME/*,$HADOOP_HDFS_HOME/lib/*,
-        $HADOOP_MAPRED_HOME/*,$HADOOP_MAPRED_HOME/lib/*,
-        $HADOOP_YARN_HOME/*,$HADOOP_YARN_HOME/lib/*
-    </value>
-  </property>
+    <property>
+        <description>Classpath for typical applications.</description>
+        <name>yarn.application.classpath</name>
+        <value>
+            $HADOOP_CONF_DIR,
+            $HADOOP_COMMON_HOME/*,$HADOOP_COMMON_HOME/lib/*,
+            $HADOOP_HDFS_HOME/*,$HADOOP_HDFS_HOME/lib/*,
+            $HADOOP_MAPRED_HOME/*,$HADOOP_MAPRED_HOME/lib/*,
+            $HADOOP_YARN_HOME/*,$HADOOP_YARN_HOME/lib/*
+        </value>
+    </property>
 
-  <property>
-    <description>Shuffle service that needs to be set for Map Reduce applications.</description>
-    <name>yarn.nodemanager.aux-services</name>
-    <value>mapreduce_shuffle</value>
-  </property>
+    <property>
+        <description>Shuffle service that needs to be set for Map Reduce applications.</description>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
 
-  <property>
-    <description>The exact name of the class for shuffle service.</description>
-    <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
-    <value>org.apache.hadoop.mapred.ShuffleHandler</value>
-  </property>
+    <property>
+        <description>The exact name of the class for shuffle service.</description>
+        <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+    </property>
 
-  <property>
-    <description>Specifies the directories where the NodeManager stores 
-	its localized files. All of the files required for running a 
-	particular YARN application will be put here for the duration 
-	of the application run. Cloudera recommends that this property 
-	specify a directory on each of the JBOD mount points; for example, 
-	/data/1/yarn/local through /data/N/yarn/local. This is a comma 
-	separated list of local-directories that one can configure to be 
-	used for copying files during localization. The idea behind allowing
-	multiple directories is to use multiple disks for localization – it 
-	helps both fail-over (one/few disk(s) going bad doesn’t affect all 
-	containers) and load balancing (no single disk is bottlenecked 
-	with writes). Thus, individual directories should be configured 
-	if possible on different local disks.</description>
-    <name>yarn.nodemanager.local-dirs</name>
-    <value>/cluster/data/1/yarn/local</value>
-  </property>
+    <property>
+        <description>Specifies the directories where the NodeManager stores 
+            its localized files. All of the files required for running a 
+            particular YARN application will be put here for the duration 
+            of the application run. Cloudera recommends that this property 
+            specify a directory on each of the JBOD mount points; for example, 
+            /data/1/yarn/local through /data/N/yarn/local. This is a comma 
+            separated list of local-directories that one can configure to be 
+            used for copying files during localization. The idea behind allowing
+            multiple directories is to use multiple disks for localization – it 
+            helps both fail-over (one/few disk(s) going bad doesn’t affect all 
+            containers) and load balancing (no single disk is bottlenecked 
+            with writes). Thus, individual directories should be configured 
+            if possible on different local disks.</description>
+        <name>yarn.nodemanager.local-dirs</name>
+        <value>/cluster/data/1/yarn/local</value>
+    </property>
 
-  <property>
-    <description>Specifies the directories where the NodeManager stores 
-	container log files. Cloudera recommends that this property specify 
-	a directory on each of the JBOD mount points; for example, 
-	/data/1/yarn/logs through /data/N/yarn/logs.</description>
-    <name>yarn.nodemanager.log-dirs</name>
-    <value>/cluster/data/1/yarn/logs</value>
-  </property>
+    <property>
+        <description>Specifies the directories where the NodeManager stores 
+            container log files. Cloudera recommends that this property specify 
+            a directory on each of the JBOD mount points; for example, 
+            /data/1/yarn/logs through /data/N/yarn/logs.</description>
+        <name>yarn.nodemanager.log-dirs</name>
+        <value>/cluster/data/1/yarn/logs</value>
+    </property>
 
-  <property>
-    <description>Where to aggregate logs</description>
-    <name>yarn.nodemanager.remote-app-log-dir</name>
-    <value>/var/log/hadoop-yarn/apps</value>
-  </property>
+    <property>
+        <description>Where to aggregate logs</description>
+        <name>yarn.nodemanager.remote-app-log-dir</name>
+        <value>/var/log/hadoop-yarn/apps</value>
+    </property>
 
+    
   <!-- YARN Framework fine tune Resource Management -->
 
   <!-- In a Hadoop cluster, it’s vital to balance the usage of RAM, 

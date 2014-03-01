@@ -23,6 +23,21 @@
 		MapReduce jobs. Can be one of local, classic or yarn.</description>
 	</property>
 
+	<property>
+		<name>mapreduce.jobhistory.address</name>
+		<value>hadoop-manager.buildoop.org:10020</value>
+	</property>
+
+	<property>
+		<name>mapreduce.jobhistory.webapp.address</name>
+		<value>hadoop-manager.buildoop.org:19888</value>
+	</property>
+
+	<property>
+        	<name>yarn.app.mapreduce.am.staging-dir</name>
+        	<value>/user</value>
+    	</property>
+
 	<!-- MapReduce v2 fine tune Resource Management -->
 
   	<!-- MapReduce 2 runs on top of YARN and utilizes YARN Containers to 
