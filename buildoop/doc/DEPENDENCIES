@@ -1,0 +1,4 @@
+RPM based:
+
+fuse-devel fuse-libs lzo-devel openssl-devel ant
+
