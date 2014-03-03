@@ -32,7 +32,14 @@
 set -e
 
 # Autodetect JAVA_HOME if not defined
-[ -z "$JAVA_HOME" ] && echo "JAVA_HOME is not defined"
+if [ -f /etc/profile.d/java.sh ]; then
+        . /etc/profile.d/java.sh
+        [ -z "$JAVA_HOME" ] && echo "JAVA_HOME is not defined" && exit 1
+else
+        echo "enviroment not properly set up"
+        exit 1
+fi
+
 
 PATH=/usr/local/sbin:/usr/local/bin:/sbin:/bin:/usr/sbin:/usr/bin
 DAEMON_SCRIPT="/usr/bin/zookeeper-server"
