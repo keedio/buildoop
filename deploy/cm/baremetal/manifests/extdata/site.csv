@@ -1,0 +1,14 @@
+# External Data lookup CSV file used for customize the
+# cluster. manifests/init.pp expects configuration 
+# to live in this CSV.
+
+# Buildoop yum repository, or Spacewalk channel
+buildoop_yumrepo_uri,http://buildooprepo:8080/
+
+# For use OpenJDK or Sun JDK
+jdk_package_name,jdk
+
+hadoop_datanodes,mncarsnas.condor.local,mncars001.condor.local
+hadoop_resourcemanager,mncars002.condor.local
+hadoop_client,noexiste
+hadoop_gateway,noexiste

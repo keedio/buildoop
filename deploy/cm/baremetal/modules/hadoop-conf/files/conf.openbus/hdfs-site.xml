@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+
+        <property>
+                <name>dfs.namenode.name.dir</name>
+                <value>/cluster/metadata/dfs/nn</value>
+                <final>true</final>
+                <description>Determines where on the local filesystem the DFS name node 
+                    should store the name table(fsimage). If this is a comma-delimited
+                    list of directories then the name table is replicated in all of 
+                    the directories, for redundancy</description>
+        </property>
+
+        <property>
+                <name>dfs.datanode.data.dir</name>
+                <value>/cluster/data/1/dfs/dn</value>
+                <final>true</final>
+                <description>Determines where on the local filesystem an DFS data node 
+                    should store its blocks. If this is a comma-delimited list of directories,
+                    then data will be stored in all named directories, typically on different
+                    devices. Directories that do not exist are ignored. This property specifies 
+                    the directories where the DataNode stores blocks. The recommendation is 
+                    that you configure the disks on the DataNode in a JBOD configuration, 
+                    mounted at /data/1/ through /data/N, and configure dfs.datanode.data.dir 
+                    to specify /data/1/dfs/dn through /data/N/dfs/dn/.</description>
+        </property>
+
+    <!-- HDFS HA Configurations -->
+
+    <property>
+        <name>dfs.nameservices</name>
+        <value>buildoopcluster</value>
+        <description>logical name for this nameservice</description>
+    </property>
+
+    <property>
+        <name>dfs.ha.namenodes.buildoopcluster</name>
+        <value>nn1,nn2</value>
+        <description>list of comma-separated NameNode IDs</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.rpc-address.buildoopcluster.nn1</name>
+        <value>hadoop-manager.buildoop.org:8020</value>
+        <description>The fully-qualified RPC address for each NameNode
+            to listen on</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.rpc-address.buildoopcluster.nn2</name>
+        <value>hadoop-node1.buildoop.org:8020</value>
+        <description>The fully-qualified RPC address for each NameNode
+            to listen on</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.http-address.buildoopcluster.nn1</name>
+        <value>hadoop-manager.buildoop.org:50070</value>
+        <description>The fully-qualified HTTP address for each NameNode
+            to listen on</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.http-address.buildoopcluster.nn2</name>
+        <value>hadoop-node1.buildoop.org:50070</value>
+        <description>The fully-qualified HTTP address for each NameNode
+            to listen on</description>
+    </property>
+
+    <property>
+        <name>dfs.namenode.shared.edits.dir</name>
+        <value>
+        qjournal://hadoop-manager.buildoop.org:8485;hadoop-node1.buildoop.org:8485;hadoop-node2.buildoop.org:8485/buildoopcluster
+        </value>
+        <description>This is the The location of the shared storage directory.
+            You must specify several JournalNode addresses:
+            The machine architecture recommended is put one JournalNode 
+            daemon in each NameNode (the Active and the Standby) and in the YARN 
+            ResourceManager. So 3 JournalNode daemons are recommended.</description>
+    </property>
+
+    <property>
+        <name>dfs.journalnode.edits.dir</name>
+        <value>/cluster/data/1/dfs/jn</value>
+        <description>The path where the JournalNode daemon will store its 
+            local state. On each JournalNode machine.</description>
+    </property>
+
+    <property>
+        <name>dfs.client.failover.proxy.provider.buildoopcluster</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+        <description>The Java class that HDFS clients use to contact the Active NameNode.</description>
+    </property> 
+
+    <property>
+        <name>dfs.ha.fencing.methods</name>
+        <value>shell(/bin/true)</value>
+    </property>
+
+    <!-- HDFS HA automatic failover with Zookeeper -->
+
+    <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
+        <description>This specifies that the cluster should be set up for automatic failover</description>
+    </property>
+
+</configuration>
