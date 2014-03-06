@@ -49,9 +49,7 @@ lockfile=/var/lock/subsys/zookeeper-server
 
 ZOOKEEPER_SHUTDOWN_TIMEOUT=15
 : ${ZOOKEEPER_CONF:="/etc/zookeeper/conf/zoo.cfg"}
-if [ -f $ZOOKEEPER_CONF ]; then
-	clientPort=`perl -e "use Config::Simple;\\$cfg = new Config::Simple('$ZOOKEEPER_CONF');print(\\$cfg->param(\\"clientPort\\"))"`
-fi
+[ -f $ZOOKEEPER_CONF ] &&  clientPort=`grep clientPort $ZOOKEEPER_CONF | cut -d'=' -f2`
 : ${clientPort:=2181}
 
 install -d -m 0755 -o zookeeper -g zookeeper /var/run/zookeeper/
