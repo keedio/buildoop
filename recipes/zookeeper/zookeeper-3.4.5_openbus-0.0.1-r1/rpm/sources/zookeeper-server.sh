@@ -48,25 +48,49 @@ pidfile=/var/run/zookeeper-server.pid
 lockfile=/var/lock/subsys/zookeeper-server
 
 ZOOKEEPER_SHUTDOWN_TIMEOUT=15
+: ${ZOOKEEPER_CONF:="/etc/zookeeper/conf/zoo.cfg"}
+if [ -f $ZOOKEEPER_CONF ]; then
+	clientPort=`perl -e "use Config::Simple;\\$cfg = new Config::Simple('$ZOOKEEPER_CONF');print(\\$cfg->param(\\"clientPort\\"))"`
+fi
+: ${clientPort:=2181}
 
 install -d -m 0755 -o zookeeper -g zookeeper /var/run/zookeeper/
 
 # Checks if the given pid represents a live process.
 # Returns 0 if the pid is a live process, 1 otherwise
 
+
+function status_ext(){
+    status -p $pidfile ${command}
+    RETVAL=$?
+    listening=`/usr/sbin/lsof -nPi | grep ":${clientPort} " | tr -s ' ' | cut -d' ' -f2`
+    [ -f $pidfile ] && pid=`cat $pidfile`
+    if [ $RETVAL -eq 3 ] && [ -n "$listening" ]; then
+	echo "Port ${clientPort} is being used by ${listening} but ${prog} is stopped"
+	RETVAL=150
+    elif [ $RETVAL -eq 0 ] && [ -z "$listening" ]; then
+	echo "Service running but not listening port ${clientPort}"
+	RETVAL=151
+    elif [ -n "$listening" ] && [ "${listening}" -ne "${pid}" ]; then
+	echo "Process listening $clientPort is ${listening}. Expected: ${pid}"
+	RETVAL=152
+    fi
+    return $RETVAL
+}
+    
 function start() {
-    status -p $pidfile ${command}>/dev/null
+    status_ext>/dev/null
     case "$?" in
 	0)
-	    echo -n "Service is running."
+	    echo "Service is running."
 	    RETVAL=0
 	    ;;
 	1)
-	    echo -n "program is dead and /var/run pid file exists"
+	    echo "program is dead and /var/run pid file exists"
 	    RETVAL=1
 	    ;;
 	2)
-	    echo -n "program is dead and /var/lock lock file exists"
+	    echo "program is dead and /var/lock lock file exists"
 	    RETVAL=1
 	    ;;
 	3)
@@ -79,10 +103,9 @@ function start() {
 	    fi
 	    ;;
 	*)
-	    echo -n "Service is in unknown state. Status: $RETVAL"
+	    echo "Service is in unknown state. Status: $RETVAL"
             return 1
     esac
-    echo
     return $RETVAL
 }
 
@@ -112,12 +135,12 @@ case "$1" in
 	RETVAL=$?
 	;;
     try-restart|condrestart)
-	status -p $pidfile ${command} > /dev/null 2>&1 || exit 0
+	status_ext>/dev/null || exit 0
 	stop 
 	start
 	;;
     status)
-	status -p $pidfile ${command}
+	status_ext
         RETVAL=$?
         ;;
     restart|force-reload)
@@ -126,7 +149,7 @@ case "$1" in
 	RETVAL=$?
 	;;
     init)
-	status -p $pidfile ${command}
+	status_ext>/dev/null
 	if [ $? != 3 ]; then
 	    echo "Error: ${prog} should be stopped." 
 	    RETVAL=1
