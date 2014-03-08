@@ -1,8 +1,17 @@
+08-03-2014 Javi Roman <javiroman@redoop.org>
+
+	* Added Kafka and Spark packages for Real Time, aka
+	Speed Layer for Lambda Architecture.
+
+	Spark is based in the upstream of BigTop 0.7.0. The
+	kafka package is based on the [BIGTOP-989] pull request
+	not included in the upstream.
+
 26-02-2014 Javi Roman <javiroman@redoop.org>
 
 	* Change RPM name nomenclature:
 
-	toolname-toolversion-tag_version.arch.rpm
+	toolName-toolVersion-distroTag_packageVersion.arch.rpm
 
 	Examples:
 	flume-1.4.0-openbus0.0.1_1.noarch.rpm
