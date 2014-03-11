@@ -107,8 +107,6 @@ if [ -z "${SCALA_HOME}" ]; then
     usage
 fi
 
-# here set env variables probably are necessaries
-
 MAN_DIR=${MAN_DIR:-/usr/share/man/man1}
 DOC_DIR=${DOC_DIR:-/usr/share/doc/spark}
 LIB_DIR=${LIB_DIR:-/usr/lib/spark}
@@ -123,6 +121,7 @@ PYSPARK_PYTHON=${PYSPARK_PYTHON:-python}
 install -d -m 0755 $PREFIX/$LIB_DIR
 install -d -m 0755 $PREFIX/$LIB_DIR/lib
 install -d -m 0755 $PREFIX/$SPARK_BIN_DIR
+install -d -m 0755 $PREFIX/$LIB_DIR/sbin
 install -d -m 0755 $PREFIX/$DOC_DIR
 
 install -d -m 0755 $PREFIX/var/lib/spark/
@@ -140,11 +139,17 @@ done
 install -d -m 0755 $PREFIX/$LIB_DIR/examples/lib
 cp ${BUILD_DIR}/examples/target/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples/lib
 
+# From Cloudera
+cp -a ${BUILD_DIR}/bin/*.sh $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/sbin/*.sh $PREFIX/$LIB_DIR/sbin/
+chmod 755 $PREFIX/$LIB_DIR/bin/*
+chmod 755 $PREFIX/$LIB_DIR/sbin/*
+
 # FIXME: executor scripts need to reside in bin
-cp -a $BUILD_DIR/spark-class $PREFIX/$LIB_DIR
-cp -a $BUILD_DIR/spark-executor $PREFIX/$LIB_DIR
-cp -a ${SOURCE_DIR}/compute-classpath.sh $PREFIX/$SPARK_BIN_DIR
-cp -a ${BUILD_DIR}/spark-shell $PREFIX/$LIB_DIR
+cp -a $BUILD_DIR/bin/spark-class $PREFIX/$LIB_DIR/bin/
+cp -a $BUILD_DIR/sbin/spark-executor $PREFIX/$LIB_DIR/sbin/
+cp -a ${SOURCE_DIR}/compute-classpath.sh $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/bin/spark-shell $PREFIX/$LIB_DIR/bin/
 touch $PREFIX/$LIB_DIR/RELEASE
 
 # Copy in the configuration files
@@ -157,15 +162,15 @@ ln -s /etc/spark/conf $PREFIX/$LIB_DIR/conf
 tar --wildcards -C $PREFIX/$LIB_DIR -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz ui-resources/\*
 
 # set correct permissions for exec. files
-for execfile in spark-class spark-shell spark-executor ; do
+for execfile in bin/spark-class bin/spark-shell sbin/spark-executor ; do
   chmod 755 $PREFIX/$LIB_DIR/$execfile
 done
 chmod 755 $PREFIX/$SPARK_BIN_DIR/compute-classpath.sh
 
 # Copy in the wrappers
 install -d -m 0755 $PREFIX/$BIN_DIR
-for wrap in spark-executor spark-shell ; do
-  cat > $PREFIX/$BIN_DIR/$wrap <<EOF
+for wrap in sbin/spark-executor bin/spark-shell ; do
+  cat > $PREFIX/$BIN_DIR/`basename $wrap` <<EOF
 #!/bin/bash 
 
 # Autodetect JAVA_HOME if not defined
@@ -179,7 +184,7 @@ fi
 
 exec $INSTALLED_LIB_DIR/$wrap "\$@"
 EOF
-  chmod 755 $PREFIX/$BIN_DIR/$wrap
+  chmod 755 $PREFIX/$BIN_DIR/`basename $wrap`
 done
 
 cat >> $PREFIX/$CONF_DIR/spark-env.sh <<EOF
@@ -204,7 +209,8 @@ EOF
 ln -s /var/run/spark/work $PREFIX/$LIB_DIR/work
 
 cp -r ${BUILD_DIR}/python ${PREFIX}/${INSTALLED_LIB_DIR}/
-cp ${BUILD_DIR}/pyspark ${PREFIX}/${INSTALLED_LIB_DIR}/
+cp ${BUILD_DIR}/bin/pyspark ${PREFIX}/${INSTALLED_LIB_DIR}/bin
+cp ${BUILD_DIR}/bin/pyspark ${PREFIX}/${INSTALLED_LIB_DIR}/
 cat > $PREFIX/$BIN_DIR/pyspark <<EOF
 #!/bin/bash
 

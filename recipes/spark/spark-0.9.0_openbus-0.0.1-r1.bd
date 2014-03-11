@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Apache Spark", 
+		"homepage":    "https://spark.incubator.apache.org",
+		"license":     "Apache-2.0",
+		"filename":    "spark-0.9.0_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://d3kbcqa49mib13.cloudfront.net/spark-0.9.0-incubating.tgz",
+		"src_md5sum": "dde85f7b6e4b3b13abdcc70b075b95f0"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}

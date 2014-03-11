@@ -21,13 +21,21 @@ if [ "x$SCALA_HOME" = "x" ]; then
     exit 2
 fi
 
-BUILD_OPTS="-Divy.home=${HOME}/.ivy2 -Dsbt.ivy.home=${HOME}/.ivy2 -Duser.home=${HOME} \
-            -Drepo.maven.org=$IVY_MIRROR_PROP \
-            -Dreactor.repo=file://${HOME}/.m2/repository \
-            -Dhadoop.version=$HADOOP_VERSION
-            -DskipTests"
-## this might be an issue at times
-#        http://maven.40175.n5.nabble.com/Not-finding-artifact-in-local-repo-td3727753.html
-export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m -XX:PermSize=1024m -XX:MaxPermSize=1024m"
+HADOOP_VERSION=2.2.0
 
-mvn -Pbigtop-dist $BUILD_OPTS package
+BUILD_OPTS="-Pyarn -Dhadoop.version=2.2.0 \
+	    -Dyarn.version=2.2.0 \
+	    -Dprotobuf.version=2.5.0 \
+	    -DskipTests"
+
+# -Dhbase.version=???
+
+export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m \
+		   -XX:PermSize=1024m -XX:MaxPermSize=1024m"
+
+# bigtop-dist profile is hardcoded in the original source code.
+mvn -Pbigtop-dist $BUILD_OPTS clean package
+
+
+
+

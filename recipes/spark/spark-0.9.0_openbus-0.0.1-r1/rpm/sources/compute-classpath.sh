@@ -17,7 +17,7 @@
 # This script computes Spark's classpath and prints it to stdout; it's used by both the "run"
 # script and the ExecutorRunner in standalone cluster mode.
 
-SCALA_VERSION=2.9.3
+SCALA_VERSION=2.10
 
 # Figure out where Spark is installed
 FWDIR="$(cd `dirname $0`/..; pwd)"
@@ -60,6 +60,9 @@ fi
 export DEFAULT_HADOOP=/usr/lib/hadoop
 export DEFAULT_HADOOP_CONF=/etc/hadoop/conf
 export HADOOP_HOME=${HADOOP_HOME:-$DEFAULT_HADOOP}
+export HADOOP_HDFS_HOME=${HADOOP_HDFS_HOME:-${HADOOP_HOME}/../hadoop-hdfs}
+export HADOOP_MAPRED_HOME=${HADOOP_MAPRED_HOME:-${HADOOP_HOME}/../hadoop-mapreduce}
+export HADOOP_YARN_HOME=${HADOOP_YARN_HOME:-${HADOOP_HOME}/../hadoop-yarn}
 export HADOOP_CONF_DIR=${HADOOP_CONF_DIR:-$DEFAULT_HADOOP_CONF}
 
 CLASSPATH="$CLASSPATH:$HADOOP_CONF_DIR"

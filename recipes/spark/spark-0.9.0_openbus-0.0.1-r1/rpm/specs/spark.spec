@@ -25,8 +25,8 @@
 %define man_dir /usr/share/man
 %define spark_services master worker
 
-%define spark_version 0.8.0
-%define spark_base_version 0.8.0
+%define spark_version 0.9.0
+%define spark_base_version 0.9.0-incubating
 %define spark_release openbus0.0.1_1
 
 %if  %{?suse_version:1}0
@@ -53,7 +53,7 @@ Group: Development/Libraries
 BuildArch: noarch
 Buildroot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 License: ASL 2.0 
-Source0: %{spark_name}-%{spark_base_version}.tar.gz
+Source0: %{spark_name}-%{spark_base_version}.tgz
 Source1: rpm-build-stage
 Source2: install_%{spark_name}.sh
 Source3: spark-master.svc
@@ -126,8 +126,9 @@ bash $RPM_SOURCE_DIR/install_spark.sh \
 for service in %{spark_services}
 do
     # Install init script
+    echo "Installing service: ${service}"
     init_file=$RPM_BUILD_ROOT/%{initd_dir}/%{spark_name}-${service}
-    bash $RPM_SOURCE_DIR/init.d.tmpl $RPM_SOURCE_DIR/spark-${service}.svc rpm $init_file
+    bash $RPM_SOURCE_DIR/init.d.tmpl $RPM_SOURCE_DIR/spark-${service}.svc rpm > $init_file
 done
 
 %pre
@@ -190,3 +191,5 @@ if [ $1 -ge 1 ]; then \
 fi
 %service_macro spark-master
 %service_macro spark-worker
+
+
