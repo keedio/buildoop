@@ -22,6 +22,10 @@
 %define bin_kafka /usr/bin
 %define man_dir /usr/share/man
 
+%define kafka_version 0.8.0
+%define kafka_base_version 0.8.0
+%define kafka_release openbus0.0.1_1
+
 %if  %{?suse_version:1}0
 %define doc_kafka %{_docdir}/kafka
 %define alternatives_cmd update-alternatives
@@ -45,7 +49,7 @@ URL: http://kafka.apache.org
 Group: Development/Libraries
 Buildroot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 License: APL2
-Source0: %{name}-%{kafka_base_version}.tgz
+Source0: %{name}-%{kafka_base_version}-src.tgz
 Source1: rpm-build-stage
 Source2: install_%{name}.sh
 Source3: kafka-server.sh
@@ -76,7 +80,7 @@ Kafka is a high-throughput distributed messaging system.
 %setup -n %{name}-%{kafka_base_version}-src
 
 %build
-bash $RPM_SOURCE_DIR/do-component-build
+bash $RPM_SOURCE_DIR/rpm-build-stage
 
 %install
 %__rm -rf $RPM_BUILD_ROOT
@@ -114,7 +118,7 @@ fi
 %config(noreplace) %{config_kafka}.dist
 %{config_kafka}
 %{config_kafka}ig
-%{etc_rcd}/kafka
+%{etc_rcd}/init.d/kafka
 %{lib_kafka}/bin/*
 %{lib_kafka}/*.jar
 %{lib_kafka}/config

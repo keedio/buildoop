@@ -1,14 +1,14 @@
 {
 	"do_info": {
 		"description": "Apache Kafka", 
-		"homepage":    "http://flume.apache.org/",
+		"homepage":    "http://kafka.apache.org/",
 		"license":     "Apache-2.0",
 		"filename":    "kafka-0.8.0_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {
-		"src_uri":    "http://www.eu.apache.org/dist/flume/1.4.0/apache-flume-1.4.0-src.tar.gz",
-		"src_md5sum": "a932da09b9edb95b0c4bf52e6480fe21"
+		"src_uri":    "http://ftp.cixug.es/apache/kafka/0.8.0/kafka-0.8.0-src.tgz",
+		"src_md5sum": "46b3e65e38f1bde4b6251ea131d905f4"
 	},
 
 	"do_fetch": {

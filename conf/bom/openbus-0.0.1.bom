@@ -2,7 +2,7 @@ TARGET=CentOS-6.x
 
 HADOOP_VERSION=2.2.0_openbus-0.0.1-r1
 ZOOKEEPER_VERSION=3.4.5_openbus-0.0.1-r1
-HBASE_VERSION=0.94.16_openbus-0.0.1-r1
+HBASE_VERSION=0.96.1.1_openbus-0.0.1-r1
 PIG_VERSION=0.11.1_openbus-0.0.1-r1
 HIVE_VERSION=0.11.0_openbus-0.0.1-r1
 SQOOP_VERSION=1.4.4_openbus-0.0.1-r1

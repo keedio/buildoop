@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Apache HBase", 
+		"homepage":    "http://hbase.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "hbase-0.96.1.1_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://www.eu.apache.org/dist/hbase/hbase-0.96.1.1/hbase-0.96.1.1-src.tar.gz",
+		"src_md5sum": "f55fe4fa13ffebced747f7874b0e2c20"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	}
+}
