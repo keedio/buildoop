@@ -52,6 +52,27 @@ __EOT__
 
 }
 
+generate_stop() {
+
+cat <<'__EOT__'
+stop() {
+  log_success_msg "Stopping ${DESC}: "
+
+  if [ -n "$HADOOP_SECURE_DN_USER" ]; then
+    TARGET_USER=root
+  else
+    TARGET_USER=${HADOOP_DATANODE_USER:-hdfs}
+  fi
+
+  start_daemon -u $TARGET_USER $EXEC_PATH --config "$CONF_DIR" stop $DAEMON_FLAGS
+  RETVAL=$?
+
+  [ $RETVAL -eq $RETVAL_SUCCESS ] && rm -f $LOCKFILE $PIDFILE
+}
+__EOT__
+
+}
+
 generate_extra_commands() {
 
 cat <<'__EOT__'
