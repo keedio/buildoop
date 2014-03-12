@@ -46,6 +46,8 @@ Version: %{kafka_version}
 Release: %{kafka_release}
 Summary: A high-throughput distributed messaging system.
 URL: http://kafka.apache.org
+Vendor: Produban - Santander Group
+Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Buildroot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 License: APL2
