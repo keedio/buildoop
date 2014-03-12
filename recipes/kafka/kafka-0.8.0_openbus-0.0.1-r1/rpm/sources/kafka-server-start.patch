@@ -1,0 +1,13 @@
+diff -uprN kafka-0.8.0-vanilla/bin/kafka-server-start.sh kafka-0.8.0-src/bin/kafka-server-start.sh
+--- kafka-0.8.0-vanilla/bin/kafka-server-start.sh	2014-03-12 16:23:28.577665065 +0100
++++ kafka-0.8.0-src/bin/kafka-server-start.sh	2014-03-12 16:23:44.236502243 +0100
+@@ -19,7 +19,8 @@ then
+ 	echo "USAGE: $0 server.properties"
+ 	exit 1
+ fi
++etc_conf_dir=/etc/kafka/conf
+ base_dir=$(dirname $0)
+-export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:$base_dir/../config/log4j.properties"
++export KAFKA_LOG4J_OPTS="-Dlog4j.configuration=file:$etc_conf_dir/log4j.properties"
+ export KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
+ exec $base_dir/kafka-run-class.sh daemon kafkaServer kafka.Kafka $@

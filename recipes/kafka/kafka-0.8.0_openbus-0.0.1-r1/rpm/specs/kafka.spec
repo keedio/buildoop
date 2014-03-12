@@ -53,6 +53,8 @@ Source0: %{name}-%{kafka_base_version}-src.tgz
 Source1: rpm-build-stage
 Source2: install_%{name}.sh
 Source3: kafka-server.sh
+Patch0: hadoop-consumer-for-hadoop2.patch
+Patch1: kafka-server-start.patch
 BuildArch: noarch
 BuildRequires: autoconf, automake
 Requires(pre): coreutils, /usr/sbin/groupadd, /usr/sbin/useradd
@@ -78,6 +80,9 @@ Kafka is a high-throughput distributed messaging system.
     
 %prep
 %setup -n %{name}-%{kafka_base_version}-src
+
+%patch0 -p1
+%patch1 -p1
 
 %build
 bash $RPM_SOURCE_DIR/rpm-build-stage
@@ -117,10 +122,8 @@ fi
 %defattr(-,root,root,755)
 %config(noreplace) %{config_kafka}.dist
 %{config_kafka}
-%{config_kafka}ig
 %{etc_rcd}/init.d/kafka
 %{lib_kafka}/bin/*
 %{lib_kafka}/*.jar
-%{lib_kafka}/config
 %{bin_kafka}/kafka
 

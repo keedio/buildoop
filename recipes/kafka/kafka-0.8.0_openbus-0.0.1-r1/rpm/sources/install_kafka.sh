@@ -95,16 +95,12 @@ cp -ra ${BUILD_DIR}/bin/*.sh $PREFIX/$LIB_DIR/bin
 
 # Copy in the configuration files
 install -d -m 0755 $PREFIX/$CONF_DIR
-cp -a ${BUILD_DIR}/config/* $PREFIX/$CONF_DIR
+cp -a ${RPM_SOURCE_DIR}/conf.dist/* $PREFIX/$CONF_DIR
+# cp -a ${BUILD_DIR}/config/* $PREFIX/$CONF_DIR
 cd $PREFIX/etc/kafka
 ln -s conf.dist conf
-ln -s conf.dist config
-cd -
-cd $PREFIX/$LIB_DIR
-ln -s $CONF_DIR config
 cd -
 install -d -m 0755 $PREFIX/$BIN_DIR
-
 
 cat > $PREFIX/$BIN_DIR/kafka <<EOF
 #!/bin/sh 
@@ -168,8 +164,9 @@ fi
 CLASSPATH=$INSTALLED_LIB_DIR/*.jar
 
 if [ ! -z \$START ]; then
-  $LIB_DIR/bin/zookeeper-server-start.sh $CONF_DIR/zookeeper.properties&
-  $LIB_DIR/bin/kafka-server-start.sh $CONF_DIR/server.properties&
+  # we consider we have an external zookeeper for production enviroments
+  # $LIB_DIR/bin/zookeeper-server-start.sh /etc/kafka/conf/zookeeper.properties&
+  $LIB_DIR/bin/kafka-server-start.sh /etc/kafka/conf/server.properties&
   echo \$! > /var/run/kafka/kafka-server.pid
 elif [ ! -z \$STOP ]; then
   kill \$(ps -eaf|grep kafka|grep -v grep|awk '{print \$2}')

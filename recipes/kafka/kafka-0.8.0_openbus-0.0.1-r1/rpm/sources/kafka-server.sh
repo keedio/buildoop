@@ -47,6 +47,10 @@ NAME=kafka-server
 DESC="Kafka daemon"
 PID_FILE=/var/run/kafka/kafka-server.pid
 install -d -m 0755 -o kafka -g kafka /var/run/kafka/
+install -d -m 0755 -o kafka -g kafka /var/run/kafka/
+install -d -m 0755 -o kafka -g kafka /var/log/kafka/
+install -d -m 0755 -o kafka -g kafka /var/lib/kafka/
+install -d -m 0755 -o kafka -g kafka /var/lib/kafka-zookeeper
 
 DODTIME=3
 
