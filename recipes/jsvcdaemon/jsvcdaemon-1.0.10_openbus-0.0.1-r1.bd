@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Apache Commons Daemon JSVC and jar files", 
+		"homepage":    "http://commons.apache.org/proper/commons-daemon/jsvc.html",
+		"license":     "Apache-2.0",
+		"filename":    "jsvcdaemon-1.0.10_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+	 "src_uri":    "http://archive.apache.org/dist/commons/daemon/source/commons-daemon-1.0.10-native-src.tar.gz",
+	 "src_md5sum": "36d5a1daa9d477d00cd3ad80226325c5"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
