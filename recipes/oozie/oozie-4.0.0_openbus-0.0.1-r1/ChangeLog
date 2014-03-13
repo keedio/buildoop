@@ -1,0 +1,9 @@
+13-03-2014 Javi Roman <javiroman@redoop.org>
+
+	* Patch for build issue:
+
+	http://mail-archives.apache.org/mod_mbox/oozie-user/201312.mbox/raw/%3CCEDDEB80.76815%25chitnis@yahoo-inc.com%3E/
+
+13-03-2014 Javi Roman <javiroman@redoop.org>
+
+	* Initial package based on CDH-5.0.0b

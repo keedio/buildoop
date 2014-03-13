@@ -15,11 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 set -x
-#
-# Resolve source directory
-#
-
-if [ -z "$GIT_REPO" ]; then
 
 # $0 may be a softlink
     PRG="$0"
@@ -191,9 +186,4 @@ if [ -z "$GIT_REPO" ]; then
 
     echo "SUCCESS: Build complete"
     exit 0
-else
-    git add .
-    git commit -a -m "Temporary commit for tarball"
-    mkdir -p build
-    git archive --prefix=oozie-${FULL_VERSION}/ --format=tar HEAD |gzip > build/oozie-${FULL_VERSION}.tar.gz
-fi
+

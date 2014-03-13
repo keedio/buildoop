@@ -55,6 +55,8 @@ Version: %{oozie_version}
 Release: %{oozie_release}
 Summary:  Oozie is a system that runs workflows of Hadoop jobs.
 URL: http://incubator.apache.org/oozie/
+Vendor: Produban - Santander Group
+Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Buildroot: %{_topdir}/INSTALL/%{name}-%{version}
 License: APL2
@@ -71,8 +73,9 @@ Source9: catalina.properties.mr1
 Requires(pre): /usr/sbin/groupadd, /usr/sbin/useradd
 Requires(post): /sbin/chkconfig
 Requires(preun): /sbin/chkconfig, /sbin/service
-Requires: oozie-client = %{version}, hadoop-client, bigtop-tomcat
+Requires: oozie-client = %{version}, hadoop-client
 Requires: avro-libs, parquet
+Patch0: build-error-2.2.0-SNAPSHOT-dependency.patch
 BuildArch: noarch
 
 %description 
@@ -122,8 +125,6 @@ URL: http://incubator.apache.org/oozie/
 Group: Development/Libraries
 License: APL2
 BuildArch: noarch
-Requires: bigtop-utils >= 0.7
-
 
 %description client
  Oozie client is a command line client utility that allows remote
@@ -137,6 +138,8 @@ Requires: bigtop-utils >= 0.7
 
 %prep
 %setup -n oozie-%{oozie_version}
+
+%patch0 -p1
 
 %build
     mkdir -p distro/downloads
