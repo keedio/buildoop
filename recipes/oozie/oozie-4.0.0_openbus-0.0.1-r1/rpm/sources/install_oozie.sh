@@ -97,7 +97,6 @@ fi
 
 ## Install client image first
 CLIENT_LIB_DIR=${CLIENT_PREFIX}/usr/lib/oozie
-MAN_DIR=${CLIENT_PREFIX}/usr/share/man/man1
 DOC_DIR=${DOC_DIR:-$CLIENT_PREFIX/usr/share/doc/oozie}
 BIN_DIR=${CLIENT_PREFIX}/usr/bin
 
@@ -112,10 +111,8 @@ cp -R ${BUILD_DIR}/oozie-examples.tar.gz ${DOC_DIR}
 cp -R ${BUILD_DIR}/README.txt ${DOC_DIR}
 cp -R ${BUILD_DIR}/release-log.txt ${DOC_DIR}
 [ -f ${BUILD_DIR}/PATCH.txt ] && cp ${BUILD_DIR}/PATCH.txt ${DOC_DIR}
-cp -R ${BUILD_DIR}/docs/* ${DOC_DIR}
+#### cp -R ${BUILD_DIR}/docs/* ${DOC_DIR}
 rm -rf ${DOC_DIR}/target
-install -d -m 0755 ${MAN_DIR}
-gzip -c ${EXTRA_DIR}/oozie.1 > ${MAN_DIR}/oozie.1.gz
 
 # Create the /usr/bin/oozie wrapper
 install -d -m 0755 $BIN_DIR
@@ -216,7 +213,7 @@ if [ "${INITD_DIR}" != "" ]; then
   chmod 755 ${INITD_DIR}/oozie
 fi
 mv ${BUILD_DIR}/oozie-sharelib-*-yarn.tar.gz ${SERVER_LIB_DIR}/oozie-sharelib-yarn.tar.gz
-mv ${BUILD_DIR}/oozie-sharelib-*.tar.gz ${SERVER_LIB_DIR}/oozie-sharelib-mr1.tar.gz
+#mv ${BUILD_DIR}/oozie-sharelib-*.tar.gz ${SERVER_LIB_DIR}/oozie-sharelib-mr1.tar.gz
 ln -s oozie-sharelib-yarn.tar.gz ${SERVER_LIB_DIR}/oozie-sharelib.tar.gz
 ln -s -f /etc/oozie/conf/oozie-env.sh ${SERVER_LIB_DIR}/bin
 
@@ -225,10 +222,11 @@ cp -R ${BUILD_DIR}/oozie-server/webapps ${SERVER_LIB_DIR}/webapps
 # Unpack oozie.war some place reasonable
 OOZIE_WEBAPP=${SERVER_LIB_DIR}/webapps/oozie
 mkdir ${OOZIE_WEBAPP}
-unzip -d ${OOZIE_WEBAPP} ${BUILD_DIR}/oozie.war
+unzip -qq -d ${OOZIE_WEBAPP} ${BUILD_DIR}/oozie.war > /dev/null
 mv -f ${OOZIE_WEBAPP}/WEB-INF/lib ${SERVER_LIB_DIR}/libserver
 touch ${SERVER_LIB_DIR}/webapps/oozie.war
 
+echo "Deployment tomcat-conf.http"
 HTTP_DIRECTORY=${ETC_DIR}/tomcat-conf.http
 install -d -m 0755 ${HTTP_DIRECTORY}
 cp -R ${BUILD_DIR}/oozie-server/conf ${HTTP_DIRECTORY}/conf

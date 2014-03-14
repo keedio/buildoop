@@ -74,7 +74,7 @@ Requires(pre): /usr/sbin/groupadd, /usr/sbin/useradd
 Requires(post): /sbin/chkconfig
 Requires(preun): /sbin/chkconfig, /sbin/service
 Requires: oozie-client = %{version}, hadoop-client
-Requires: avro-libs, parquet
+#Requires: avro-libs, parquet
 Patch0: build-error-2.2.0-SNAPSHOT-dependency.patch
 BuildArch: noarch
 
@@ -147,11 +147,11 @@ BuildArch: noarch
 
 %install
 %__rm -rf $RPM_BUILD_ROOT
-    %{SOURCE2} --extra-dir=$RPM_SOURCE_DIR --build-dir=. --server-dir=$RPM_BUILD_ROOT --client-dir=$RPM_BUILD_ROOT --docs-dir=$RPM_BUILD_ROOT%{doc_oozie} --initd-dir=$RPM_BUILD_ROOT%{initd_dir} --conf-dir=$RPM_BUILD_ROOT%{conf_oozie_dist}
+    bash %{SOURCE2} --extra-dir=$RPM_SOURCE_DIR --build-dir=. --server-dir=$RPM_BUILD_ROOT --client-dir=$RPM_BUILD_ROOT --docs-dir=$RPM_BUILD_ROOT%{doc_oozie} --initd-dir=$RPM_BUILD_ROOT%{initd_dir} --conf-dir=$RPM_BUILD_ROOT%{conf_oozie_dist}
 
 %__ln_s -f %{data_oozie}/ext-2.2 $RPM_BUILD_ROOT/%{lib_oozie}/webapps/oozie/ext-2.2
-%__rm  -rf              $RPM_BUILD_ROOT/%{lib_oozie}/webapps/oozie/docs
-%__ln_s -f %{doc_oozie} $RPM_BUILD_ROOT/%{lib_oozie}/webapps/oozie/docs
+#%__rm  -rf              $RPM_BUILD_ROOT/%{lib_oozie}/webapps/oozie/docs
+#%__ln_s -f %{doc_oozie} $RPM_BUILD_ROOT/%{lib_oozie}/webapps/oozie/docs
 
 %__install -d -m 0755 $RPM_BUILD_ROOT/usr/bin
 
@@ -205,9 +205,7 @@ fi
 %{lib_oozie}/libserver
 %{lib_oozie}/oozie-sharelib.tar.gz
 %{lib_oozie}/oozie-sharelib-yarn.tar.gz
-%{lib_oozie}/oozie-sharelib-mr1.tar.gz
 %{lib_oozie}/libext
-%{lib_oozie}/cloudera/
 %{initd_dir}/oozie
 %defattr(-, oozie, oozie)
 %dir %{_sysconfdir}/%{name}
@@ -222,4 +220,4 @@ fi
 %{lib_oozie}/bin/oozie
 %{lib_oozie}/lib
 %doc %{doc_oozie}
-%{man_dir}/man1/oozie.1.*
+

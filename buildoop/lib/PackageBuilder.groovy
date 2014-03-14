@@ -53,7 +53,15 @@ class PackageBuilder {
 		assert (strList instanceof String ||
             (strList instanceof List && strList.each{ it instanceof String }))
 
+		/*
+	     * Because this functionality (string.execute) currently make use 
+	     * of java.lang.Process under the covers, the deficiencies of 
+         * that class must currently be taken into consideration. With
+	     * the method consumeProcessOutput(). 
+         * http://groovy.codehaus.org/Process+Management
+	     */
   		def proc = strList.execute()
+            proc.consumeProcessOutput(System.out, System.err)
   			proc.in.eachLine { 
 				line -> println line 
   		}
