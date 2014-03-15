@@ -213,7 +213,6 @@ if [ "${INITD_DIR}" != "" ]; then
   chmod 755 ${INITD_DIR}/oozie
 fi
 mv ${BUILD_DIR}/oozie-sharelib-*-yarn.tar.gz ${SERVER_LIB_DIR}/oozie-sharelib-yarn.tar.gz
-#mv ${BUILD_DIR}/oozie-sharelib-*.tar.gz ${SERVER_LIB_DIR}/oozie-sharelib-mr1.tar.gz
 ln -s oozie-sharelib-yarn.tar.gz ${SERVER_LIB_DIR}/oozie-sharelib.tar.gz
 ln -s -f /etc/oozie/conf/oozie-env.sh ${SERVER_LIB_DIR}/bin
 
@@ -239,14 +238,6 @@ HTTPS_DIRECTORY=${ETC_DIR}/tomcat-conf.https
 cp -r ${HTTP_DIRECTORY} ${HTTPS_DIRECTORY}
 cp ${HTTPS_DIRECTORY}/conf/ssl/ssl-server.xml ${HTTPS_DIRECTORY}/conf/server.xml
 cp ${BUILD_DIR}/oozie-server/conf/ssl/ssl-web.xml ${HTTPS_DIRECTORY}/WEB-INF/web.xml
-
-HTTP_MR1_DIRECTORY=${ETC_DIR}/tomcat-conf.http.mr1
-cp -r ${HTTP_DIRECTORY} ${HTTP_MR1_DIRECTORY}
-cp -f ${EXTRA_DIR}/catalina.properties.mr1 ${HTTP_MR1_DIRECTORY}/conf/catalina.properties
-
-HTTPS_MR1_DIRECTORY=${ETC_DIR}/tomcat-conf.https.mr1
-cp -r ${HTTPS_DIRECTORY} ${HTTPS_MR1_DIRECTORY}
-cp -f ${EXTRA_DIR}/catalina.properties.mr1 ${HTTP_MR1_DIRECTORY}/conf/catalina.properties
 
 # Create all the jars needed for tools execution
 install -d -m 0755 ${SERVER_LIB_DIR}/libtools

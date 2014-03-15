@@ -69,11 +69,10 @@ Source5: oozie.init
 Source6: catalina.properties
 Source7: context.xml
 Source8: hive.xml
-Source9: catalina.properties.mr1
 Requires(pre): /usr/sbin/groupadd, /usr/sbin/useradd
 Requires(post): /sbin/chkconfig
 Requires(preun): /sbin/chkconfig, /sbin/service
-Requires: oozie-client = %{version}, hadoop-client
+Requires: oozie-client = %{version}, hadoop-client, tomcatserver
 #Requires: avro-libs, parquet
 Patch0: build-error-2.2.0-SNAPSHOT-dependency.patch
 BuildArch: noarch
@@ -167,8 +166,6 @@ getent passwd oozie >/dev/null || /usr/sbin/useradd --comment "Oozie User" --she
 %post 
 %{alternatives_cmd} --install %{tomcat_conf_oozie} %{name}-tomcat-deployment %{tomcat_conf_oozie}.http 30
 %{alternatives_cmd} --install %{tomcat_conf_oozie} %{name}-tomcat-deployment %{tomcat_conf_oozie}.https 20
-%{alternatives_cmd} --install %{tomcat_conf_oozie} %{name}-tomcat-deployment %{tomcat_conf_oozie}.http.mr1 15
-%{alternatives_cmd} --install %{tomcat_conf_oozie} %{name}-tomcat-deployment %{tomcat_conf_oozie}.https.mr1 10
 %{alternatives_cmd} --install %{conf_oozie} %{name}-conf %{conf_oozie_dist} 30
 
 /sbin/chkconfig --add oozie 
@@ -180,8 +177,6 @@ if [ "$1" = 0 ]; then
   /sbin/chkconfig --del oozie
   %{alternatives_cmd} --remove %{name}-tomcat-deployment %{tomcat_conf_oozie}.http || :
   %{alternatives_cmd} --remove %{name}-tomcat-deployment %{tomcat_conf_oozie}.https || :
-  %{alternatives_cmd} --remove %{name}-tomcat-deployment %{tomcat_conf_oozie}.http.mr1 || :
-  %{alternatives_cmd} --remove %{name}-tomcat-deployment %{tomcat_conf_oozie}.https.mr1 || :
   %{alternatives_cmd} --remove %{name}-conf %{conf_oozie_dist} || :
 fi
 
