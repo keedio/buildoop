@@ -54,11 +54,11 @@ echo "Starting system build"
     fi
 
 # Delete and recreate build directory
-    BUILDDIR=${WORKDIR}/build
-    rm -rf ${BUILDDIR}
-    mkdir -p ${BUILDDIR}
+BUILDDIR=${WORKDIR}/build
+rm -rf ${BUILDDIR}
+mkdir -p ${BUILDDIR}
 
-    EXTRA_GOALS=""
+EXTRA_GOALS="-Dhadoop.version=2.2.0"
 
 
 MKDISTRO_OPTIONS="-DskipTests ${EXTRA_GOALS} -Dmaven.repo.local=${HOME}/.m2/repository $@"
