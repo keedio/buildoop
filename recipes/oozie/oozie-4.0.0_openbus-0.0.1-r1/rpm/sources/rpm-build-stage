@@ -58,7 +58,7 @@ BUILDDIR=${WORKDIR}/build
 rm -rf ${BUILDDIR}
 mkdir -p ${BUILDDIR}
 
-EXTRA_GOALS="-Dhadoop.version=2.2.0"
+EXTRA_GOALS="-Dhadoop.version=2.2.0 -DjavaVersion=1.7 -DtargetJavaVersion=1.7"
 
 
 MKDISTRO_OPTIONS="-DskipTests ${EXTRA_GOALS} -Dmaven.repo.local=${HOME}/.m2/repository $@"
