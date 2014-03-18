@@ -249,6 +249,15 @@ for i in `cd ${BUILD_DIR}/libtools ; ls *` ; do
   fi
 done
 
+# issue [buildoop-github-#33]
+# Get rid of hadoop jar, and instead link to installed hadoop. This
+# is the same hack done in flume package, only this staff is done
+# in the install section from spec file.
+rm -f ${SERVER_LIB_DIR}/libtools/hadoop-auth*
+rm -f ${CLIENT_LIB_DIR}/lib/hadoop-auth*
+ln -sf  /usr/lib/hadoop/hadoop-auth.jar ${SERVER_LIB_DIR}/libtools/hadoop-auth.jar || true
+ln -sf  /usr/lib/hadoop/hadoop-auth.jar ${SERVER_LIB_DIR}/lib/hadoop-auth.jar || true
+
 # Provide a convenience symlink to be more consistent with tarball deployment
 ln -s ${DATA_DIR#${SERVER_PREFIX}} ${SERVER_LIB_DIR}/libext
 

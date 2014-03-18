@@ -219,6 +219,10 @@ install -d -m 0755 ${YARN_DIR}/lib
 cp ${BUILD_DIR}/share/hadoop/yarn/lib/*.jar ${YARN_DIR}/lib
 chmod 644 ${HADOOP_DIR}/lib/*.jar ${MAPREDUCE_DIR}/lib/*.jar ${HDFS_DIR}/lib/*.jar ${YARN_DIR}/lib/*.jar
 
+# issue [buildoop-github-#44]
+# used this link by oozie and flume, and probably other tools.
+ln -sf /usr/lib/hadoop/hadoop-auth-*.jar $RPM_BUILD_ROOT/usr/lib/hadoop/hadoop-auth.jar || true
+
 # Install webapps
 cp -ra ${BUILD_DIR}/share/hadoop/hdfs/webapps ${HDFS_DIR}/
 
