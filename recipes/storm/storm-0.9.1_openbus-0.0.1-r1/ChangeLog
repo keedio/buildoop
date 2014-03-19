@@ -1,0 +1,8 @@
+13-03-2014 Javi Roman <javiroman@redoop.org>
+
+	* JSVC jar files are dispatched by
+	hadoop-hdfs-2.2.0-openbus0.0.1_1.x86_64:
+
+	/usr/lib/hadoop-hdfs/lib/commons-daemon-1.0.13.jar
+
+	So this new version of jsvc-1.0.13.
