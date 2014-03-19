@@ -1,20 +1,38 @@
-# sudo yum -y install rpmdevtools && rpmdev-setuptree
-# wget http://nodeload.github.com/nathanmarz/jzmq/tarball/master -O ~/rpmbuild/SOURCES/jzmq-2.1.0.tar.gz
-# sudo yum -y install libtool automake autoconf
-# rpmbuild -bb ~/rpmbuild/SPECS/jzmq-2.1.0.spec
+# Licensed to the Apache Software Foundation (ASF) under one or more
+# contributor license agreements.  See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ASF licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License.  You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
 
-Name:          jzmqstorm
-Version:       2.1.0.dd3327d620
-Release:       storm1%{?dist}
-Summary:       The Java ZeroMQ bindings
-Group:         Applications/Internet
-License:       LGPLv3+
-URL:           http://www.zeromq.org/
-Source:        %{name}-%{version}.tar.gz
-Prefix:        %{_prefix}
-Buildroot:     %{_tmppath}/%{name}-%{version}-%{release}-root
-BuildRequires: gcc, make, gcc-c++, libstdc++-devel, libtool, zeromq-devel, java-1.6.0-openjdk-devel
-Requires:      libstdc++, zeromq
+%define jzmqstorm_version 2.1.0.dd3327d620
+%define jzmqstorm_base_version 2.1.0.dd3327d620
+%define jzmqstorm_release openbus0.0.1_1
+
+Name: jzmqstorm
+Version: 2.1.0.dd3327d620
+Release: storm1%{?dist}
+Summary: The Java ZeroMQ bindings
+Group: Applications/Internet
+License: LGPLv3+
+URL: http://www.zeromq.org/
+Vendor: Produban - Santander Group
+Packager: Javi Roman <javiroman@redoop.org>
+Source0: master.zip
+Source1: rpm-build-stage
+Source2: install_jzmqstorm.sh
+Prefix: %{_prefix}
+Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires: gcc, make, gcc-c++, libstdc++-devel, libtool, zeromq-devel
+Requires: libstdc++, zeromq
 
 %description
 The 0MQ lightweight messaging kernel is a library which extends the
@@ -42,12 +60,10 @@ multiple transport protocols and more.
 This package contains Java Bindings for ZeroMQ related development libraries and header files.
 
 %prep
-%setup -n nathanmarz-jzmq-dd3327d
+%setup -n jzmq-master
 
 %build
-export JAVA_HOME=/usr/lib/jvm/java-openjdk
-./autogen.sh
-%configure
+bash %{SOURCE1}
 
 %{__make}
 

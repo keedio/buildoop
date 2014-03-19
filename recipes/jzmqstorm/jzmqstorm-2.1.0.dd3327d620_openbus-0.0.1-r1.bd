@@ -8,7 +8,7 @@
 	
 	"do_download": {
 	 "src_uri":    "https://github.com/nathanmarz/jzmq/archive/master.zip",
-	 "src_md5sum": "654318c1e88fdc8b7b5182c4479612b1"
+	 "src_md5sum": "c093997eeaa5f181f5bde0d63bcbc047"
 	},
 
 	"do_fetch": {
