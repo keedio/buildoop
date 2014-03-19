@@ -64,7 +64,7 @@ running in their Hadoop cluster.
 %package nimbus
 Summary: The Storm Nimbus node manages the Storm cluster.
 Group: System/Daemons
-Requires: %{name} = %{version}-%{release}, jzmq, jdk
+Requires: %{name} = %{version}-%{release}, jdk
 BuildArch: noarch
 %description nimbus
 Nimbus role is the Master Node of Storm, is responsible for distributing code 
@@ -82,7 +82,7 @@ a high level view of the cluster.
 %package supervisor
 Summary: The Storm Supervisor is a worker process of the Storm cluster.
 Group: System/Daemons
-Requires: %{name} = %{version}-%{release}, jzmq, jdk
+Requires: %{name} = %{version}-%{release}, jdk
 BuildArch: noarch
 %description supervisor
 The Supervisor role is the Worker Node, listens for work assigned to its 
@@ -93,7 +93,7 @@ A topology in Storm runs across many worker nodes on different machines.
 %package drpc
 Summary: Storm Distributed RPC daemon.
 Group: System/Daemons
-Requires: %{name} = %{version}-%{release}, jzmq, jdk
+Requires: %{name} = %{version}-%{release}, jdk
 BuildArch: noarch
 %description drpc
 The DRPC server coordinates receiving an RPC request, sending the request to

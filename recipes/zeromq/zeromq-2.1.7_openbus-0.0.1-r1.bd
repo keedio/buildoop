@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Lightweight messaging kernel", 
+		"homepage":    "http://www.zeromq.org/",
+		"license":     "Apache-2.0",
+		"filename":    "zeromq-2.1.7_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+	 "src_uri": "http://download.zeromq.org/zeromq-2.1.7.tar.gz",
+	 "src_md5sum": "7d3120f8a8fb913a7e55c57c6eb024f3"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
