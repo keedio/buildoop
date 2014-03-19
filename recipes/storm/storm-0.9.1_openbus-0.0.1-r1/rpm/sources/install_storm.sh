@@ -16,7 +16,6 @@
 
 set -ex
 
-exit 0
 usage() {
   echo "
 usage: $0 <options>
@@ -34,6 +33,7 @@ OPTS=$(getopt \
   -l 'build-dir:' \
   -l 'man-dir:' \
   -l 'bin-dir:' \
+  -l 'initd-dir:' \
   -l 'doc-dir:' \
   -- "$@")
 
@@ -55,6 +55,9 @@ while true ; do
         ;;
         --bin-dir)
         BIN_DIR=$2 ; shift 2
+        ;;
+	--initd-dir)
+        INITD_DIR=$2 ; shift 2
         ;;
         --doc-dir)
         DOC_DIR=$2 ; shift 2
@@ -81,74 +84,56 @@ STORM_HOME=${STORM_HOME:-$PREFIX/usr/lib/storm}
 BIN_DIR=${BIN_DIR:-$PREFIX/usr/bin}
 STORM_ETC_DIR=${STORM_ETC_DIR:-$PREFIX/etc/storm}
 
-#install -d -m 0755 ${PREFIX}/${DOC_DIR}
-#cp ${BUILD_DIR}/*.txt  ${PREFIX}/${DOC_DIR}/
-#cp ${BUILD_DIR}/README  ${PREFIX}/${DOC_DIR}/
-
 install -d -m 755 ${STORM_HOME}
-install    -m 644 ${BUILD_DIR}/apache-storm-0.9.1-incubating/CHANGELOG.md ${STORM_HOME}/
-install    -m 644 ${BUILD_DIR}/apache-storm-0.9.1-incubating/DISCLAIMER ${STORM_HOME}/
-install    -m 644 ${BUILD_DIR}/apache-storm-0.9.1-incubating/LICENSE ${STORM_HOME}/
-install    -m 644 ${BUILD_DIR}/apache-storm-0.9.1-incubating/NOTICE ${STORM_HOME}/
-install    -m 644 ${BUILD_DIR}/apache-storm-0.9.1-incubating/RELEASE ${STORM_HOME}/
-install    -m 644 ${BUILD_DIR}/apache-storm-0.9.1-incubating/README.markdown ${STORM_HOME}/
-install    -m 644 ${BUILD_DIR}/apache-storm-0.9.1-incubating/lib/*.jar ${STORM_HOME}/
+install    -m 644 ${BUILD_DIR}/CHANGELOG.md ${STORM_HOME}/
+install    -m 644 ${BUILD_DIR}/DISCLAIMER ${STORM_HOME}/
+install    -m 644 ${BUILD_DIR}/LICENSE ${STORM_HOME}/
+install    -m 644 ${BUILD_DIR}/NOTICE ${STORM_HOME}/
+install    -m 644 ${BUILD_DIR}/RELEASE ${STORM_HOME}/
+install    -m 644 ${BUILD_DIR}/README.markdown ${STORM_HOME}/
 
-#install -d -m 755 %{buildroot}/%{storm_home}/bin/
-#install    -m 755 %{_builddir}/%{storm_name}-%{storm_version}/bin/*.sh         %{buildroot}/%{storm_home}/bin
-#install    -m 755 %{_builddir}/%{storm_name}-%{storm_version}/bin/storm        %{buildroot}/%{storm_home}/bin
-#
-#install -d -m 755 %{buildroot}/%{storm_home}/conf/
-#install    -m 644 %{_builddir}/%{storm_name}-%{storm_version}/conf/*           %{buildroot}/%{storm_home}/conf
-#
-#install -d -m 755 %{buildroot}/%{storm_home}/lib/
-#install    -m 644 %{_builddir}/%{storm_name}-%{storm_version}/lib/*            %{buildroot}/%{storm_home}/lib
-#
-#install -d -m 755 %{buildroot}/%{storm_home}/logback/
-#install    -m 644 %_sourcedir/cluster.xml                                      %{buildroot}/%{storm_home}/logback/cluster.xml
-#
-#install -d -m 755 %{buildroot}/%{storm_home}/logs/
-#
-#install -d -m 755 %{buildroot}/%{storm_home}/public/
-#
-#install -d -m 755 %{buildroot}/%{storm_home}/public/css/
-#install    -m 644 %{_builddir}/%{storm_name}-%{storm_version}/public/css/*     %{buildroot}/%{storm_home}/public/css/
-#
-#install -d -m 755 %{buildroot}/%{storm_home}/public/js/
-#install    -m 644 %{_builddir}/%{storm_name}-%{storm_version}/public/js/*      %{buildroot}/%{storm_home}/public/js/
-#
-#cd %{buildroot}/opt/
-#ln -s %{storm_name}-%{storm_version} %{storm_name}
-#cd -
-#
-#install -d -m 755 %{buildroot}/etc/
-#cd %{buildroot}/etc
-#ln -s %{storm_home}/conf %{storm_name}
-#cd -
-#
-#install -d -m 755 %{buildroot}/%{_initrddir}
-#install    -m 755 %_sourcedir/storm-nimbus     %{buildroot}/%{_initrddir}/storm-nimbus
-#install    -m 755 %_sourcedir/storm-ui         %{buildroot}/%{_initrddir}/storm-ui
-#install    -m 755 %_sourcedir/storm-supervisor %{buildroot}/%{_initrddir}/storm-supervisor
-#install    -m 755 %_sourcedir/storm-drpc       %{buildroot}/%{_initrddir}/storm-drpc
-#install -d -m 755 %{buildroot}/%{_sysconfdir}/sysconfig
-#install    -m 644 %_sourcedir/storm            %{buildroot}/%{_sysconfdir}/sysconfig/storm
-#install -d -m 755 %{buildroot}/%{_sysconfdir}/security/limits.d/
-#install    -m 644 %_sourcedir/storm.nofiles.conf %{buildroot}/%{_sysconfdir}/security/limits.d/storm.nofiles.conf
-#
+install -d -m 755 ${BIN_DIR}/
+install    -m 755 ${BUILD_DIR}/bin/storm ${PREFIX}/usr/bin/storm
+
+install -d -m 755 ${STORM_HOME}/conf/
+install    -m 644 ${BUILD_DIR}/conf/* ${STORM_HOME}/conf
+
+install    -m 644 ${BUILD_DIR}/lib/* ${STORM_HOME}/
+
+install -d -m 755 ${STORM_HOME}/logback/
+install    -m 644 $RPM_SOURCE_DIR/cluster.xml ${STORM_HOME}/logback/cluster.xml
+
+install -d -m 755 ${STORM_HOME}/public/css/
+install    -m 644 ${BUILD_DIR}/public/css/* ${STORM_HOME}/public/css/
+
+install -d -m 755 ${STORM_HOME}/public/js/
+install    -m 644 ${BUILD_DIR}/public/js/* ${STORM_HOME}/public/js/
+
+install -d -m 755 ${STORM_ETC_DIR}
+install    -m 644 ${BUILD_DIR}/conf/* ${STORM_ETC_DIR}/
+
+echo ${INITD_DIR}
+install -d -m 755 ${INITD_DIR}
+
+install    -m 755 $RPM_SOURCE_DIR/storm-nimbus.init     ${INITD_DIR}/storm-nimbus
+install    -m 755 $RPM_SOURCE_DIR/storm-ui.init         ${INITD_DIR}/storm-ui
+install    -m 755 $RPM_SOURCE_DIR/storm-supervisor.init ${INITD_DIR}/storm-supervisor
+install    -m 755 $RPM_SOURCE_DIR/storm-drpc.init       ${INITD_DIR}/storm-drpc
+
+install -d -m 755 ${PREFIX}/etc/sysconfig
+install    -m 644 $RPM_SOURCE_DIR/storm ${PREFIX}/etc/sysconfig/storm
+
+install -d -m 755 ${PREFIX}/etc/security/limits.d/
+install    -m 644 $RPM_SOURCE_DIR/storm.nofiles.conf ${PREFIX}/etc/security/limits.d/storm.nofiles.conf
+
+install -d -m 755 ${PREFIX}/var/log/storm
+install -d -m 755 ${PREFIX}/var/run/storm/
+
 #install -d -m 755 %{buildroot}/usr/bin/
 #cd %{buildroot}/usr/bin
 #ln -s %{storm_home}/bin/%{storm_name} %{storm_name}
 #cd -
-#
-#install -d -m 755 %{buildroot}/var/log/
-#cd %{buildroot}/var/log/
-#ln -s %{storm_home}/logs %{storm_name}
-#cd -
-#
-#install -d -m 755 %{buildroot}/var/run/storm/
-#
 #install -d -m 755 %{buildroot}/%{storm_home}/local/
 #echo 'storm.local.dir: "/opt/storm/local/"' >> %{buildroot}/%{storm_home}/conf/storm.yaml.example
-#
+
 

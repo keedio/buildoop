@@ -1,8 +1,11 @@
-13-03-2014 Javi Roman <javiroman@redoop.org>
+19-03-2014 Javi Roman <javiroman@redoop.org>
 
-	* JSVC jar files are dispatched by
-	hadoop-hdfs-2.2.0-openbus0.0.1_1.x86_64:
+	* First package collection for Storm:
 
-	/usr/lib/hadoop-hdfs/lib/commons-daemon-1.0.13.jar
-
-	So this new version of jsvc-1.0.13.
+	storm-0.9.1-openbus0.0.1_1.noarch.rpm
+	storm-drpc-0.9.1-openbus0.0.1_1.noarch.rpm
+	storm-nimbus-0.9.1-openbus0.0.1_1.noarch.rpm
+	storm-supervisor-0.9.1-openbus0.0.1_1.noarch.rpm
+	storm-ui-0.9.1-openbus0.0.1_1.noarch.rpm
+	
+	This package was originally made by Nathan Milford <nathan@milford.io>

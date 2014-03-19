@@ -14,11 +14,12 @@
 # limitations under the License.
 %define storm_name storm
 %define release_version 4
-%define storm_home /opt/%{storm_name}-%{storm_version}
+%define storm_home /usr/lib/storm
 %define etc_storm /etc/%{name}
 %define config_storm %{etc_storm}/conf
 %define storm_user storm
 %define storm_group storm
+%global initd_dir %{_sysconfdir}/rc.d/init.d
 
 %define storm_version 0.9.1
 %define storm_base_version 0.9.1
@@ -35,12 +36,12 @@ Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Source0: apache-%{storm_name}-%{storm_version}-incubating-src.tar.gz
 Source1: cluster.xml
-Source2: storm-ui
-Source3: storm-supervisor
+Source2: storm-ui.init
+Source3: storm-supervisor.init
 Source4: storm
 Source5: storm.nofiles.conf
-Source6: storm-nimbus
-Source7: storm-drpc
+Source6: storm-nimbus.init
+Source7: storm-drpc.init
 Source8: rpm-build-stage
 Source9: install_storm.sh
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
@@ -112,6 +113,8 @@ rm -rf %{buildroot}
 %__rm -rf $RPM_BUILD_ROOT
 bash %{SOURCE9} \
           --build-dir=build \
+	  --build-dir=$PWD/build \
+	  --initd-dir=$RPM_BUILD_ROOT%{initd_dir} \
           --prefix=$RPM_BUILD_ROOT
 %pre
 getent group %{storm_group} >/dev/null || groupadd -r %{storm_group}
@@ -119,11 +122,9 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 
 %files
 %defattr(-,%{storm_user},%{storm_group})
-
-/opt/%{storm_name}
 %{storm_home}
 %{storm_home}/*
-%attr(755,%{storm_user},%{storm_group}) %{storm_home}/bin/*
+%attr(755,%{storm_user},%{storm_group}) /usr/bin/*
 /etc/storm
 /var/log/*
 /var/run/storm/
@@ -131,11 +132,10 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 /etc/sysconfig/storm
 /etc/security/limits.d/storm.nofiles.conf
 
-
 %define service_macro() \
 %files %1 \
 %defattr(-,root,root) \
-%{_initrddir}/%{storm_name}-%1 \
+%{initd_dir}/%{storm_name}-%1 \
 %post %1 \
 chkconfig --add %{storm_name}-%1 \
 \
