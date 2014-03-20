@@ -44,6 +44,7 @@ Source6: storm-nimbus.init
 Source7: storm-drpc.init
 Source8: rpm-build-stage
 Source9: install_storm.sh
+Patch0: avoid-harcoded-paths.patch
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires: sh-utils, textutils, /usr/sbin/useradd, /usr/sbin/usermod, /sbin/chkconfig, /sbin/service
 Provides: storm
@@ -103,6 +104,8 @@ the results back to the waiting client.
 %prep
 %setup -n apache-%{storm_name}-%{storm_version}-incubating
 
+%patch0 -p1
+
 %build
 bash %{SOURCE8}
 
@@ -122,12 +125,14 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 
 %files
 %defattr(-,%{storm_user},%{storm_group})
-%{storm_home}
+%dir %attr(755, root, root) %{storm_home}
+%dir %attr(755, root, root) /etc/storm
 %{storm_home}/*
-%attr(755,%{storm_user},%{storm_group}) /usr/bin/*
-/etc/storm
+/etc/storm/storm.yaml
+/etc/default/storm
 /var/log/*
 /var/run/storm/
+%attr(755,%{storm_user},%{storm_group}) /usr/bin/*
 /usr/bin/storm
 /etc/sysconfig/storm
 /etc/security/limits.d/storm.nofiles.conf

@@ -6,8 +6,17 @@
 #
 # chkconfig: 2345 20 80
 # description: Starts and stops storm-drpc
+
+if [ -f /etc/profile.d/java.sh ]; then
+        . /etc/profile.d/java.sh
+        [ -z "$JAVA_HOME" ] && echo "JAVA_HOME is not defined" && exit 1
+else
+	echo "enviroment not properly set up"
+        exit 1
+fi
+
 . /etc/init.d/functions
-stormBin=/opt/storm/bin/storm
+stormBin=/usr/bin/storm
 stormSvc=$(echo $0 | cut -d'-' -f2)
 desc="Storm $stormSvc daemon"
 outFile="/var/log/storm/storm-$stormSvc.out"
@@ -15,6 +24,10 @@ outFile="/var/log/storm/storm-$stormSvc.out"
 if ! [ -f $stormBin ]; then
   echo "storm binary not found."
   exit 5
+fi
+
+if [ -f /etc/default/storm ]; then
+  . /etc/default/storm
 fi
 
 if [ -f /etc/sysconfig/storm ]; then

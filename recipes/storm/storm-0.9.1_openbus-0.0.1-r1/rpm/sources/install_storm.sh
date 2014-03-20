@@ -98,7 +98,8 @@ install    -m 755 ${BUILD_DIR}/bin/storm ${PREFIX}/usr/bin/storm
 install -d -m 755 ${STORM_HOME}/conf/
 install    -m 644 ${BUILD_DIR}/conf/* ${STORM_HOME}/conf
 
-install    -m 644 ${BUILD_DIR}/lib/* ${STORM_HOME}/
+install -d -m 755 ${STORM_HOME}/lib/
+install    -m 644 ${BUILD_DIR}/lib/* ${STORM_HOME}/lib/
 
 install -d -m 755 ${STORM_HOME}/logback/
 install    -m 644 $RPM_SOURCE_DIR/cluster.xml ${STORM_HOME}/logback/cluster.xml
@@ -122,6 +123,9 @@ install    -m 755 $RPM_SOURCE_DIR/storm-drpc.init       ${INITD_DIR}/storm-drpc
 
 install -d -m 755 ${PREFIX}/etc/sysconfig
 install    -m 644 $RPM_SOURCE_DIR/storm ${PREFIX}/etc/sysconfig/storm
+
+install -d -m 755 ${PREFIX}/etc/default
+install    -m 644 $RPM_SOURCE_DIR/storm.default ${PREFIX}/etc/default/storm
 
 install -d -m 755 ${PREFIX}/etc/security/limits.d/
 install    -m 644 $RPM_SOURCE_DIR/storm.nofiles.conf ${PREFIX}/etc/security/limits.d/storm.nofiles.conf
