@@ -20,6 +20,9 @@
 %define storm_user storm
 %define storm_group storm
 %global initd_dir %{_sysconfdir}/rc.d/init.d
+# prevent binary stripping - not necessary at all.
+# Only for prevention.
+%global __os_install_post %{nil}
 
 %define storm_version 0.9.1
 %define storm_base_version 0.9.1

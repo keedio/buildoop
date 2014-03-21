@@ -25,5 +25,7 @@ pushd storm-dist/binary/
 mvn package $MAVEN_OPTS
 popd
 mkdir build
-tar --strip-components=1 -xzf storm-dist/binary/target/${storm_version}.tar.gz -C build
+#tar --strip-components=1 -xzf storm-dist/binary/target/${storm_version}.tar.gz -C build
+tar -xzf storm-dist/binary/target/${storm_version}.tar.gz -C build
+mv build/${storm_version}/* build
 
