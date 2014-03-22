@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Apache Avro is a data serialization system", 
+		"homepage":    "http://avro.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "avrolibs-1.7.5_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+	 "src_uri":    "http://archive.apache.org/dist/avro/avro-1.7.5/avro-src-1.7.5.tar.gz",
+	 "src_md5sum": "5441c1e830e61113711ed7e135ff822"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
