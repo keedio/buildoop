@@ -101,7 +101,7 @@ Source6: hbase.nofiles.conf
 Source7: regionserver-init.d.tpl
 Requires: coreutils, /usr/sbin/useradd, /sbin/chkconfig, /sbin/service
 Requires: hadoop-hdfs, zookeeper >= 3.3.1
-Requires: avrolibs
+Requires: avro-libs
 Conflicts: hadoop-hbase
 
 %if  0%{?mgaversion}
