@@ -89,6 +89,14 @@ So the project has two branches:
 2. The "development branch": Where the work is made and where the pull request has to make.
 
 
+Roadmap
+-------
+
+| Feature        | Desc          | State  |
+| ------------- |:-------------: | -----:|
+| Cross-Architecture      | right-aligned  | $1600 |
+| Layers      | centered       |   $12 |
+| SIT | are neat       |    $1 |
 
 --
 Javi Roman <javiroman@redoop.org>
