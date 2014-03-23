@@ -94,9 +94,12 @@ Roadmap
 
 | Feature        | Desc          | State  |
 | ------------- |:-------------: | -----:|
-| Cross-Architecture      | right-aligned  | $1600 |
-| Layers      | centered       |   $12 |
-| SIT | are neat       |    $1 |
+| Core Engine |Core building engine | Done |
+| POM versioning | Simple BOM multi-versioning | Done |
+| Cross-Architecture | Cross build from different distributions | Pending |
+| DEB Support | Debian/Ubuntu Support | Pending |
+| Layers      | Add/Modify features without modify the core folders | Pending |
+| SIT | System Integration Tests  |  Pending |
 
 --
 Javi Roman <javiroman@redoop.org>
