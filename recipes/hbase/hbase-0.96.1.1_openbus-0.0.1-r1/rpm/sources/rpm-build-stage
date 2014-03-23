@@ -14,30 +14,22 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-if [ -z "$GIT_REPO" ]; then
-    if [ -z "${DO_MAVEN_DEPLOY}" ]; then
+if [ -z "${DO_MAVEN_DEPLOY}" ]; then
         MAVEN_INST_DEPLOY=install
-    else
-        MAVEN_INST_DEPLOY=$DO_MAVEN_DEPLOY
-    fi
-
-    build_args="clean $MAVEN_INST_DEPLOY site assembly:single -DskipTests -Dmaven.repo.local=${HOME}/.m2/repository"
-
-    set -ex
-    
-    mvn $build_args "$@"
-    
-    mkdir -p build
-    for x in hbase-assembly/target/*.tar.gz ; do
-        tar -C build -xzf $x
-    done
-    
-    #cp -r target/site/apidocs build/hbase-${FULL_VERSION}/docs
-    (cd build && tar --exclude='*/native/lib*' --exclude='*/lib/native/*' -czf hbase-${FULL_VERSION}.tar.gz hbase-${FULL_VERSION})
 else
-    git add .
-    git commit -a -m "Temporary commit for tarball"
-    mkdir -p build
-    git archive --prefix=hbase-${FULL_VERSION}/ --format=tar HEAD |gzip > build/hbase-${FULL_VERSION}.tar.gz
+        MAVEN_INST_DEPLOY=$DO_MAVEN_DEPLOY
 fi
+
+build_args="clean $MAVEN_INST_DEPLOY site assembly:single -DskipTests -Dmaven.repo.local=${HOME}/.m2/repository"
+
+set -ex
+    
+mvn $build_args "$@"
+    
+mkdir -p build
+for x in hbase-assembly/target/*.tar.gz ; do
+        tar -C build -xzf $x
+done
+    
+(cd build && tar --exclude='*/native/lib*' --exclude='*/lib/native/*' -czf hbase-${FULL_VERSION}.tar.gz hbase-${FULL_VERSION})
     

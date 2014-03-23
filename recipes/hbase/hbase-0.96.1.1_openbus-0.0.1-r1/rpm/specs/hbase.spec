@@ -238,7 +238,6 @@ The Apache HBase REST gateway
 env FULL_VERSION=%{hbase_version} bash %{SOURCE1}
 
 %install
-#--build-dir=BUILD/hbase-%{hbase_version} 
 %__rm -rf $RPM_BUILD_ROOT
 sh %{SOURCE2} \
         --build-dir=`pwd`/build/hbase-%{hbase_version} \

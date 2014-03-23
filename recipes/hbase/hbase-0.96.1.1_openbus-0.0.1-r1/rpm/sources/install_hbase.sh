@@ -96,7 +96,6 @@ for var in PREFIX BUILD_DIR ; do
   fi
 done
 
-hbase_version=0.96.1.1
 MAN_DIR=${MAN_DIR:-/usr/share/man/man1}
 DOC_DIR=${DOC_DIR:-/usr/share/doc/hbase}
 LIB_DIR=${LIB_DIR:-/usr/lib/hbase}
@@ -120,8 +119,6 @@ for lib in $PREFIX/$LIB_DIR/lib/hbase*.jar; do
     ln -s lib/`basename $lib` $PREFIX/$LIB_DIR/
 done
 
-#cp -a $BUILD_DIR/docs/* $PREFIX/$DOC_DIR
-#cp $BUILD_DIR/*.txt $PREFIX/$DOC_DIR/
 cp -a $BUILD_DIR/hbase-webapps $PREFIX/$LIB_DIR
 
 cp -a $BUILD_DIR/conf $PREFIX/$CONF_DIR
