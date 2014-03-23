@@ -96,6 +96,7 @@ for var in PREFIX BUILD_DIR ; do
   fi
 done
 
+hbase_version=0.96.1.1
 MAN_DIR=${MAN_DIR:-/usr/share/man/man1}
 DOC_DIR=${DOC_DIR:-/usr/share/doc/hbase}
 LIB_DIR=${LIB_DIR:-/usr/lib/hbase}
@@ -119,8 +120,8 @@ for lib in $PREFIX/$LIB_DIR/lib/hbase*.jar; do
     ln -s lib/`basename $lib` $PREFIX/$LIB_DIR/
 done
 
-cp -a $BUILD_DIR/docs/* $PREFIX/$DOC_DIR
-cp $BUILD_DIR/*.txt $PREFIX/$DOC_DIR/
+#cp -a $BUILD_DIR/docs/* $PREFIX/$DOC_DIR
+#cp $BUILD_DIR/*.txt $PREFIX/$DOC_DIR/
 cp -a $BUILD_DIR/hbase-webapps $PREFIX/$LIB_DIR
 
 cp -a $BUILD_DIR/conf $PREFIX/$CONF_DIR
@@ -132,8 +133,8 @@ for file in rolling-restart.sh graceful_stop.sh local-regionservers.sh \
   rm -f $PREFIX/$BIN_DIR/$file
 done
 
-cp $BUILD_DIR/hbase-thrift/src/main/resources/org/apache/hadoop/hbase/thrift/Hbase.thrift $PREFIX/$THRIFT_DIR/hbase1.thrift
-cp $BUILD_DIR/hbase-thrift/src/main/resources/org/apache/hadoop/hbase/thrift2/hbase.thrift $PREFIX/$THRIFT_DIR/hbase2.thrift
+cp `pwd`/hbase-thrift/src/main/resources/org/apache/hadoop/hbase/thrift/Hbase.thrift $PREFIX/$THRIFT_DIR/hbase1.thrift
+cp `pwd`/hbase-thrift/src/main/resources/org/apache/hadoop/hbase/thrift2/hbase.thrift $PREFIX/$THRIFT_DIR/hbase2.thrift
 
 ln -s $ETC_DIR/conf $PREFIX/$LIB_DIR/conf
 
@@ -172,10 +173,6 @@ chmod 755 $wrapper
 
 install -d -m 0755 $PREFIX/usr/bin
 
-
-# Cloudera specific
-install -d -m 0755 $PREFIX/$LIB_DIR/cloudera
-cp cloudera/cdh_version.properties $PREFIX/$LIB_DIR/cloudera/
 
 # Replace every Avro or Parquet jar with a symlink to the versionless symlinks in our distribution
 # This regex matches upstream versions, plus CDH versions, betas and snapshots if they are present

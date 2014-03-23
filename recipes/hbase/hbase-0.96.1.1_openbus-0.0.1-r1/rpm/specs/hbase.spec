@@ -204,14 +204,6 @@ Requires: redhat-lsb
 ThriftServer - this class starts up a Thrift server which implements the Hbase API specified in the Hbase.thrift IDL file.
 "Thrift is a software framework for scalable cross-language services development. It combines a powerful software stack with a code generation engine to build services that work efficiently and seamlessly between C++, Java, Python, PHP, and Ruby. Thrift was developed at Facebook, and we are now releasing it as open source." For additional information, see http://developers.facebook.com/thrift/. Facebook has announced their intent to migrate Thrift into Apache Incubator.
 
-%package doc
-Summary: Hbase Documentation
-Group: Documentation
-Obsoletes: %{name}-docs
-
-%description doc
-Documentation for Hbase
-
 %package rest
 Summary: The Apache HBase REST gateway
 Group: System/Daemons
@@ -246,9 +238,10 @@ The Apache HBase REST gateway
 env FULL_VERSION=%{hbase_version} bash %{SOURCE1}
 
 %install
+#--build-dir=BUILD/hbase-%{hbase_version} 
 %__rm -rf $RPM_BUILD_ROOT
 sh %{SOURCE2} \
-	--build-dir=build/hbase-%{hbase_version} \
+        --build-dir=`pwd`/build/hbase-%{hbase_version} \
         --doc-dir=%{doc_hbase} \
         --conf-dir=%{etc_hbase_conf_dist} \
 	--prefix=$RPM_BUILD_ROOT
@@ -323,11 +316,6 @@ fi
 %{webapps_hbase}
 /usr/bin/hbase
 %config(noreplace) %{etc_hbase_conf_dist}
-
-%files doc
-%defattr(-,root,root)
-%doc %{doc_hbase}/
-
 
 %define service_macro() \
 %files %1 \
