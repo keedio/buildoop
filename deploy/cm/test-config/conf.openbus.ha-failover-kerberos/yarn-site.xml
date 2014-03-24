@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+<configuration>
+
+    <property>
+        <description>The address of the applications manager interface in the RM.</description>
+        <name>yarn.resourcemanager.address</name>
+        <value>hadoop-node2.buildoop.org:8032</value>
+    </property>
+
+    <property>
+        <description>The address of the resource tracker interface.</description>
+        <name>yarn.resourcemanager.resource-tracker.address</name>
+        <value>hadoop-node2.buildoop.org:8031</value>
+    </property>
+
+    <property>
+        <description>The address of the scheduler interface.</description>
+        <name>yarn.resourcemanager.scheduler.address</name>
+        <value>hadoop-node2.buildoop.org:8030</value>
+    </property>
+
+    <property>
+        <description>The address of the RM admin interface.</description>
+        <name>yarn.resourcemanager.admin.address</name>
+        <value>hadoop-node2.buildoop.org:8033</value>
+    </property>
+
+    <property>
+        <description>The address of the RM web application.</description>
+        <name>yarn.resourcemanager.webapp.address</name>
+        <value>hadoop-node2.buildoop.org:8088</value>
+    </property>
+
+    <property>
+        <description>Classpath for typical applications.</description>
+        <name>yarn.application.classpath</name>
+        <value>
+            $HADOOP_CONF_DIR,
+            $HADOOP_COMMON_HOME/*,$HADOOP_COMMON_HOME/lib/*,
+            $HADOOP_HDFS_HOME/*,$HADOOP_HDFS_HOME/lib/*,
+            $HADOOP_MAPRED_HOME/*,$HADOOP_MAPRED_HOME/lib/*,
+            $HADOOP_YARN_HOME/*,$HADOOP_YARN_HOME/lib/*
+        </value>
+    </property>
+
+    <property>
+        <description>Shuffle service that needs to be set for Map Reduce applications.</description>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+    </property>
+
+    <property>
+        <description>The exact name of the class for shuffle service.</description>
+        <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+    </property>
+
+    <property>
+        <description>Specifies the directories where the NodeManager stores 
+            its localized files. All of the files required for running a 
+            particular YARN application will be put here for the duration 
+            of the application run. Cloudera recommends that this property 
+            specify a directory on each of the JBOD mount points; for example, 
+            /data/1/yarn/local through /data/N/yarn/local. This is a comma 
+            separated list of local-directories that one can configure to be 
+            used for copying files during localization. The idea behind allowing
+            multiple directories is to use multiple disks for localization – it 
+            helps both fail-over (one/few disk(s) going bad doesn’t affect all 
+            containers) and load balancing (no single disk is bottlenecked 
+            with writes). Thus, individual directories should be configured 
+            if possible on different local disks.</description>
+        <name>yarn.nodemanager.local-dirs</name>
+        <value>/cluster/data/1/yarn/local</value>
+    </property>
+
+    <property>
+        <description>Specifies the directories where the NodeManager stores 
+            container log files. Cloudera recommends that this property specify 
+            a directory on each of the JBOD mount points; for example, 
+            /data/1/yarn/logs through /data/N/yarn/logs.</description>
+        <name>yarn.nodemanager.log-dirs</name>
+        <value>/cluster/data/1/yarn/logs</value>
+    </property>
+
+    <property>
+        <description>Where to aggregate logs</description>
+        <name>yarn.nodemanager.remote-app-log-dir</name>
+        <value>/var/log/hadoop-yarn/apps</value>
+    </property>
+
+    
+  <!-- YARN Framework fine tune Resource Management -->
+
+  <!-- In a Hadoop cluster, it’s vital to balance the usage of RAM, 
+       CPU and disk so that processing is not constrained by any one
+       of these cluster resources. As a general recommendation, we’ve
+       found that allowing for 1-2 Containers per disk and per core 
+       gives the best balance for cluster utilization. So with an 
+       example cluster node with 12 disks and 12 cores, we will allow
+       for 20 maximum Containers to be allocated to each node.
+       Some of node RAM should be reserved for Operating System usage.-->
+
+  <!-- The following property sets the maximum memory YARN can 
+       utilize on the node: -->
+  <!--
+  <property>
+    <name>yarn.nodemanager.resource.memory-mb</name>
+    <value>3557</value>
+  </property>
+  -->
+
+  <!-- The next step is to provide YARN guidance on how to break 
+       up the total resources available into Containers. You do this 
+       by specifying the minimum unit of RAM to allocate for a Container. 
+       For example if we want to allow for a ""maximum"" of 20 Containers, 
+       and thus need (40 GB total RAM) / (20 # of Containers) = 2 GB 
+       minimum per container. YARN will allocate Containers with RAM 
+       amounts greater than the yarn.scheduler.minimum-allocation-mb.-->
+  <!--
+  <property>
+    <name>yarn.scheduler.minimum-allocation-mb</name>
+    <value>2048</value>
+  </property>
+  -->
+
+  <!-- YARN add CPU as a resource: Nodes are configured with a number 
+       of “virtual cores” (vcores) and applications give a vcore 
+       number when requesting a container. In almost all cases, a 
+       node’s virtual core capacity should be set as the number of physical
+       cores on the machine. CPU capacity is configured with the 
+       yarn.nodemanager.resource.cpu-vcores, and the mapreduce.map.cpu.vcores 
+       and mapreduce.reduce.cpu.vcores properties can be used to change 
+       the CPU request for MapReduce tasks from the default of 1. -->
+  <!--
+  <property>
+    <name>yarn.nodemanager.resource.cpu-vcores</name>
+    <value>2</value>
+  </property>
+  -->
+
+</configuration>

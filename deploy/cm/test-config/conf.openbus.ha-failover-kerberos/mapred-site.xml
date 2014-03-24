@@ -1,0 +1,109 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<configuration>
+
+	<property>
+		<name>mapreduce.framework.name</name>
+		<value>yarn</value>
+		<description>The runtime framework for executing 
+		MapReduce jobs. Can be one of local, classic or yarn.</description>
+	</property>
+
+	<property>
+		<name>mapreduce.jobhistory.address</name>
+		<value>hadoop-manager.buildoop.org:10020</value>
+	</property>
+
+	<property>
+		<name>mapreduce.jobhistory.webapp.address</name>
+		<value>hadoop-manager.buildoop.org:19888</value>
+	</property>
+
+	<property>
+        	<name>yarn.app.mapreduce.am.staging-dir</name>
+        	<value>/user</value>
+    	</property>
+
+	<!-- MapReduce v2 fine tune Resource Management -->
+
+  	<!-- MapReduce 2 runs on top of YARN and utilizes YARN Containers to 
+     	     schedule and execute its map and reduce tasks.
+
+     	When configuring MapReduce 2 resource utilization on YARN, 
+     	there are three aspects to consider:
+
+		Physical RAM limit for each Map And Reduce task
+		The JVM heap size limit for each task
+		The amount of virtual memory each task will get
+
+     	You can define how much maximum memory each Map and Reduce task 
+     	will take. Since each Map and each Reduce will run in a separate 
+     	Container, these maximum memory settings should be at least equal 
+     	to or more than the YARN minimum Container allocation.
+
+     	For our example cluster, we have the minimum RAM for a Container 
+     	(yarn.scheduler.minimum-allocation-mb) = 2 GB. We’ll thus assign 
+     	4 GB for Map task Containers, and 8 GB for Reduce tasks Containers. -->
+
+	<!--
+	<property>
+		<name>mapreduce.map.memory.mb</name>
+		<value>1024</value>
+	</property>
+	-->
+
+	<!--
+	<property>
+		<name>mapreduce.reduce.memory.mb</name>
+		<value>1024</value>
+	</property>
+	-->
+
+	<!-- Each Container will run JVMs for the Map and Reduce tasks. 
+	     The JVM heap size should be set to lower than the Map and 
+	     Reduce memory defined above, so that they are within the 
+	     bounds of the Container memory allocated by YARN.-->
+	
+	<!--
+	<property>
+		<name>mapreduce.map.java.opts</name>
+		<value>-Xmx1024m</value>
+	</property>
+	-->
+
+	<!--
+	<property>
+		<name>mapreduce.reduce.java.opts</name>
+		<value>-Xmx1024m</value>
+	</property>
+	-->
+
+	<!-- The above settings configure the upper limit of the physical 
+	     RAM that Map and Reduce tasks will use. The virtual memory 
+	     (physical + paged memory) upper limit for each Map and Reduce 
+	     task is determined by the virtual memory ratio each YARN Container 
+	     is allowed. This is set by the following configuration, and the 
+	     default value is 2.1: -->
+
+	<!--
+	<property>
+		<name>yarn.nodemanager.vmem-pmem-ratio</name>
+		<value>2.1</value>
+	</property>
+	-->
+
+</configuration>

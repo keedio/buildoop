@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+<!--
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License. See accompanying LICENSE file.
+-->
+
+<configuration>
+
+    <property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://buildoopcluster</value>
+        <description>HA-enabled logical URI NameService ID</description>
+    </property>
+
+    <!-- HDFS HA automatic failover with Zookeeper -->
+
+    <property>
+        <name>ha.zookeeper.quorum</name>
+        <value>hadoop-manager:2181,hadoop-node1:2181,hadoop-node2:2181</value>
+        <description>This lists the host-port pairs running the ZooKeeper service</description>
+    </property>
+
+    <!-- Hadoop Secure Mode - KERBEROS -->
+
+    <property>
+        <name>hadoop.security.authentication</name>
+        <value>kerberos</value>
+        <description>defines the authentication mechanism
+        to use within Hadoop. By default, it is set to simple, which simply trusts the
+        client is who they claim to be, whereas setting it to the string kerberos enables
+        Kerberos support. Setting a value of simple here disable security</description>
+    </property>
+
+     <property>
+        <name>hadoop.security.authorization</name>
+        <value>true</value>
+        <description>causes Hadoop to authorize the client when it makes remote procedure 
+        calls to a server. The access control lists that affect these permissions are 
+        configured via the hadoop-policy.xml file and allow per-service level control. 
+        For instance, it is possible to permit only users placed in the
+        mapred-admin Linux group to invoke APIs that are part of the administration service
+        (the security.admin.operations.protocol.acl policy). When enabling security,
+        this feature should be enabled as well and meaningful ACLs configured.</description>
+    </property>  
+
+    <!-- Authentication for Hadoop HTTP web-consoles -->
+
+     <property>
+        <name>hadoop.http.filter.initializers</name>
+        <value>org.apache.hadoop.security.AuthenticationFilterInitializer</value>
+        <description>Similarly to Hadoop RPC, Hadoop HTTP web-consoles can be 
+        configured to require Kerberos authentication using HTTP SPNEGO protocol.
+        This property is the initializer class.
+        </description>
+    </property>  
+
+     <property>
+        <name>hadoop.http.authentication.type</name>
+        <value>kerberos</value>
+        <description>Defines authentication used for the HTTP web-consoles. 
+        The supported values are: simple | kerberos | #AUTHENTICATION_HANDLER_CLASSNAME#
+        </description>
+    </property>  
+
+     <property>
+        <name>hadoop.http.authentication.kerberos.principal</name>
+        <value>HTTP/_HOST@BUILDOOP.ORG</value>
+        <description>Indicates the Kerberos principal to be used for 
+        HTTP endpoint when using 'kerberos' authentication. The principal 
+        short name must be HTTP per Kerberos HTTP SPNEGO specification. 
+        The default value is HTTP/_HOST@$LOCALHOST, where _HOST -if present- 
+        is replaced with bind address of the HTTP server.
+        </description>
+    </property> 
+
+    <property>
+        <name>hadoop.http.authentication.kerberos.keytab</name>
+        <value>/etc/hadoop/conf/security/HTTP.keytab</value>
+        <description> Location of the keytab file with the credentials 
+        for the Kerberos principal used for the HTTP endpoint.
+        </description>
+    </property> 
+
+     <property>
+        <name>hadoop.http.authentication.simple.anonymous.allowed</name>
+        <value>false</value>
+        <description>Indicates if anonymous requests are allowed when 
+        using 'simple' authentication. The default value is true.
+        </description>
+    </property> 
+
+     <property>
+        <name>hadoop.http.authentication.cookie.domain</name>
+        <value>buildoop.org</value>
+        <description>The domain to use for the HTTP cookie that stores 
+        the authentication token. In order to authentiation to work correctly 
+        across all nodes in the cluster the domain must be correctly set. 
+        There is no default value, the HTTP cookie will not have a domain 
+        working only with the hostname issuing the HTTP cookie.
+        </description>
+    </property> 
+
+     <property>
+        <name>hadoop.http.authentication.signature.secret.file</name>
+        <value>/etc/hadoop/conf/security/secret</value>
+        <description>The signature secret file for signing the authentication
+        tokens. The same secret should be used for all nodes in the cluster.
+        </description>
+    </property> 
+
+<!-- change only if default is no used
+    <property>
+        <name>hadoop.http.authentication.token.validity</name>
+        <value>36000</value>
+        <description>Indicates how long (in seconds) an authentication token 
+        is valid before it has to be renewed. The default value is 36000.
+        </description>
+    </property> 
+-->
+
+</configuration>
