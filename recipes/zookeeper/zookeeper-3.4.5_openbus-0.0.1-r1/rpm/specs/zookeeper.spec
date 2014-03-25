@@ -19,6 +19,8 @@
 %define run_zookeeper /var/run/%{name}
 %define vlb_zookeeper /var/lib/%{name}
 %define svc_zookeeper %{name}-server
+%define svc_zookeeper_rest %{name}-rest
+%define lib_zookeeper_rest /usr/lib/%{name}-rest
 %define man_dir %{_mandir}
 
 %define zookeeper_base_version 3.4.5
@@ -80,6 +82,7 @@ Source3: zookeeper-server.sh
 Source4: zookeeper-server.sh.suse
 Source5: zookeeper.1
 Source6: zoo.cfg
+Source7: zookeeper-rest-server.sh
 BuildArch: noarch
 BuildRequires: autoconf, automake
 Requires(pre): coreutils, /usr/sbin/groupadd, /usr/sbin/useradd
@@ -122,9 +125,21 @@ Requires: initscripts
 Requires: redhat-lsb
 %endif
 
-
 %description server
 This package starts the zookeeper server on startup
+
+%package rest
+Summary: The Hadoop Zookeeper REST service
+Group: System/Daemons
+Requires: %{name} = %{version}-%{release}
+Requires(pre): %{name} = %{version}-%{release}
+Requires(post): %{chkconfig_dep}
+Requires(preun): %{service_dep}, %{chkconfig_dep}
+BuildArch: noarch
+
+%description rest
+This is an implementation of version 2 of the ZooKeeper REST spec.
+
 
 %prep
 %setup -n %{name}-%{zookeeper_base_version}
@@ -185,7 +200,12 @@ if [ $1 -ge 1 ]; then
 fi
 
 %files server
-	%attr(0755,root,root) %{initd_dir}/%{svc_zookeeper}
+%attr(0755,root,root) %{initd_dir}/%{svc_zookeeper}
+
+%files rest
+%attr(0755,root,root) %{initd_dir}/%{svc_zookeeper_rest}
+%defattr(-,root,root)
+%{lib_zookeeper_rest}
 
 #######################
 #### FILES SECTION ####
@@ -200,3 +220,4 @@ fi
 %{bin_zookeeper}/zookeeper-server-cleanup
 %doc %{doc_zookeeper}
 %{man_dir}/man1/zookeeper.1.*
+
