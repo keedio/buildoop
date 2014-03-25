@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Apache Phoenix", 
+		"homepage":    "http://phoenix.incubator.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "phoenix-2.2.3_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://www.eu.apache.org/dist/incubator/phoenix/phoenix-2.2.3-incubating/src/phoenix-2.2.3-incubating-src.tar.gz",
+		"src_md5sum": "c7c5fa41a4915b0e3f2824e8cdd01b91"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
