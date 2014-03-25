@@ -30,31 +30,12 @@ else
         exit 1
 fi
 
-# Only follow symlinks if readlink supports it
-if readlink -f "$0" > /dev/null 2>&1
-then
-  ZKREST=`readlink -f "$0"`
-else
-  ZKREST="$0"
-fi
-ZKREST_HOME=`dirname "$ZKREST"`
-
-if $cygwin
-then
-    # cygwin has a "kill" in the shell itself, gets confused
-    KILL=/bin/kill
-else
-    KILL=kill
-fi
-
-if [ -z $ZKREST_PIDFILE ]
-    then ZKREST_PIDFILE=$ZKREST_HOME/server.pid
-fi
-
+ZKREST_PIDFILE=/var/run/zookeeper/zookeeper-rest.pid
+ZKREST_LOG=/var/log/zookeeper/zookeeper-rest.log
+ZKREST_HOME=/usr/lib/zookeeper-rest
+ZKREST_CONF=/etc/zookeeper/conf/rest
 ZKREST_MAIN=org.apache.zookeeper.server.jersey.RestMain
-
-ZKREST_CONF=$ZKREST_HOME/conf
-ZKREST_LOG=$ZKREST_HOME/zkrest.log
+ZOOKEEPER_HOME=/usr/lib/zookeeper
 
 CLASSPATH="$ZKREST_CONF:$CLASSPATH"
 
@@ -68,10 +49,18 @@ do
     CLASSPATH="$i:$CLASSPATH"
 done
 
+for i in "$ZOOKEEPER_HOME"/zookeeper-*.jar
+do
+    CLASSPATH="$i:$CLASSPATH"
+done
+
 case $1 in
 start)
     echo  "Starting ZooKeeper REST Gateway ... "
-    java  -cp "$CLASSPATH" $JVMFLAGS $ZKREST_MAIN >$ZKREST_LOG 2>&1 &
+    echo  "Starting ZooKeeper REST Gateway" >> $ZKREST_LOG
+    echo  "===============================" >> $ZKREST_LOG
+    echo "java  -cp "$CLASSPATH" $JVMFLAGS $ZKREST_MAIN" >> $ZKREST_LOG 
+    java  -cp "$CLASSPATH" $JVMFLAGS $ZKREST_MAIN >> $ZKREST_LOG 2>&1 &
     /bin/echo -n $! > "$ZKREST_PIDFILE"
     echo STARTED
     ;;
@@ -82,7 +71,7 @@ stop)
     echo "error: could not find file $ZKREST_PIDFILE"
     exit 1
     else
-    $KILL -9 $(cat "$ZKREST_PIDFILE")
+    kill -9 $(cat "$ZKREST_PIDFILE")
     rm "$ZKREST_PIDFILE"
     echo STOPPED
     fi

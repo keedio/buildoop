@@ -8,7 +8,7 @@
 	
 	"do_download": {
 		"src_uri":    "http://www.eu.apache.org/dist/sqoop/1.99.3/sqoop-1.99.3.tar.gz",
-		"src_md5sum": "1ede1f9d397f1a372db7f017bc836816"
+		"src_md5sum": "251dd510be562908f1823c10c218b922"
 	},
 
 	"do_fetch": {

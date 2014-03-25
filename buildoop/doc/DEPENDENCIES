@@ -1,4 +1,4 @@
 RPM based:
 
-fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax
+fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax asciidoc
 
