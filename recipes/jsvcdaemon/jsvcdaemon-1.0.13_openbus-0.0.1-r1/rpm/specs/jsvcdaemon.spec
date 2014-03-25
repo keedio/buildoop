@@ -31,7 +31,7 @@ Version: %{jsvc_version}
 Release: %{jsvc_release}
 Summary: Application to launch java daemon
 URL: http://commons.apache.org/daemon/
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Buildroot: %{_topdir}/INSTALL/%{name}-%{version}

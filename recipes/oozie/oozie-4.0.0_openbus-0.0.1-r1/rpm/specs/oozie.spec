@@ -55,7 +55,7 @@ Version: %{oozie_version}
 Release: %{oozie_release}
 Summary:  Oozie is a system that runs workflows of Hadoop jobs.
 URL: http://incubator.apache.org/oozie/
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Buildroot: %{_topdir}/INSTALL/%{name}-%{version}

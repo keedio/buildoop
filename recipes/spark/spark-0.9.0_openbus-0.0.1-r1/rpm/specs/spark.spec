@@ -47,7 +47,7 @@ Version: %{spark_version}
 Release: %{spark_release}
 Summary: Lightning-Fast Cluster Computing
 URL: http://spark.incubator.apache.org/
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 BuildArch: noarch

@@ -34,7 +34,7 @@ Release: %{storm_release}
 Summary: Storm is a distributed realtime computation system.
 License: Eclipse Public License 1.0
 URL: https://github.com/nathanmarz/storm/
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Source0: apache-%{storm_name}-%{storm_version}-incubating-src.tar.gz

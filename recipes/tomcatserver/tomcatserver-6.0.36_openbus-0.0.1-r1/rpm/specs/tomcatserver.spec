@@ -28,6 +28,7 @@ Version: %{tomcat_version}
 Release: %{tomcat_release}
 Summary: Apache Tomcat
 URL: http://tomcat.apache.org/
+Vendor: The Redoop Team
 Group: Development/Libraries
 BuildArch: noarch
 Buildroot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)

@@ -24,7 +24,7 @@ Summary: The Java ZeroMQ bindings
 Group: Applications/Internet
 License: LGPLv3+
 URL: http://www.zeromq.org/
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Source0: master.zip
 Source1: rpm-build-stage

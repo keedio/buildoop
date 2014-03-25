@@ -70,7 +70,7 @@ Version: %{zookeeper_version}
 Release: %{zookeeper_release}
 Summary: A high-performance coordination service for distributed applications.
 URL: http://zookeeper.apache.org/
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Buildroot: %{_topdir}/INSTALL/%{name}-%{version}

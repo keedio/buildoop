@@ -25,7 +25,7 @@ Version: %{avro_version}
 Release: %{avro_release}
 Summary: A data serialization system
 URL: http://avro.apache.org
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 BuildArch: noarch

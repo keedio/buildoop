@@ -20,6 +20,7 @@ Version: %{bigtop_groovy_version}
 Release: %{bigtop_groovy_release}
 Summary: An agile and dynamic language for the Java Virtual Machine
 URL: http://groovy.codehaus.org/
+Vendor: Produban - Santander Group
 Group: Development/Libraries
 Buildroot: %{_topdir}/INSTALL/%{name}-%{version}
 BuildArch:  noarch

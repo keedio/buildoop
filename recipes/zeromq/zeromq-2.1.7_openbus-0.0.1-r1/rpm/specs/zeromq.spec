@@ -22,7 +22,7 @@ Version: %{zeromq_version}
 Release: %{zeromq_release}
 Summary:        Lightweight messaging kernel
 URL: http://www.zeromq.org/
-Vendor: Produban - Santander Group
+Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 License: LGPL-3.0+
 Group: Productivity/Networking/Web/Servers
