@@ -177,10 +177,12 @@ install -d -m 1766 $PREFIX/var/log/zookeeper/txlog
 # Zookeeper REST Server
 install -d -m 1766 $PREFIX/usr/lib/zookeeper-rest/lib
 install -d -m 1766 $PREFIX/usr/lib/zookeeper-rest/bin
-install -d -m 1766 $PREFIX/etc/rc.d/init.d/
 cp build/contrib/rest/lib/* $PREFIX/usr/lib/zookeeper-rest/lib
 cp build/contrib/rest/*.jar $PREFIX/usr/lib/zookeeper-rest/lib
-cp -a ${RPM_SOURCE_DIR}/zookeeper-rest-server.sh $PREFIX/etc/rc.d/init.d/zookeeper-rest
+#install -d -m 1766 $PREFIX/etc/rc.d/init.d/
+#cp -a ${RPM_SOURCE_DIR}/zookeeper-rest-server.sh $PREFIX/etc/rc.d/init.d/zookeeper-rest
+install -d -m 755 $PREFIX/etc/zookeeper/conf.dist
+cp -r ${RPM_SOURCE_DIR}/rest $PREFIX/etc/zookeeper/conf.dist
 
 
 

@@ -167,6 +167,12 @@ init_file=$RPM_BUILD_ROOT/%{initd_dir}/%{svc_zookeeper}
 %__cp $orig_init_file $init_file
 chmod 755 $init_file
 
+# REST service
+orig_init_file=%{SOURCE7}
+%__install -d -m 0755 $RPM_BUILD_ROOT/%{initd_dir}/
+init_file=$RPM_BUILD_ROOT/%{initd_dir}/%{svc_zookeeper_rest}
+%__cp $orig_init_file $init_file
+chmod 755 $init_file
 
 %pre
 getent group zookeeper >/dev/null || groupadd -r zookeeper
@@ -206,6 +212,8 @@ fi
 %attr(0755,root,root) %{initd_dir}/%{svc_zookeeper_rest}
 %defattr(-,root,root)
 %{lib_zookeeper_rest}
+%defattr(-,root,root)
+%config(noreplace) %{etc_zookeeper}/conf.dist/rest
 
 #######################
 #### FILES SECTION ####
