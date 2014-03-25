@@ -136,8 +136,9 @@ sh %{SOURCE2} \
           --initd-dir=%{initd_dir}
 
 # Install init script
+%__install -d -m 0755 $RPM_BUILD_ROOT/%{initd_dir}
 init_file=$RPM_BUILD_ROOT/%{initd_dir}/sqoop-server
-bash $RPM_SOURCE_DIR/init.d.tmpl $RPM_SOURCE_DIR/sqoop-server.svc rpm $init_file
+bash $RPM_SOURCE_DIR/init.d.tmpl $RPM_SOURCE_DIR/sqoop-server.svc rpm > $init_file
 
 %__install -d -m 0755 $RPM_BUILD_ROOT/usr/bin
 
@@ -189,8 +190,11 @@ fi
 %attr(0755,root,root)
 /usr/bin/sqoop
 %{lib_sqoop}/bin/sqoop.sh
+%{lib_sqoop}/bin/sqoop-sys.sh
 %{lib_sqoop}/client-lib
 
 %files server
 %attr(0755,root,root) %{initd_dir}/sqoop-server
+%{initd_dir}/sqoop-server
+
 

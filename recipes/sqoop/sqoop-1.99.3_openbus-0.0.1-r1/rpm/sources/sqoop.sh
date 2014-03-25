@@ -16,7 +16,14 @@
 # limitations under the License.
 
 # Autodetect JAVA_HOME if not defined
-. /usr/lib/bigtop-utils/bigtop-detect-javahome
+if [ -f /etc/profile.d/java.sh ]; then
+        . /etc/profile.d/java.sh
+        [ -z "$JAVA_HOME" ] && echo "JAVA_HOME is not defined" && exit 1
+else
+        echo "enviroment not properly set up"
+        exit 1
+fi
+
 
 LIB_DIR=/usr/lib/sqoop
 BIN_DIR=${LIB_DIR}/bin
