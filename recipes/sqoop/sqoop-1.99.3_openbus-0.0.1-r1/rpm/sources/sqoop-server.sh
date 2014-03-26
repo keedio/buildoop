@@ -35,6 +35,6 @@ export CATALINA_BIN=${CATALINA_BIN:-${TOMCAT_HOME}/bin}
 export CATALINA_BASE=${CATALINA_BASE:-${DEPLOYMENT_TARGET}}
 export CATALINA_OPTS=${CATALINA_OPTS:--Xmx1024m}
 export CATALINA_OUT=${CATALINE_OUT:-/var/log/sqoop/sqoop-tomcat.log}
-
+export CATALINA_PID=${SQOOP_PID:-/var/run/sqoop/sqoop-server-sqoop.pid}
 env CLASSPATH=$CLASSPATH $SQOOP_HOME/bin/sqoop.sh server $@
 
