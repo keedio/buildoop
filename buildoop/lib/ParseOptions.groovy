@@ -134,7 +134,7 @@ Package Options:
 		new File(bomfile).eachLine { 
 			line -> 
 			switch(line){
-				case {line.contains(pkg.toUpperCase())}:
+				case {line.contains(pkg.toUpperCase() + "_VERSION")}:
 					recipe = BDROOT + "/" + 
 							globalConfig.buildoop.recipes +	"/" +
 							pkg + "/" + pkg + "-" + 

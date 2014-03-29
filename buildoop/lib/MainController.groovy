@@ -255,12 +255,28 @@ class MainController {
         println "Home site   : " + jsonRecipe.do_info.homepage
         println "License     : " + jsonRecipe.do_info.license
         println "URL base    : " + jsonRecipe.do_download.src_uri
-        println "MD5SUM hash : " + jsonRecipe.do_download.src_md5sum
+		switch (jsonRecipe.do_fetch.download_cmd) {
+				case "git":
+					println "git hash    : " + jsonRecipe.do_download.src_hash
+					break
+
+				case "wget":
+        			println "MD5SUM hash : " + jsonRecipe.do_download.src_md5sum
+					break
+
+			 	default:
+					break
+			}
     }
 
-    def downloadSourceFile(uri, outFile) {
-        return fileDownloader.downloadFromURL(uri, outFile)
-    }
+    def downloadSourceFile(uri, git_hash, outFile) {
+		if (git_hash) {
+        		return fileDownloader.downloadFromGIT(uri, git_hash, outFile)
+				System.exit(1)
+		} else {
+        		return fileDownloader.downloadFromURL(uri, outFile)
+		}
+	}
 
     /**
      * Package building phases. Probably the most importatnt
@@ -295,32 +311,62 @@ class MainController {
                     globalConfig.buildoop.downloads + "/" +
                     jsonRecipe.do_download.src_uri.tokenize("/")[-1]
 
+		// FIXME: rework this hack, subversion?
+		if (jsonRecipe.do_fetch.download_cmd == "git") {
+			outFile = outFile + ".tar.gz"
+		}
+
         def f = new File(outFile + ".done")
         if (!f.exists()) {
             println "Downloading $jsonRecipe.do_download.src_uri ..."
+			LOG.info "[MainController:makePhases] do_fetch: $jsonRecipe.do_fetch.download_cmd"
+
+			def git_hash = ""
+
+			if (jsonRecipe.do_fetch.download_cmd == "git") {
+				git_hash = jsonRecipe.do_download.src_hash
+			}
+
             long start = System.currentTimeMillis()
-            def size = downloadSourceFile(jsonRecipe.do_download.src_uri, outFile)
+            def size = downloadSourceFile(jsonRecipe.do_download.src_uri,
+											git_hash,
+										  	outFile)
+
             println "Downloaded: $size bytes"
-            def md5Calculated = fileDownloader.getMD5sum(outFile, size)
             long end = System.currentTimeMillis()
+
             _buildoop.userMessage("OK", "[OK] ")
             println "Elapsed time: " + ((end - start) / 1000) + " seconds ";
-            if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
-                // create done file
-                f.createNewFile() 
-            } else {
-                LOG.error "[makePhases] md5sum fails!!!"
-                LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
-                LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
-                _buildoop.userMessage("ERROR",
-                    "ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:\n")
-                _buildoop.userMessage("ERROR",
-                    "Calculated : $md5Calculated\n")
-                _buildoop.userMessage("ERROR",
-                    "From recipe: $jsonRecipe.do_download.src_md5sum\n")
-                _buildoop.userMessage("ERROR", "Aborting program!\n")
-                System.exit(1)
-            }
+
+		    switch (jsonRecipe.do_fetch.download_cmd) {
+				case "git":
+                	f.createNewFile() 
+					break
+
+				case "wget":
+	            	def md5Calculated = fileDownloader.getMD5sum(outFile, size)
+            		if (md5Calculated == jsonRecipe.do_download.src_md5sum) {
+                		// create done file
+                		f.createNewFile() 
+            		} else {
+                		LOG.error "[makePhases] md5sum fails!!!"
+                		LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
+                		LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
+                		_buildoop.userMessage("ERROR",
+                    			"ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:\n")
+                		_buildoop.userMessage("ERROR",
+                    			"Calculated : $md5Calculated\n")
+                		_buildoop.userMessage("ERROR",
+                    			"From recipe: $jsonRecipe.do_download.src_md5sum\n")
+                		_buildoop.userMessage("ERROR", "Aborting program!\n")
+                		System.exit(1)
+            		}
+					break
+
+			 	default:
+					break
+			}
+
         } else {
             _buildoop.userMessage("OK", "[OK]")
             println " Recipe: " + outFile.tokenize('/').last() + " ready to build "

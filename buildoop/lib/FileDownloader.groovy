@@ -33,12 +33,18 @@ class FileDownloader {
 	def BDROOT
 	def LOG
 	def globalConfig
+	def runCommand
 
 	def FileDownloader(buildoop) {
 		LOG = buildoop.log
 		BDROOT = buildoop.ROOT
 		globalConfig = buildoop.globalConfig
         LOG.info "[FileDownloader] constructor, checking enviroment"
+
+		String[] roots = [globalConfig.buildoop.classfolder]
+		def engine = new GroovyScriptEngine(roots)
+		def RunCommandClass = engine.loadScriptByName('RunCommand.groovy')
+		runCommand = RunCommandClass.newInstance(buildoop.log)
 	}
 
 	def getMD5sum(file, len) {
@@ -60,6 +66,40 @@ class FileDownloader {
 		//long delta = System.currentTimeMillis()-start
 
 		return "$sha1Hex"
+	}
+
+
+	def downloadFromGIT(uri, git_hash, outFile) {
+
+
+		def repository_folder =  BDROOT + "/" + globalConfig.buildoop.downloads +
+						"/" + uri.split('/')[-1]
+
+		new File(repository_folder).mkdir()
+
+		def repository =  repository_folder + "/" + uri.split('/')[-1]
+
+		def command = "git clone " + uri + " " + repository
+                
+		new AntBuilder().delete(dir: repository_folder)
+
+		println "cloning repository: " +  command
+		runCommand.runCommand(["bash", "-c", command])
+
+		command = "git --git-dir " + repository + 
+				"/.git" + " checkout " +
+				git_hash
+
+		println "checking out hash: " +  command
+		runCommand.runCommand(["bash", "-c", command])
+
+		new AntBuilder().tar(destfile: outFile,
+					basedir: repository_folder,
+					longfile: "gnu",
+					compression: "gzip",
+					excludes: ".git")
+
+		return 0
 	}
 
 	def downloadFromURL(address, outFile) {
