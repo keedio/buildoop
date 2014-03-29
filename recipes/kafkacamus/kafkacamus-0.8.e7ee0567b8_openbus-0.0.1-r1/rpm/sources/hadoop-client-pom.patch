@@ -1,0 +1,12 @@
+diff -uprN camus.git-vanilla/pom.xml camus.git/pom.xml
+--- camus.git-vanilla/pom.xml	2014-03-29 13:02:27.800327282 +0100
++++ camus.git/pom.xml	2014-03-29 13:03:18.145782138 +0100
+@@ -78,7 +78,7 @@
+ 			<dependency>
+ 				<groupId>org.apache.hadoop</groupId>
+ 				<artifactId>hadoop-client</artifactId>
+-				<version>1.0.3</version>
++				<version>2.2.0</version>
+ 			</dependency>
+ 			<dependency>
+                 <groupId>org.apache.kafka</groupId>

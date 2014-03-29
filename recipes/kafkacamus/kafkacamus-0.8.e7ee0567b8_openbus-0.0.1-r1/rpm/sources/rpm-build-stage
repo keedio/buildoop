@@ -16,10 +16,4 @@
 
 set -ex
 
-mkdir dl
-ant -Dbase.path=dl clean download
-ant -Dbase.path=dl
-ant -Dbase.path=dl -Dskip.installer=true -f dist.xml dist-static package-tgz 
-
-mkdir build
-tar -C build --strip-components=1 -xzf output/release/v*/bin/apache-tomcat-*[0-9].tar.gz
+mvn clean package

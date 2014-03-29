@@ -76,8 +76,7 @@ for var in PREFIX BUILD_DIR ; do
   fi
 done
 
-DOC_DIR=${DOC_DIR:-/usr/share/doc/tomcatserver}
-LIB_DIR=${LIB_DIR:-/usr/lib/tomcatserver}
+find . -not \( -path ./.m2 -prune \) -name \*.jar
 
 # First we'll move everything into lib
 install -d -m 0755 $PREFIX/$LIB_DIR
