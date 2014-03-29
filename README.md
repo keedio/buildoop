@@ -96,6 +96,9 @@ Roadmap
 | ------------- |:-------------: | -----:|
 | Core Engine |Core building engine | Done |
 | POM versioning | Simple BOM multi-versioning | Done |
+| Git repsotory | Download sources from GIT | Done |
+| Svn repsotory | Download sources from Subversion | Pending |
+| Code refactoring | More elegant code | Forever Pending |
 | Cross-Architecture | Cross build from different distributions | Pending |
 | DEB Support | Debian/Ubuntu Support | Pending |
 | Layers      | Add/Modify features without modify the core folders | Pending |
