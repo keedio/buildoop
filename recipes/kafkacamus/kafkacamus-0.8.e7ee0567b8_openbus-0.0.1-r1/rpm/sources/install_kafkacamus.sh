@@ -76,15 +76,8 @@ for var in PREFIX BUILD_DIR ; do
   fi
 done
 
-find . -not \( -path ./.m2 -prune \) -name \*.jar
 
-# First we'll move everything into lib
-install -d -m 0755 $PREFIX/$LIB_DIR
-(cd $BUILD_DIR && tar -cf - .) | (cd $PREFIX/$LIB_DIR && tar -xf -)
-
-rm -rf $PREFIX/$LIB_DIR/webapps
-mv -f $PREFIX/$LIB_DIR/conf $PREFIX/$LIB_DIR/conf.template
-
-install -d -m 0755 $PREFIX/$DOC_DIR
-mv $PREFIX/$LIB_DIR/{RUNNING.txt,RELEASE-NOTES,NOTICE,LICENSE} $PREFIX/$DOC_DIR
+CAMUS_HOME=${CAMUS_HOME:-$PREFIX/usr/lib/camus}
+install -d -m 755 ${CAMUS_HOME}
+find $BUILD_DIR -not \( -path ./.m2 -prune \) -name \*.jar | xargs -I file cp file $CAMUS_HOME
 

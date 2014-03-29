@@ -13,6 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+%define lib_camus %{_usr}/lib/camus
+
 %define camus_version 0.8.e7ee0567b8
 %define camus_base_version 0.8.e7ee0567b8
 %define camus_release openbus0.0.1_1
@@ -47,13 +49,12 @@ bash %{SOURCE1}
 %install
 %__rm -rf $RPM_BUILD_ROOT
 bash %{SOURCE2} \
-          --build-dir=build \
+          --build-dir=. \
           --prefix=$RPM_BUILD_ROOT
 
 %files 
 %defattr(-,root,root)
-%attr(0755,root,root) %{lib_tomcat}
-%doc %{doc_tomcat}
+%attr(0755,root,root) %{lib_camus}
 
 %changelog
 
