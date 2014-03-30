@@ -14,6 +14,8 @@
 # limitations under the License.
 
 %define lib_camus %{_usr}/lib/camus
+%define etc_camus /etc/kafka/
+%define config_camus %{etc_camus}/camus
 
 %define camus_version 0.8.e7ee0567b8
 %define camus_base_version 0.8.e7ee0567b8
@@ -52,9 +54,20 @@ bash %{SOURCE2} \
           --build-dir=. \
           --prefix=$RPM_BUILD_ROOT
 
+%pre
+getent group camus >/dev/null || groupadd -r camus
+getent passwd camus > /dev/null || useradd -c "Camus" -s /sbin/nologin -g camus -r -d %{lib_camus} camus 2> /dev/null || :
+
+
 %files 
-%defattr(-,root,root)
+%defattr(-,root,root,755)
 %attr(0755,root,root) %{lib_camus}
+%config(noreplace) %{config_camus}
+%{config_camus}
+%{lib_camus}/bin/*
 
 %changelog
+* Sun Mar 30 2014 Javi Roman <javiroman@redoop.org> 
+- First package version released.
+
 

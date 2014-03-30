@@ -78,6 +78,22 @@ done
 
 
 CAMUS_HOME=${CAMUS_HOME:-$PREFIX/usr/lib/camus}
+CAMUS_CONF=${PREFIX}/etc/kafka/camus
+
+# base libraries
 install -d -m 755 ${CAMUS_HOME}
 find $BUILD_DIR -not \( -path ./.m2 -prune \) -name \*.jar | xargs -I file cp file $CAMUS_HOME
+
+# run-example
+install -d -m 755 ${CAMUS_HOME}/bin
+cp ${RPM_SOURCE_DIR}/run-camus-example.sh ${CAMUS_HOME}/bin
+
+# config
+install -d -m 755 ${CAMUS_CONF}
+cp ${RPM_SOURCE_DIR}/log4j.xml ${CAMUS_CONF}
+cp ${RPM_SOURCE_DIR}/camus.properties ${CAMUS_CONF}
+
+
+
+
 
