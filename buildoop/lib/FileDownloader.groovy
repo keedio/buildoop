@@ -71,7 +71,6 @@ class FileDownloader {
 
 	def downloadFromGIT(uri, git_hash, outFile) {
 
-
 		def repository_folder =  BDROOT + "/" + globalConfig.buildoop.downloads +
 						"/" + uri.split('/')[-1]
 
