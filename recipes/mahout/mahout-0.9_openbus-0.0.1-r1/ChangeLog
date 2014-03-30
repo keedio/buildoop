@@ -1,0 +1,6 @@
+31-03-2014 Javi Roman <javiroman@redoop.org>
+
+	* First package for Mahout. Original version
+	from BigTop 0.7.0, basically the same metadata
+	in Cloudera 5.0.0b2
+
