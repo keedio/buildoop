@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Apache Sqoop", 
+		"homepage":    "http://sqoop.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "sqoop-1.4.4_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://www.eu.apache.org/dist/sqoop/1.4.4/sqoop-1.4.4.tar.gz",
+		"src_md5sum": "251dd510be562908f1823c10c218b922"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
