@@ -40,22 +40,36 @@ class RunCommand {
 		assert (strList instanceof String ||
             (strList instanceof List && strList.each{ it instanceof String }))
 
-		/*
-	     * Because this functionality (string.execute) currently make use 
-	     * of java.lang.Process under the covers, the deficiencies of 
-         * that class must currently be taken into consideration. With
-	     * the method consumeProcessOutput(). 
+        /*
+         * -string.execute- currently make use of java.lang.Process 
+         * under the covers, the deficiencies of that class must 
+         * currently be taken into consideration.
          * http://groovy.codehaus.org/Process+Management
-	     */
+		 *
+		 * java.lang.Process: in/out/err streams and exit code.
+         */
   		def proc = strList.execute()
-            proc.consumeProcessOutput(System.out, System.err)
-  			proc.in.eachLine { 
-				line -> println line 
-  		}
 
-  		proc.out.close()
-  		proc.waitFor()
-		proc.destroy()
+		/* 
+		 * print InputStream of proc line at a line. This gobble the stdout of
+		 * the executed command. The try-catch is the recommended way to use 
+		 * the streams in Java. This will make sure, that the system resources 
+		 * associated with the stream will be released anyway.
+         */ 
+		try {
+  			proc.in.eachLine { line -> println line }
+		} catch (e) {
+			println "Stream closed"	 
+		} finally {
+            proc.in.close()
+        }
+
+        /* 
+		 * Causes the current thread to wait, if necessary, until the 
+         * process represented by this Process object has terminated.
+		 */
+		println "waitFor process"
+        proc.waitFor()
 
   		print "[INFO] ( "
   		if(strList instanceof List) {
