@@ -47,10 +47,12 @@ $ buildoop -info
 $ buildoop -targets
 $ buildoop -bom
 
+
 $ buildoop stable -info
-$ buildoop stable -build
+$ buildoop openbus-0.0.1 -build
 $ buildoop stable -clean
 
+$ buildoop openbus-0.0.1 hbase -build
 $ buildoop stable hadoop -info
 $ buildoop stable hadoop -build
 $ buildoop stable hadoop -clean
