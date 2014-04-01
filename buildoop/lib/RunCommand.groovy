@@ -85,5 +85,33 @@ class RunCommand {
   		}
   		assert !proc.exitValue()
 	}
+
+	def runCommand2(strList) {
+
+  		Process process = strList.execute()
+    	def out = new StringBuffer()
+    	def err = new StringBuffer()
+    	process.consumeProcessOutput(out, err)
+  	    process.in.eachLine { line -> println line }
+    	process.waitFor()
+    	if(out.size() > 0) {
+			println "Std Out ---------------------------"
+			println out
+		}
+    	if(err.size() > 0) {
+			println "Std Err ---------------------------"
+ 			println err
+		}
+
+		print "[INFO] ( "
+		print "command: " + strList
+  		println " )"
+
+  		if (process.exitValue()) {
+    	    println "[ERROR] "
+  		}
+
+  		assert !process.exitValue()
+	}
 }
 
