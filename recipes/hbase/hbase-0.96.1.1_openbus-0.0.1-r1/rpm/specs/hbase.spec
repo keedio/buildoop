@@ -31,6 +31,7 @@
 %define hbase_version 0.96.1.1
 %define hbase_base_version 0.96.1.1
 %define hbase_release openbus0.0.1_1
+%define hbase_jar_version 0.96.1.1-hadoop2
 
 
 %if  %{?suse_version:1}0
@@ -235,12 +236,13 @@ The Apache HBase REST gateway
 %setup -n %{name}-%{hbase_version} 
 
 %build
-env FULL_VERSION=%{hbase_version} bash %{SOURCE1}
+#env FULL_VERSION=%{hbase_version} bash %{SOURCE1}
+env HBASE_VERSION=%{version} hbase_name=%{name} hbase_jar_version=%{hbase_jar_version} bash %{SOURCE1}
 
 %install
 %__rm -rf $RPM_BUILD_ROOT
 sh %{SOURCE2} \
-        --build-dir=`pwd`/build/hbase-%{hbase_version} \
+        --build-dir=`pwd`/build/ \
         --doc-dir=%{doc_hbase} \
         --conf-dir=%{etc_hbase_conf_dist} \
 	--prefix=$RPM_BUILD_ROOT

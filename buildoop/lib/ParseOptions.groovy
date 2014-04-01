@@ -133,16 +133,12 @@ Package Options:
 		def recipe = ""
 		new File(bomfile).eachLine { 
 			line -> 
-			switch(line){
-				case {line.contains(pkg.toUpperCase() + "_VERSION")}:
-					recipe = BDROOT + "/" + 
+			if ((line.split("_VERSION")[0]) == (pkg.toUpperCase())) {
+				recipe = BDROOT + "/" + 
 							globalConfig.buildoop.recipes +	"/" +
 							pkg + "/" + pkg + "-" + 
 							line.split("=")[1].trim() + ".bd"
-					break
-				default:
-					break
-			}
+			} 
 		}
 		return recipe
 	}
