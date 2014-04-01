@@ -209,6 +209,8 @@ class MainController {
                     println line.split("=")[1].trim()
                     println "\nEcosystem versions:\n"
                     break
+                case {line.contains("#")}:
+                    break
                 case {line.contains("VERSION")}:
                     print line.split("_")[0].trim() + ": "
                     println line.split("=")[1].trim()
