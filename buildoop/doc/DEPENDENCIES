@@ -2,3 +2,7 @@ RPM based:
 
 fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax asciidoc
 
+Protobuf:
+
+wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+
