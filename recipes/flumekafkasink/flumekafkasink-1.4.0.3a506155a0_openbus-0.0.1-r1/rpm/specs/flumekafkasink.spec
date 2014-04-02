@@ -15,6 +15,7 @@
 %define lib_flume /usr/lib/flume
 %define flume_kafka_sink_base_version 1.4.0
 %define flume_kafka_sink_release openbus0.0.1_1
+%define etc_flume /etc/flume/conf
 
 %if  %{?suse_version:1}0
 
@@ -84,3 +85,7 @@ sh %{SOURCE2} \
 %dir %{lib_flume}
 %dir %{lib_flume}/lib
 %{lib_flume}/lib/*.jar
+
+%dir %{etc_flume}
+%config(noreplace) %{etc_flume}/*
+
