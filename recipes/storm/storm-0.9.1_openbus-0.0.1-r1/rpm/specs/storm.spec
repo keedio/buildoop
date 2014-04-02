@@ -124,7 +124,7 @@ bash %{SOURCE9} \
           --prefix=$RPM_BUILD_ROOT
 %pre
 getent group %{storm_group} >/dev/null || groupadd -r %{storm_group}
-getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Daemon User" --shell /bin/bash -M -r -g %{storm_group} --home /opt/%{storm_name}} %{storm_user}
+getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Daemon User" --shell /sbin/nologin -M -r -g %{storm_group} --home /var/run/%{storm_name} %{storm_user}
 
 %files
 %defattr(-,%{storm_user},%{storm_group})
