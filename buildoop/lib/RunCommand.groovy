@@ -86,26 +86,40 @@ class RunCommand {
   		assert !proc.exitValue()
 	}
 
-	def runCommand2(strList) {
+	def runCommand2(strList) throws IOException {
 
-  		Process process = strList.execute()
-    	def out = new StringBuffer()
-    	def err = new StringBuffer()
-    	process.consumeProcessOutput(out, err)
-  	    process.in.eachLine { line -> println line }
-    	process.waitFor()
-    	if(out.size() > 0) {
-			println "Std Out ---------------------------"
-			println out
-		}
-    	if(err.size() > 0) {
-			println "Std Err ---------------------------"
- 			println err
-		}
+		Process process = null	
+		try {
+  			process = strList.execute()
+    		def out = new StringBuffer()
+    		def err = new StringBuffer()
+    		process.consumeProcessOutput(out, err)
 
-		print "[INFO] ( "
-		print "command: " + strList
-  		println " )"
+  	    	process.in.eachLine { line -> println line }
+    		if(out.size() > 0) {
+				println "[INFO] Std Out ---------------------------"
+				println out
+			}
+    		if(err.size() > 0) {
+				println "[INFO] Std Err ---------------------------"
+ 				println err
+			}
+    		process.waitFor()
+			print "[INFO runCommand2] ( "
+			print "command: " + strList
+  			println " )"
+		} finally {
+			if (process.in != null) {
+				try {
+					println "[INFO] Clossing inputStream"
+					process.in.close()
+				} catch(IOException ignored) {
+					println "[INFO] catch IOException"
+					// failsafe
+				}
+			}
+		}
+			
 
   		if (process.exitValue()) {
     	    println "[ERROR] "

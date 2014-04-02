@@ -83,14 +83,14 @@ class FileDownloader {
 		new AntBuilder().delete(dir: repository_folder)
 
 		println "cloning repository: " +  command
-		runCommand.runCommand2(["bash", "-c", command])
+		runCommand.runCommand(["bash", "-c", command])
 
 		command = "git --git-dir " + repository + 
 				"/.git" + " checkout " +
 				git_hash
 
 		println "checking out hash: " +  command
-		runCommand.runCommand2(["bash", "-c", command])
+		runCommand.runCommand(["bash", "-c", command])
 
 		new AntBuilder().tar(destfile: outFile,
 					basedir: repository_folder,
