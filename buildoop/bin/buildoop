@@ -57,6 +57,7 @@ class Buildoop {
 
 	def loadConfigurations() {
 		System.setProperty("log4j.ignoreTCL", "true");
+		System.setProperty("java.security.egd", "file:/dev/./urandom");
 
 		// load general configuration properties
 		globalConfig = new ConfigSlurper(). \
