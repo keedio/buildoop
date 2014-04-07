@@ -16,7 +16,7 @@ The Buildoop is splitted in the following fundations:
 
 1. A main command line program for metadata operations: **buildoop**.
 2. A set of **recipes**: The metadata for package and tools building.
-3. A set of integration tests: **iTest framework**.
+3. A set of system integration tests: **SIT framework**.
 4. A central repository for **baremetal deployment** configuration.
 
 Technology
@@ -25,7 +25,7 @@ From the technology point of view Buildoop is based on:
 
 1. Command line "buildoop" based on **Groovy**.
 2. Packaging recipes based on **JSON**.
-3. iTest Framework: based on Groovy test scripts, and **Vagrant** for
+3. SIT Framework: based on Groovy test scripts, and **Vagrant** for
    virtual development enviroment.
 4. Set of **Kickstart**, **Cheff** and **Puppet** files for baremetal deployment.
 
@@ -55,6 +55,39 @@ Read More
 
 http://buildoop.github.io/
 
+
+GitHub projects forked in Buildoop
+----------------------------------
+
+The https://github.com/buildoop project contains a set of
+GitHub projects forked from other authors. This forks are 
+used by Buildoop in order to make relevant packages in the 
+ecosystem.
+
+The list of forked porjects are:
+
+- camus -
+
+	Forked from Marcelo Valle (https://github.com/mvalleavila).
+	The -mvallevila- fork from the original author of Camus has
+	some enhance from the original code.
+
+- flume-ng-kafka-sink -
+
+	Flume to Kafka Sink fork from Marcelo Valle.
+
+- storm-kafka-0.8-plus -
+
+	Storm Spout for Kafka fork from Thomas Becker (https://github.com/wurstmeister)
+
+- Storm-0.9.1-Kafka-0.8-Test -
+
+	Storm Spout for Kafka fork from Marcelo Valle. The original code is
+	patched by Marcelo Valle.
+
+- storm-hbase -
+
+	Storm to HBase connector fork from P. Taylor Goetz (Hortonworks)
 	
 Pull request flow
 ------------------
