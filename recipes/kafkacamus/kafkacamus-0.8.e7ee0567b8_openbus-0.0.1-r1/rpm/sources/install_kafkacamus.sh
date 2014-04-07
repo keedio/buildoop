@@ -78,7 +78,7 @@ done
 
 
 CAMUS_HOME=${CAMUS_HOME:-$PREFIX/usr/lib/camus}
-CAMUS_CONF=${PREFIX}/etc/kafka/camus
+CAMUS_CONF=${PREFIX}/etc/camus/conf.dist
 
 # base libraries
 install -d -m 755 ${CAMUS_HOME}

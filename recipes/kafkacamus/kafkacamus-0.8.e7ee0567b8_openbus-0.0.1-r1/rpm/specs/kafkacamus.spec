@@ -14,8 +14,8 @@
 # limitations under the License.
 
 %define lib_camus %{_usr}/lib/camus
-%define etc_camus /etc/kafka/
-%define config_camus %{etc_camus}/camus
+%define etc_camus /etc/camus/
+%define config_camus %{etc_camus}/conf.dist
 
 %define camus_version 0.8.e7ee0567b8
 %define camus_base_version 0.8.e7ee0567b8
