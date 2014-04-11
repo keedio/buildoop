@@ -12,6 +12,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+%{!?python_sitearch: %define python_sitearch %(%{__python} -c "from distutils.sysconfig import get_python_lib; print get_python_lib(1)")}
+
 %define lib_avro /usr/lib/avro
 # disable repacking jars
 %define __os_install_post %{nil}
@@ -34,6 +36,8 @@ License: ASL 2.0
 Source0: avro-src-%{avro_version}.tar.gz
 Source1: rpm-build-stage
 Source2: install_avro.sh
+Requires: python
+BuildRequires: python-devel
 
 %description
  Avro provides rich data structures, a compact & fast binary data format, a
@@ -57,11 +61,22 @@ Requires: %{name} = %{version}-%{release}
 %build
 env FULL_VERSION=%{avro_version} bash $RPM_SOURCE_DIR/rpm-build-stage
 
+# Python bindings
+(cd lang/py; 
+	python setup.py build)
+
 %install
 %__rm -rf $RPM_BUILD_ROOT
 env FULL_VERSION=%{avro_version} bash $RPM_SOURCE_DIR/install_avro.sh \
           --build-dir=./ \
           --prefix=$RPM_BUILD_ROOT
+
+# Python bindings install
+(cd lang/py; sed -i -r "s/@AVRO_VERSION@/%{avro_version}/" setup.py;
+	%{__python} setup.py install -O1 \
+			--skip-build \
+			--root %{buildroot} \
+			--install-lib=${buildroot}%{python_sitearch})
 
 #######################
 #### FILES SECTION ####
@@ -69,6 +84,9 @@ env FULL_VERSION=%{avro_version} bash $RPM_SOURCE_DIR/install_avro.sh \
 %files
 %defattr(-,root,root,755)
 /usr/lib/avro
+/usr/bin/avro
+%defattr(-,root,root,-)
+%{python_sitearch}/*
 
 %files -n avro-tools
 /usr/bin/avro-tools
