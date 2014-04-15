@@ -3,7 +3,7 @@
 		"description": "Apache Tomcat is an implementation of the Java Servlet and JavaServer Pages technologies", 
 		"homepage":    "http://tomcat.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "tomcatserver-6.0.36_openbus-0.0.1-r1.bd"
+		"filename":    "tomcat-server-6.0.36_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {

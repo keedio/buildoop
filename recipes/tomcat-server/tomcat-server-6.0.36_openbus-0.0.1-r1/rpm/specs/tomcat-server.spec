@@ -35,7 +35,7 @@ Buildroot: %(mktemp -ud %{_tmppath}/%{name}-%{version}-%{release}-XXXXXX)
 License: ASL 2.0 
 Source0: apache-tomcat-%{tomcat_base_version}-src.tar.gz
 Source1: rpm-build-stage
-Source2: install_tomcat.sh
+Source2: install_tomcat-server.sh
 
 %description 
 Apache Tomcat is an open source software implementation of the
