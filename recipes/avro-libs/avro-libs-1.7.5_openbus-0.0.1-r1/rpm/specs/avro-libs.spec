@@ -35,7 +35,7 @@ Buildroot: %(mktemp -ud %{_tmppath}/avro-%{version}-%{release}-XXXXXX)
 License: ASL 2.0 
 Source0: avro-src-%{avro_version}.tar.gz
 Source1: rpm-build-stage
-Source2: install_avro.sh
+Source2: install_avro-libs.sh
 Requires: python
 BuildRequires: python-devel
 
@@ -67,7 +67,7 @@ env FULL_VERSION=%{avro_version} bash $RPM_SOURCE_DIR/rpm-build-stage
 
 %install
 %__rm -rf $RPM_BUILD_ROOT
-env FULL_VERSION=%{avro_version} bash $RPM_SOURCE_DIR/install_avro.sh \
+env FULL_VERSION=%{avro_version} bash $RPM_SOURCE_DIR/install_avro-libs.sh \
           --build-dir=./ \
           --prefix=$RPM_BUILD_ROOT
 

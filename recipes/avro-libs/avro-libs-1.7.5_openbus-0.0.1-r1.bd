@@ -3,7 +3,7 @@
 		"description": "Apache Avro is a data serialization system", 
 		"homepage":    "http://avro.apache.org/",
 		"license":     "Apache-2.0",
-		"filename":    "avrolibs-1.7.5_openbus-0.0.1-r1.bd"
+		"filename":    "avro-libs-1.7.5_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {
