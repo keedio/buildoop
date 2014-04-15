@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "kafka-producer-avro description", 
+		"homepage":    "http://www.kafka-producer-avro.org/",
+		"license":     "Apache-2.0",
+		"filename":    "kafka-producer-avro-0.8.1_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri": "https://github.com/buildoop/AvroRepoKafkaProducerTest.git",
+	 	"src_hash": "release-0.8.1"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}

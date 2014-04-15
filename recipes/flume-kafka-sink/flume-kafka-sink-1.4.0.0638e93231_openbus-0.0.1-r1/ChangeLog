@@ -1,0 +1,12 @@
+11-04-2014 Javi Roman <javiroman@redoop.org>
+
+	* This new version is related to issue #71
+	This new package added the runtime dependencies:
+
+	metrics-core-3.0.0.jar
+	scala-library-2.10.3.jar
+
+01-04-2014 Javi Roman <javiroman@redoop.org>
+
+	* First package version for Flume 1.4.0 sink to kafka 0.8
+
