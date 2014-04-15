@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Strom to HBase connector from P. Taylor Goetz - Hortonworks", 
+		"homepage":    "https://github.com/ptgoetz/storm-hbase",
+		"license":     "Apache-2.0",
+		"filename":    "storm-hbase-0.9.1.7f79e191ef_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+	 "src_uri":    "https://github.com/ptgoetz/storm-hbase.git",
+	 "src_hash": "a2d48e1a62c6249c8737fc80ff70587f79e191ef"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}
