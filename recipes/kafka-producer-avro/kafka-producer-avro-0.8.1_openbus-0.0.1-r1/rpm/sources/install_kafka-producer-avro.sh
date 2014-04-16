@@ -87,13 +87,17 @@ for var in PREFIX BUILD_DIR ; do
   fi
 done
 
-LIB_DIR=${LIB_DIR:-/usr/lib/flume/lib}
-FLUME_CONF=/etc/flume/conf
+LIB_DIR=${LIB_DIR:-/usr/lib/kafka/lib/kafka-producer-avro/}
+BIN_DIR=/usr/lib/kafka/bin
+CONF_DIR=/etc/kafka/conf
 
 install -d -m 0755 ${PREFIX}/${LIB_DIR}
 cp ${BUILD_DIR}/target/*.jar ${PREFIX}/${LIB_DIR}
 cp ${BUILD_DIR}/target/libs/*.jar ${PREFIX}/${LIB_DIR}
 
-install -d -m 0755 ${PREFIX}/${FLUME_CONF}
-cp ${RPM_SOURCE_DIR}/flume-kafka-sink.conf.example ${PREFIX}/${FLUME_CONF}
+install -d -m 0755 ${PREFIX}/${BIN_DIR}
+cp ${BUILD_DIR}/kafka-producer-avro.sh ${PREFIX}/${BIN_DIR}
+
+install -d -m 0755 ${PREFIX}/${CONF_DIR}
+cp ${BUILD_DIR}/conf/* ${PREFIX}/${CONF_DIR}
 

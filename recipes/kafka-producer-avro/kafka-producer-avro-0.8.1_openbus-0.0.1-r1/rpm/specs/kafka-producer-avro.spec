@@ -12,52 +12,30 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-%define lib_flume /usr/lib/flume
-%define flume_kafka_sink_base_version 1.4.0.0638e93231
-%define flume_kafka_sink_release openbus0.0.1_1
-%define etc_flume /etc/flume/conf
 
-%if  %{?suse_version:1}0
+# Kafka Producer Avro tag -> release-0.8.1
+%define kafka_producer_avro_base_version 0.8.1
+%define kafka_producer_avro_release openbus0.0.1_1
 
-# Only tested on openSUSE 11.4. le'ts update it for previous release when confirmed
-%if 0%{suse_version} > 1130
-%define suse_check \# Define an empty suse_check for compatibility with older sles
-%endif
+%define lib_kafka_producer_avro /usr/lib/kafka/lib/kafka-producer-avro
+%define etc_kafka /etc/kafka/conf
+%define bin_kafka /usr/lib/kafka/bin
 
-# SLES is more strict and check all symlinks point to valid path
-# But we do point to a hadoop jar which is not there at build time
-# (but would be at install time).
-# Since our package build system does not handle dependencies,
-# these symlink checks are deactivated
-%define __os_install_post \
-    %{suse_check} ; \
-    /usr/lib/rpm/brp-compress ; \
-    %{nil}
-
-%define alternatives_cmd update-alternatives
-%global initd_dir %{_sysconfdir}/rc.d
-
-%else
-%define alternatives_cmd alternatives
-%global initd_dir %{_sysconfdir}/rc.d/init.d
-
-%endif
-
-Name: flume-kafka-sink
-Version: %{flume_kafka_sink_base_version}
-Release: %{flume_kafka_sink_release}
-Summary: Flume Sink for Kafka v0.8
-URL: https://github.com/buildoop/flume-ng-kafka-sink
+Name: kafka-producer-avro
+Version: %{kafka_producer_avro_base_version}
+Release: %{kafka_producer_avro_release}
+Summary: Avro Producer for Kafka v0.8 
+URL: https://github.com/buildoop/AvroRepoKafkaProducerTest
 Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
 Group: Development/Libraries
 Buildroot: %{_topdir}/INSTALL/%{name}-%{version}
 BuildArch: noarch
 License: APL2
-Source0: flume-ng-kafka-sink.git.tar.gz
+Source0: AvroRepoKafkaProducerTest.git.tar.gz
 Source1: rpm-build-stage
-Source2: install_flumekafkasink.sh
-Requires: flume
+Source2: install_kafka-producer-avro.sh
+Requires: kafka, avro-libs
 
 %if  0%{?mgaversion}
 Requires: bsh-utils
@@ -66,10 +44,12 @@ Requires: sh-utils
 %endif
 
 %description 
-Flume Kafka Sink for Kafka 0.8
+This is a Kafka producer for testing purposes. The producer
+send two simple avro files in order to check the connection
+with the "Avro Server Schema Repository" used by Camus consummer.
 
 %prep
-%setup -n flume-ng-kafka-sink.git
+%setup -n AvroRepoKafkaProducerTest.git
 
 %build
 sh %{SOURCE1}
@@ -82,10 +62,10 @@ sh %{SOURCE2} \
 
 %files 
 %defattr(644,root,root,755)
-%dir %{lib_flume}
-%dir %{lib_flume}/lib
-%{lib_flume}/lib/*.jar
+%dir %{lib_kafka_producer_avro}
+%{lib_kafka_producer_avro}/*.jar
+%{bin_kafka}/*.sh
 
-%dir %{etc_flume}
-%config(noreplace) %{etc_flume}/*
+%dir %{etc_kafka}
+%config(noreplace) %{etc_kafka}/*
 
