@@ -66,27 +66,15 @@ ecosystem.
 
 The list of forked porjects are:
 
-| Recipe Name    | Desc                         | Forked From |
+| Project Name    | Desc                         | Forked From |
 | -------------  |:---------------------------- |:------------|
-| Camus          | Kafka Camus is LinkedIn's Kafka HDFS pipeline | Marcelo Valle https://github.com/mvalleavila |
-| flume-ng-kafka-sink | Flume to Kafka Sink  | Marcelo Valle https://github.com/mvalleavila/flume-ng-kafka-sink |
-
-- flume-ng-kafka-sink -
-
-	Flume to Kafka Sink fork from Marcelo Valle.
-
-- storm-kafka-0.8-plus -
-
-	Storm Spout for Kafka fork from Thomas Becker (https://github.com/wurstmeister)
-
-- Storm-0.9.1-Kafka-0.8-Test -
-
-	Storm Spout for Kafka fork from Marcelo Valle. The original code is
-	patched by Marcelo Valle.
-
-- storm-hbase -
-
-	Storm to HBase connector fork from P. Taylor Goetz (Hortonworks)
+| Camus          | Kafka Camus is LinkedIn's Kafka HDFS pipeline | Marcelo Valle (Redoop) https://github.com/mvalleavila |
+| flume-ng-kafka-sink | Flume to Kafka Sink  | Marcelo Valle (Redoop) https://github.com/mvalleavila/flume-ng-kafka-sink |
+| storm-kafka-0.8-plus | Storm Spout for Kafka | Thomas Becker https://github.com/wurstmeister |
+| Storm-0.9.1-Kafka-0.8-Test | Storm Topology for Kafka Spout | Marcelo Valle (Redoop) https://github.com/mvalleavila/Storm-0.9.1-Kafka-0.8-Test |
+| storm-hbase | Storm to HBase connector | P. Taylor Goetz (Hortonworks) https://github.com/ptgoetz/storm-hbase |
+| kafka-hue | Hue application for Apache Kafka | Daniel Tardon (Redoop) https://github.com/danieltardon/kafka-hue |
+| AvroRepoKafkaProducerTest | kafka producer to send Avro Messages with an Avro schema repository | Marcelo Valle (Redoop) https://github.com/mvalleavila/AvroRepoKafkaProducerTest |
 	
 Pull request flow
 ------------------
