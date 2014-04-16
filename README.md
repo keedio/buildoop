@@ -66,15 +66,20 @@ ecosystem.
 
 The list of forked porjects are:
 
-| Project Name    | Desc                         | Forked From |
-| :----------|:----------------------------------|:------------|
-| Camus          | Kafka Camus is LinkedIn's Kafka HDFS pipeline | Marcelo Valle (Redoop) https://github.com/mvalleavila |
-| flume-ng-kafka-sink | Flume to Kafka Sink  | Marcelo Valle (Redoop) https://github.com/mvalleavila/flume-ng-kafka-sink |
-| storm-kafka-0.8-plus | Storm Spout for Kafka | Thomas Becker https://github.com/wurstmeister |
-| Storm-0.9.1-Kafka-0.8-Test | Storm Topology for Kafka Spout | Marcelo Valle (Redoop) https://github.com/mvalleavila/Storm-0.9.1-Kafka-0.8-Test |
-| storm-hbase | Storm to HBase connector | P. Taylor Goetz (Hortonworks) https://github.com/ptgoetz/storm-hbase |
-| kafka-hue | Hue application for Apache Kafka | Daniel Tardon (Redoop) https://github.com/danieltardon/kafka-hue |
-| AvroRepoKafkaProducerTest | kafka producer to send Avro Messages with an Avro schema repository | Marcelo Valle (Redoop) https://github.com/mvalleavila/AvroRepoKafkaProducerTest |
+1. Camus: Kafka Camus is LinkedIn's Kafka HDFS pipeline 
+	* Marcelo Valle (Redoop) https://github.com/mvalleavila 
+2. flume-ng-kafka-sink: Flume to Kafka Sink
+	* Marcelo Valle (Redoop) https://github.com/mvalleavila/flume-ng-kafka-sink
+3. storm-kafka-0.8-plus: Storm Spout for Kafka 
+	* Thomas Becker https://github.com/wurstmeister
+4. Storm-0.9.1-Kafka-0.8-Test: Storm Topology for Kafka Spout 
+	* Marcelo Valle (Redoop) https://github.com/mvalleavila/Storm-0.9.1-Kafka-0.8-Test
+5. storm-hbase: Storm to HBase connector 
+	* P. Taylor Goetz (Hortonworks) https://github.com/ptgoetz/storm-hbase
+6. kafka-hue: Hue application for Apache Kafka 
+	* Daniel Tardon (Redoop) https://github.com/danieltardon/kafka-hue
+7. AvroRepoKafkaProducerTest: kafka producer to send Avro Messages with an Avro schema repository 
+	* Marcelo Valle (Redoop) https://github.com/mvalleavila/AvroRepoKafkaProducerTest
 	
 Pull request flow
 ------------------
