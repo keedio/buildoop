@@ -66,11 +66,10 @@ ecosystem.
 
 The list of forked porjects are:
 
-- camus -
-
-	Forked from Marcelo Valle (https://github.com/mvalleavila).
-	The -mvallevila- fork from the original author of Camus has
-	some enhance from the original code.
+| Recipe Name    | Desc                         | Forked From |
+| -------------  |:---------------------------- |:------------|
+| Camus          | Kafka Camus is LinkedIn's Kafka HDFS pipeline | Marcelo Valle https://github.com/mvalleavila |
+| flume-ng-kafka-sink | Flume to Kafka Sink  | Marcelo Valle https://github.com/mvalleavila/flume-ng-kafka-sink |
 
 - flume-ng-kafka-sink -
 
@@ -125,8 +124,8 @@ So the project has two branches:
 Roadmap
 -------
 
-| Feature        | Desc          | State  |
-| ------------- |:-------------: | -----:|
+| Feature        | Desc           | State  |
+| -------------  |:-------------- | :-----:|
 | Core Engine |Core building engine | Done |
 | POM versioning | Simple BOM multi-versioning | Done |
 | Git repsotory | Download sources from GIT | Done |
