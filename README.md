@@ -66,19 +66,19 @@ ecosystem.
 
 The list of forked porjects are:
 
-1. Camus: Kafka Camus is LinkedIn's Kafka HDFS pipeline 
+1. __Camus__: Kafka Camus is LinkedIn's Kafka HDFS pipeline 
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila 
-2. flume-ng-kafka-sink: Flume to Kafka Sink
+2. __flume-ng-kafka-sink__: Flume to Kafka Sink
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila/flume-ng-kafka-sink
-3. storm-kafka-0.8-plus: Storm Spout for Kafka 
+3. __storm-kafka-0.8-plus__: Storm Spout for Kafka 
 	* Thomas Becker https://github.com/wurstmeister
-4. Storm-0.9.1-Kafka-0.8-Test: Storm Topology for Kafka Spout 
+4. __Storm-0.9.1-Kafka-0.8-Test__: Storm Topology for Kafka Spout 
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila/Storm-0.9.1-Kafka-0.8-Test
-5. storm-hbase: Storm to HBase connector 
+5. __storm-hbase__: Storm to HBase connector 
 	* P. Taylor Goetz (Hortonworks) https://github.com/ptgoetz/storm-hbase
-6. kafka-hue: Hue application for Apache Kafka 
+6. __kafka-hue__: Hue application for Apache Kafka 
 	* Daniel Tardon (Redoop) https://github.com/danieltardon/kafka-hue
-7. AvroRepoKafkaProducerTest: kafka producer to send Avro Messages with an Avro schema repository 
+7. __AvroRepoKafkaProducerTest__: kafka producer to send Avro Messages with an Avro schema repository 
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila/AvroRepoKafkaProducerTest
 	
 Pull request flow
