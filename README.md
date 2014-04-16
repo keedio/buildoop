@@ -67,7 +67,7 @@ ecosystem.
 The list of forked porjects are:
 
 | Project Name    | Desc                         | Forked From |
-| -------------  |:---------------------------- |:------------|
+| :----------|:----------------------------------|:------------|
 | Camus          | Kafka Camus is LinkedIn's Kafka HDFS pipeline | Marcelo Valle (Redoop) https://github.com/mvalleavila |
 | flume-ng-kafka-sink | Flume to Kafka Sink  | Marcelo Valle (Redoop) https://github.com/mvalleavila/flume-ng-kafka-sink |
 | storm-kafka-0.8-plus | Storm Spout for Kafka | Thomas Becker https://github.com/wurstmeister |
