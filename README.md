@@ -80,6 +80,8 @@ The list of forked porjects are:
 	* Daniel Tardon (Redoop) https://github.com/danieltardon/kafka-hue
 7. __AvroRepoKafkaProducerTest__: kafka producer to send Avro Messages with an Avro schema repository 
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila/AvroRepoKafkaProducerTest
+0. __avro-1.7.4-schema-repo__: Avro Schema Repository Server
+	* Marcelo Valle (Redoop) https://github.com/mvalleavila/avro-1.7.4-schema-repo
 	
 Pull request flow
 ------------------
