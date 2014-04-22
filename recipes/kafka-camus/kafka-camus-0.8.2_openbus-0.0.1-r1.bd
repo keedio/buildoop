@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Camus is LinkedIn's Kafka->HDFS pipeline. It is a mapreduce job that does distributed data loads out of Kafka", 
+		"homepage":    "https://github.com/linkedin/camus",
+		"license":     "Apache-2.0",
+		"filename":    "kafka-camus-0.8.2_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+	 "src_uri":    "https://github.com/buildoop/camus.git",
+	 "src_hash":   "release-0.8.2"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}
