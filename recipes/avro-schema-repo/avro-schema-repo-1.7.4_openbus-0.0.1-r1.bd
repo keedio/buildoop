@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Avro Schema Repository for Camus", 
+		"homepage":    "https://github.com/buildoop/avro-schema-repo",
+		"license":     "Apache-2.0",
+		"filename":    "avro-schema-repo-1.7.4_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "https://github.com/buildoop/avro-schema-repo.git",
+		"src_hash":   "1.7.4"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}
