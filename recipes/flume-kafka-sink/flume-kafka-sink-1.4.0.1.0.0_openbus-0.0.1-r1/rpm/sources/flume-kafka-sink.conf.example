@@ -8,7 +8,7 @@ agent.channels = memory-channel
 # Describe/configure the source
 agent.sources.tailFile.type = exec
 
-# Note: You have to put in /etc/sudo.conf this entry in order
+# Note: You have to put in /etc/sudoers this entry in order
 # to run privileged tails:
 #
 # flume ALL=(root) NOPASSWD: /usr/bin/tail -F /var/log/audit/audit.log
