@@ -3,7 +3,7 @@
 		"description": "Codehaus Groovy dynamic language for the Java platform", 
 		"homepage":    "http://groovy.codehaus.org/",
 		"license":     "Apache-2.0",
-		"filename":    "groovybinary-2.2.1_openbus-0.0.1-r1.bd"
+		"filename":    "groovy-binary-2.2.1_openbus-0.0.1-r1.bd"
 	},
 	
 	"do_download": {

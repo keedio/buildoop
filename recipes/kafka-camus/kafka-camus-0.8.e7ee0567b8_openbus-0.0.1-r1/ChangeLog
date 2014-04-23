@@ -1,3 +1,8 @@
 13-03-2014 Javi Roman <javiroman@redoop.org>
 
 	* First version based on git hash from original author.
+
+23-04-2014 Javi Rooman <javiroman@redoop.org>
+
+	* This version is superset by release-0.8.2. And from
+	now on is based on the buildoop repository forked projects.
