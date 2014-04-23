@@ -36,15 +36,12 @@ License: ASL 2.0
 Source0: camus.git.tar.gz
 Source1: rpm-build-stage
 Source2: install_kafka-camus.sh
-Patch0: hadoop-client-pom.patch
 
 %description 
 Camus is LinkedIn's Kafka->HDFS pipeline. It is a mapreduce job that does distributed data loads out of Kafka.
 
 %prep
 %setup -n camus.git
-
-%patch0 -p1
 
 %build
 bash %{SOURCE1}

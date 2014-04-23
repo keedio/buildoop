@@ -80,9 +80,9 @@ done
 CAMUS_HOME=${CAMUS_HOME:-$PREFIX/usr/lib/camus}
 CAMUS_CONF=${PREFIX}/etc/camus/conf.dist
 
-# base libraries
+# base libraries: only one, recomendations of Cloudera.
 install -d -m 755 ${CAMUS_HOME}
-find $BUILD_DIR -not \( -path ./.m2 -prune \) -name \*.jar | xargs -I file cp file $CAMUS_HOME
+cp $BUILD_DIR/camus-etl-kafka/target/camus-etl-kafka-0.1.0-SNAPSHOT-shaded.jar $CAMUS_HOME
 
 # run-example
 install -d -m 755 ${CAMUS_HOME}/bin
@@ -91,7 +91,7 @@ cp ${RPM_SOURCE_DIR}/run-camus-example.sh ${CAMUS_HOME}/bin
 # config
 install -d -m 755 ${CAMUS_CONF}
 cp ${RPM_SOURCE_DIR}/log4j.xml ${CAMUS_CONF}
-cp ${RPM_SOURCE_DIR}/camus.properties ${CAMUS_CONF}
+cp ${RPM_SOURCE_DIR}/camus*properties ${CAMUS_CONF}
 
 
 
