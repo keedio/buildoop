@@ -1,0 +1,109 @@
+diff -uNr hue-original/desktop/core/src/desktop/templates/about_layout.mako hue-produban-openbus/desktop/core/src/desktop/templates/about_layout.mako
+--- hue-original/desktop/core/src/desktop/templates/about_layout.mako	2013-12-06 00:12:52.000000000 +0100
++++ hue-produban-openbus/desktop/core/src/desktop/templates/about_layout.mako	2014-03-28 16:02:56.290000078 +0100
+@@ -35,7 +35,7 @@
+             <ul class="nav">
+               <li class="currentApp">
+                 <a href="/about">
+-                  <img src="/static/art/icon_hue_24.png" />
++                  <img src="/static/art/openbus/icon_openbus_24.png" /> 
+                   ${ _('About Hue') }
+                 </a>
+                </li>
+diff -uNr hue-original/desktop/core/src/desktop/templates/common_header.mako hue-produban-openbus/desktop/core/src/desktop/templates/common_header.mako
+--- hue-original/desktop/core/src/desktop/templates/common_header.mako	2013-12-06 00:12:52.000000000 +0100
++++ hue-produban-openbus/desktop/core/src/desktop/templates/common_header.mako	2014-03-28 16:02:56.186999860 +0100
+@@ -284,7 +284,7 @@
+   </ul>
+       % endif
+   </div>
+-    <a class="brand nav-tooltip pull-left" title="${_('About Hue')}" rel="navigator-tooltip" href="/about"><img src="/static/art/hue-logo-mini-white.png" data-orig="/static/art/hue-logo-mini-white.png" data-hover="/static/art/hue-logo-mini-white-hover.png"/></a>
++    <a class="brand nav-tooltip pull-left" title="${_('About Hue')}" rel="navigator-tooltip" href="/about"><img src="/static/art/openbus/logo_header.png" data-orig="/static/art/openbus/logo_header.png" data-hover="/static/art/openbus/logo_header.png"/></a>
+      <ul class="nav nav-pills pull-left">
+        <li><a title="${_('My documents')}" rel="navigator-tooltip" href="/home" style="padding-bottom:2px!important"><i class="fa fa-home" style="font-size: 19px"></i></a></li>
+        <%
+diff -uNr hue-original/desktop/core/src/desktop/templates/login.mako hue-produban-openbus/desktop/core/src/desktop/templates/login.mako
+--- hue-original/desktop/core/src/desktop/templates/login.mako	2013-12-06 00:12:52.000000000 +0100
++++ hue-produban-openbus/desktop/core/src/desktop/templates/login.mako	2014-03-28 16:02:56.290000078 +0100
+@@ -58,6 +58,7 @@
+     .login-content label {
+       margin-bottom: 20px;
+       font-size: 16px;
++      color: #ffffff;
+     }
+ 
+     .login-content input[type='text'], .login-content input[type='password'] {
+@@ -91,6 +92,7 @@
+     .well {
+       border: 1px solid #D8D8D8;
+       border-radius: 3px 3px 3px 3px;
++      background-color: #1f1f1f;
+     }
+ 
+     .footer {
+@@ -113,9 +115,9 @@
+       <li id="jHueTourFlagPlaceholder"></li>
+     </ul>
+   </div>
+-  <a class="brand nav-tooltip pull-left" href="#"><img src="/static/art/hue-logo-mini-white.png"
+-                                                       data-orig="/static/art/hue-logo-mini-white.png"
+-                                                       data-hover="/static/art/hue-logo-mini-white-hover.png"/></a>
++  <a class="brand nav-tooltip pull-left" href="#"><img src="/static/art/openbus/logo_header.png"
++                                                       data-orig="/static/art/openbus/logo_header.png"
++                                                       data-hover="/static/art/openbus/logo_header.png"/></a>
+   <ul class="nav nav-pills pull-left hide" id="visit">
+     <li><a title="${_('Visit gethue.com')}" href="http://gethue.com">${_('Fell asleep? Visit us on gethue.com instead!')} <i class="fa fa-external-link-circle"></i></a></li>
+   </ul>
+@@ -126,8 +128,8 @@
+   <div class="row">
+     <div class="login-content">
+       <form method="POST" action="${action}" class="well">
+-        <img id="logo" src="/static/art/hue-login-logo.png" data-orig="/static/art/hue-login-logo.png"
+-             data-hover="/static/art/hue-login-logo-skew.png"/>
++	<img id="logo" src="/static/art/openbus/logo-openbus.png" data-orig="/static/art/openbus/logo-openbus.png"
++             data-hover="/static/art/openbus/logo-openbus.png"/>
+         <label
+           % if backend_name == 'OAuthBackend':
+             class="hide"
+diff -uNr hue-original/desktop/core/static/css/hue3.css hue-produban-openbus/desktop/core/static/css/hue3.css
+--- hue-original/desktop/core/static/css/hue3.css	2013-12-06 00:12:52.000000000 +0100
++++ hue-produban-openbus/desktop/core/static/css/hue3.css	2014-03-28 16:02:53.009000087 +0100
+@@ -1379,7 +1379,9 @@
+   position: fixed;
+   top: 0;
+   width: 100%;
+-  background-color: #338BB8;
++  background-image: url(/static/art/openbus/topWrapper-bg.png);
++  background-position: center top;
++  background-repeat: repeat-x;
+   height: 28px;
+   z-index: 1033;
+   min-width: 1100px;
+@@ -1495,4 +1497,4 @@
+   padding: 2px;
+   background-color: #C2E0B0;
+   opacity: 0.80;
+-}
+\ No newline at end of file
++}
+
+diff -uNr hue-original/apps/about/src/about/templates/header.mako hue-produban-openbus/apps/about/src/about/templates/header.mako
+--- hue-original/apps/about/src/about/templates/header.mako     2013-12-06 00:12:50.000000000 +0100
++++ hue-produban-openbus/apps/about/src/about/templates/header.mako     2014-03-28 16:03:24.701000087 +0100
+@@ -24,7 +24,7 @@
+           <div class="nav-collapse">
+             <ul class="nav">
+               <li class="currentApp">
+-                <a href="/${app_name}"><img src="/static/art/icon_hue_24.png" />
++               <a href="/${app_name}"><img src="/static/art/openbus/icon_openbus_24.png" />
+                 ${ _('About Hue') }</a>
+                </li>
+                % if user.is_superuser:
+@@ -37,4 +37,4 @@
+         </div>
+       </div>
+   </div>
+-</%def>
+\ No newline at end of file
++</%def>
+
