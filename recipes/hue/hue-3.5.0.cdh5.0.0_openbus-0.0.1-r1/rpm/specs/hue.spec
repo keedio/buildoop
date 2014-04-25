@@ -14,7 +14,7 @@
 # limitations under the License.
 
 %define hue_version 3.5.0.cdh5.0.0
-%define hue_base_version 3.5.0.cdh5.0.0
+%define hue_base_version 3.5.0
 %define hue_release openbus0.0.1_1
 
 Name:    hue
@@ -164,7 +164,9 @@ env FULL_VERSION=%{hue_base_version} bash -x %{SOURCE2}
 # Install
 ########################################
 %install
-bash -x %{SOURCE3} --prefix=$RPM_BUILD_ROOT --build-dir=${PWD}/build/release/prod/hue-%{hue_base_version}
+bash -x %{SOURCE3} \
+	--prefix=$RPM_BUILD_ROOT \
+	--build-dir=${PWD}/build/release/prod/hue-%{hue_base_version}
 
 %if  %{?suse_version:1}0
 orig_init_file=$RPM_SOURCE_DIR/%{name}.init.suse
@@ -188,7 +190,7 @@ BuildRequires: krb5-devel
 Group: Applications/Engineering
 Requires: cyrus-sasl-gssapi, libxml2, libxslt, zlib, sqlite
 # The only reason we need the following is because we also have AutoProv: no
-Conflicts: cloudera-desktop, hue-about, hue-filebrowser, hue-help, hue-jobbrowser, hue-jobsub, hue-metastore, hue-oozie, hue-proxy, hue-shell, hue-useradmin
+Conflicts: hue-about, hue-filebrowser, hue-help, hue-jobbrowser, hue-jobsub, hue-metastore, hue-oozie, hue-proxy, hue-shell, hue-useradmin
 Provides: config(%{name}-common) = %{version}
 
 %if %{?suse_version:1}0
@@ -281,7 +283,6 @@ fi
 %{hue_dir}/build/env/stamp
 %{hue_dir}/app.reg
 %{hue_dir}/apps/Makefile
-%{hue_dir}/cloudera/cdh_version.properties
 %dir %{hue_dir}/apps
 # Hue core apps
 %{about_app_dir}
@@ -358,9 +359,8 @@ fi
 #### PLUGINS ######
 %package -n %{name}-plugins
 Summary: Hadoop plugins for Hue
-Requires: %{name}-common = %{version}-%{release}, hadoop, bigtop-utils >= 0.7
+Requires: %{name}-common = %{version}-%{release}, hadoop
 Group: Applications/Engineering
-Conflicts: cloudera-desktop-plugins
 %description -n %{name}-plugins
 Plugins for Hue
 
@@ -369,13 +369,12 @@ This package should be installed on each node in the Hadoop cluster.
 %files -n %{name}-plugins
 %defattr(-,root,root)
 %{hadoop_lib}/
-%{hadoop_home}/cloudera/
 
 #### HUE-BEESWAX PLUGIN ######
 %package -n %{name}-beeswax
 Summary: A UI for Hive on Hue
 Group: Applications/Engineering
-Requires: %{name}-common = %{version}-%{release}, hive, make, cyrus-sasl-plain
+Requires: %{name}-common = %{version}-%{release}, make, cyrus-sasl-plain
 
 %description -n %{name}-beeswax
 Beeswax is a web interface for Hive.

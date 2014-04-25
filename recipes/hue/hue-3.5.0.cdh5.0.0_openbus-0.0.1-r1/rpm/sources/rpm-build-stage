@@ -16,20 +16,26 @@
 
 set -ex 
 
+echo "[TRACE] Maven CLEAN INSTALL"
 mvn -f maven/pom.xml clean install "$@"
 
+# Hack when the source is downloaded from git
 chmod +x desktop/core/ext-py/markdown/bin/markdown
+
+# Hack for custom version
+#sed -i -r "s/VERSION=.*/VERSION=\"3.5.0.cdh5.0.0\"/" VERSION
+
+echo "[TRACE] make apps docs"
 make apps docs
 
 # Workaround for https://issues.cloudera.org/browse/HUE-1603 
 rename .md .html docs/user-guide/*.md || :
 
+echo "[TRACE] relocatable"
 # Make the entire tree relocatable
 bash -xv tools/relocatable.sh
 
+echo "[TRACE] make prod"
+# Make the entire tree relocatable
 make prod
-rm -rf build/release/prod/hue-*.tgz build/release/prod/hue-${FULL_VERSION}
-mv build/release/prod/hue-* build/release/prod/hue-${FULL_VERSION}
-cp -r cloudera build/release/prod/hue-${FULL_VERSION}
-tar -C build/release/prod -czf build/hue-${FULL_VERSION}.tar.gz hue-${FULL_VERSION}
- 
+

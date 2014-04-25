@@ -184,11 +184,3 @@ rm -fv `find $PREFIX -iname "build_log.txt"`
 
 install -d ${PREFIX}/${DOC_DIR}
 cp -r ${BUILD_DIR}/docs/* ${PREFIX}/${DOC_DIR}/
-
-# Cloudera specific
-install -d -m 0755 $PREFIX/$LIB_DIR/cloudera
-cp $BUILD_DIR/cloudera/cdh_version.properties $PREFIX/$LIB_DIR/cloudera
-install -d -m 0755 $PREFIX/$HADOOP_DIR/../cloudera
-grep -v 'cloudera.pkg.name=' < $BUILD_DIR/cloudera/cdh_version.properties > $PREFIX/$HADOOP_DIR/../cloudera/cm_version.properties
-echo 'cloudera.pkg.name=hue-common' >> $PREFIX/$HADOOP_DIR/../cloudera/cm_version.properties
-
