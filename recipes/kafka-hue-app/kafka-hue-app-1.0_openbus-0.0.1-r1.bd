@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "kafka-hue-app description", 
+		"homepage":    "https://github.com/danieltardon/kafka-hue",
+		"license":     "Apache-2.0",
+		"filename":    "kafka-hue-app-1.0_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":  "https://github.com/buildoop/kafka-hue.git",
+		"src_hash": "v0.1"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}
