@@ -1,3 +1,8 @@
+23-04-2014 Javi Rooman <javiroman@redoop.org>
+
+	* This version is superset by release-0.8.2. And from
+	now on is based on the buildoop repository forked projects.
+
 22-04-2014 Javi Roman <javiroman@redoop.org>
 
 	* Notes for this new release-0.8.2:
@@ -13,5 +18,9 @@
 	"release-0.8.2". The last number will change with new version
 	of this producer, and the two first numbers only will be changed
 	with the mayor version of Kafka.
+
+13-03-2014 Javi Roman <javiroman@redoop.org>
+
+	* First version based on git hash from original author.
 
 

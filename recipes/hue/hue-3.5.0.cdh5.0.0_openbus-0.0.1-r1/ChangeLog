@@ -1,5 +1,0 @@
-24-04-20114 Javi Roman <javiroman@redoop.org>
-
-	* Initial commit based on Cloudera CDH-5.0.0b2 package.
-	We are using the tag cdh5.0.0-release from Cloudera GitHub.
-	

@@ -79,12 +79,6 @@ basedir=${BDROOT}/recipes/${RECIPE_NAME}/${RECIPE_NAME}-${RECIPE_VERSION}_${RECI
 mkdir -p ${basedir}/rpm/sources
 mkdir -p ${basedir}/rpm/specs
 
-cat <<! > ${basedir}/ChangeLog
-DD-MM-YYYY User Committer <usercommiter@domain.org>
-
-	* Initial commit.
-!
-
 cat <<! > ${BDROOT}/recipes/${RECIPE_NAME}/${RECIPE_NAME}-${RECIPE_VERSION}_${RECIPE_REVISION}.bd
 {
 	"do_info": {
