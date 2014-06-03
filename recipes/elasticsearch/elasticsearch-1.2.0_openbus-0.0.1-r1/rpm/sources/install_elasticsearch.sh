@@ -76,48 +76,48 @@ for var in PREFIX BUILD_DIR ; do
   fi
 done
 
-LIB_DIR=${LIB_DIR:-/usr/lib/avro/avro-schema-repo}
+TARGET_RELEASE=target/releases/elasticsearch-1.2.0.tar.gz
+SHARE_DIR=${SHARE_DIR:-/usr/share/elasticsearch}
+SRC=${BUILD_DIR}/working/elasticsearch-1.2.0
 
-exit
+mkdir ${BUILD_DIR}/working
+tar xzf ${BUILD_DIR}/${TARGET_RELEASE} -C ${BUILD_DIR}/working
 
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/bin
-%{__install} -p -m 755 bin/elasticsearch %{buildroot}%{_javadir}/%{name}/bin
-%{__install} -p -m 644 bin/elasticsearch.in.sh %{buildroot}%{_javadir}/%{name}/bin
-%{__install} -p -m 755 bin/plugin %{buildroot}%{_javadir}/%{name}/bin
+mkdir -p ${PREFIX}/${SHARE_DIR}
+
+mkdir -p ${PREFIX}/${SHARE_DIR}/bin
+install -p -m 755 ${SRC}/bin/elasticsearch ${PREFIX}/${SHARE_DIR}/bin
+install -p -m 644 ${SRC}/bin/elasticsearch.in.sh ${PREFIX}/${SHARE_DIR}/bin
+install -p -m 755 ${SRC}/bin/plugin ${PREFIX}/${SHARE_DIR}/bin
 
 #libs
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/lib/sigar
-%{__install} -p -m 644 lib/*.jar %{buildroot}%{_javadir}/%{name}/lib
-%{__install} -p -m 644 lib/sigar/*.jar %{buildroot}%{_javadir}/%{name}/lib/sigar
-%ifarch i386
-%{__install} -p -m 644 lib/sigar/libsigar-x86-linux.so %{buildroot}%{_javadir}/%{name}/lib/sigar
-%endif
-%ifarch x86_64
-%{__install} -p -m 644 lib/sigar/libsigar-amd64-linux.so %{buildroot}%{_javadir}/%{name}/lib/sigar
-%endif
+mkdir -p ${PREFIX}/${SHARE_DIR}/lib/sigar
+install -p -m 644 ${SRC}/lib/*.jar ${PREFIX}/${SHARE_DIR}/lib
+install -p -m 644 ${SRC}/lib/sigar/*.jar ${PREFIX}/${SHARE_DIR}/lib/sigar
+install -p -m 644 ${SRC}/lib/sigar/libsigar-amd64-linux.so ${PREFIX}/${SHARE_DIR}/lib/sigar
 
 # config
-%{__mkdir} -p %{buildroot}%{_sysconfdir}/elasticsearch
-%{__install} -m 644 config/elasticsearch.yml %{buildroot}%{_sysconfdir}/%{name}
-%{__install} -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/logging.yml
+mkdir -p ${PREFIX}/etc/elasticsearch
+install -m 644 ${SRC}/config/elasticsearch.yml ${PREFIX}/etc/elasticsearch/
+install -m 644 ${SRC}/config/logging.yml ${PREFIX}/etc/elasticsearch/
 
 # data
-%{__mkdir} -p %{buildroot}%{_localstatedir}/lib/%{name}
+mkdir -p ${PREFIX}/lib/elasticsearch
+mkdir -p ${PREFIX}/${SHARE_DIR}/plugins
 
 # logs
-%{__mkdir} -p %{buildroot}%{_localstatedir}/log/%{name}
-%{__install} -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/elasticsearch
-
-# plugins
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/plugins
+mkdir -p ${PREFIX}/var/log/elasticsearch
+mkdir -p ${PREFIX}/etc/logrotate.d/
+install -m 644 ${RPM_SOURCE_DIR}/elasticsearch.logrotate ${PREFIX}/etc/logrotate.d/elasticsearch
 
 # sysconfig and init
-%{__mkdir} -p %{buildroot}%{_sysconfdir}/rc.d/init.d
-%{__mkdir} -p %{buildroot}%{_sysconfdir}/sysconfig
-%{__install} -m 755 %{SOURCE1} %{buildroot}%{_sysconfdir}/rc.d/init.d/elasticsearch
-%{__install} -m 755 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/elasticsearch
+mkdir -p ${PREFIX}/etc/rc.d/init.d
+mkdir -p ${PREFIX}/etc/sysconfig
+install -m 755 ${RPM_SOURCE_DIR}/elasticsearch.init ${PREFIX}/etc/rc.d/init.d/elasticsearch
+install -m 755 ${RPM_SOURCE_DIR}/elasticsearch.sysconfig ${PREFIX}/etc/sysconfig/elasticsearch
 
-%{__mkdir} -p %{buildroot}%{_localstatedir}/run/elasticsearch
-%{__mkdir} -p %{buildroot}%{_localstatedir}/lock/subsys/elasticsearch
+mkdir -p ${PREFIX}/var/run/elasticsearch
+mkdir -p ${PREFIX}/var/lib/elasticsearch
+mkdir -p ${PREFIX}/lock/subsys/elasticsearch
 
 

@@ -31,10 +31,6 @@ URL: http://www.elasticsearch.com
 Source0: elasticsearch.git.tar.gz
 Source1: rpm-build-stage
 Source2: install_elasticsearch.sh
-#Source1: init.d-elasticsearch
-#Source2: logrotate.d-elasticsearch
-#Source3: config-logging.yml
-#Source4: sysconfig-elasticsearch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(post): chkconfig initscripts
 Requires(pre):  chkconfig initscripts
@@ -52,7 +48,7 @@ bash %{SOURCE1}
 %install
 %__rm -rf $RPM_BUILD_ROOT
 bash %{SOURCE2} \
-          --build-dir=bundle \
+          --build-dir=. \
           --prefix=$RPM_BUILD_ROOT
 %pre
 # create elasticsearch group
@@ -80,13 +76,13 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(-,root,root,-)
-%{_sysconfdir}/rc.d/init.d/elasticsearch
+%{_initddir}/elasticsearch
 %config(noreplace) %{_sysconfdir}/sysconfig/elasticsearch
 %{_sysconfdir}/logrotate.d/elasticsearch
-%dir %{_javadir}/elasticsearch
-%{_javadir}/elasticsearch/bin/*
-%{_javadir}/elasticsearch/lib/*
-%dir %{_javadir}/elasticsearch/plugins
+%dir /usr/share/elasticsearch
+/usr/share/elasticsearch/bin/*
+/usr/share/elasticsearch/lib/*
+%dir /usr/share/elasticsearch/plugins
 %config(noreplace) %{_sysconfdir}/elasticsearch
 %doc LICENSE.txt  NOTICE.txt  README.textile
 %defattr(-,elasticsearch,elasticsearch,-)
