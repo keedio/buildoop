@@ -85,7 +85,7 @@ class FileDownloader {
 		println "cloning repository: " +  command
 		runCommand.runCommand(["bash", "-c", command])
 
-		command = "git --git-dir " + repository + 
+		command = "git " + "--work-tree " + repository + " --git-dir " + repository + 
 				"/.git" + " checkout " +
 				git_hash
 

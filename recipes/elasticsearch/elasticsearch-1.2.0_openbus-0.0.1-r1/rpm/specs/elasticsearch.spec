@@ -28,7 +28,9 @@ Packager: Javi Roman <javiroman@redoop.org>
 Group: System Environment/Daemons
 License: ASL 2.0
 URL: http://www.elasticsearch.com
-Source0: http://download.elasticsearch.org/%{name}/%{name}/%{name}-%{version}.tar.gz
+Source0: elasticsearch.git.tar.gz
+Source1: rpm-build-stage
+Source2: install_elasticsearch.sh
 #Source1: init.d-elasticsearch
 #Source2: logrotate.d-elasticsearch
 #Source3: config-logging.yml
@@ -42,54 +44,16 @@ Requires(pre):  shadow-utils
 A distributed, highly available, RESTful search engine
 
 %prep
-%setup -q -n %{name}-%{version}
+%setup -n  elasticsearch.git
 
 %build
-true
+bash %{SOURCE1}
 
 %install
-rm -rf $RPM_BUILD_ROOT
-
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/bin
-%{__install} -p -m 755 bin/elasticsearch %{buildroot}%{_javadir}/%{name}/bin
-%{__install} -p -m 644 bin/elasticsearch.in.sh %{buildroot}%{_javadir}/%{name}/bin
-%{__install} -p -m 755 bin/plugin %{buildroot}%{_javadir}/%{name}/bin
-
-#libs
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/lib/sigar
-%{__install} -p -m 644 lib/*.jar %{buildroot}%{_javadir}/%{name}/lib
-%{__install} -p -m 644 lib/sigar/*.jar %{buildroot}%{_javadir}/%{name}/lib/sigar
-%ifarch i386
-%{__install} -p -m 644 lib/sigar/libsigar-x86-linux.so %{buildroot}%{_javadir}/%{name}/lib/sigar
-%endif
-%ifarch x86_64
-%{__install} -p -m 644 lib/sigar/libsigar-amd64-linux.so %{buildroot}%{_javadir}/%{name}/lib/sigar
-%endif
-
-# config
-%{__mkdir} -p %{buildroot}%{_sysconfdir}/elasticsearch
-%{__install} -m 644 config/elasticsearch.yml %{buildroot}%{_sysconfdir}/%{name}
-%{__install} -m 644 %{SOURCE3} %{buildroot}%{_sysconfdir}/%{name}/logging.yml
-
-# data
-%{__mkdir} -p %{buildroot}%{_localstatedir}/lib/%{name}
-
-# logs
-%{__mkdir} -p %{buildroot}%{_localstatedir}/log/%{name}
-%{__install} -D -m 644 %{SOURCE2} %{buildroot}%{_sysconfdir}/logrotate.d/elasticsearch
-
-# plugins
-%{__mkdir} -p %{buildroot}%{_javadir}/%{name}/plugins
-
-# sysconfig and init
-%{__mkdir} -p %{buildroot}%{_sysconfdir}/rc.d/init.d
-%{__mkdir} -p %{buildroot}%{_sysconfdir}/sysconfig
-%{__install} -m 755 %{SOURCE1} %{buildroot}%{_sysconfdir}/rc.d/init.d/elasticsearch
-%{__install} -m 755 %{SOURCE4} %{buildroot}%{_sysconfdir}/sysconfig/elasticsearch
-
-%{__mkdir} -p %{buildroot}%{_localstatedir}/run/elasticsearch
-%{__mkdir} -p %{buildroot}%{_localstatedir}/lock/subsys/elasticsearch
-
+%__rm -rf $RPM_BUILD_ROOT
+bash %{SOURCE2} \
+          --build-dir=bundle \
+          --prefix=$RPM_BUILD_ROOT
 %pre
 # create elasticsearch group
 if ! getent group elasticsearch >/dev/null; then
@@ -130,8 +94,10 @@ rm -rf $RPM_BUILD_ROOT
 %{_localstatedir}/run/elasticsearch
 %dir %{_localstatedir}/log/elasticsearch
 
-
 %changelog
+* Tue Jun 03 2014 Javi Roman <javiroman@redoop.org>
+- Rework for buildoop builder system.
+
 * Fri Aug 09 2013 Matt Dainty <matt@bodgit-n-scarper.com> - 0.20.6-2
 - Add ulimit call to allow unlimited memory locking
 
