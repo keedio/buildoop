@@ -7,11 +7,11 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://ftp.elasticsearch.org/elasticsearch-1.2.0-src.tgz",
-		"src_md5sum": "46b3e65e38f1bde4b6251ea131d905f4"
+	 	"src_uri":    "https://github.com/elasticsearch/elasticsearch.git",
+	 	"src_hash":   "v1.2.0"
 	},
 
 	"do_fetch": {
-		"download_cmd": "wget"
+		"download_cmd": "git"
 	},
 }
