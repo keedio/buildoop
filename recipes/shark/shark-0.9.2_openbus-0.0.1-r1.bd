@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Hive on Spark", 
+		"homepage":    "http://shark.cs.berkeley.edu/",
+		"license":     "Apache-2.0",
+		"filename":    "shark-0.9.2_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "https://github.com/amplab/shark.git",
+	 	"src_hash":   "v0.9.2"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}
