@@ -84,6 +84,8 @@ The list of forked porjects are:
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila/avro-1.7.4-schema-repo
 9. __flume-ng-kafka-avro-sink__: Apache Flume sink to produce Avro messages to Apache Kafka linked with Avro Schema Respository Server from Camus.
 	* Daniel Tardon (Redoop): https://github.com/danieltardon/flume-ng-kafka-avro-sink
+10. __siddhi__: Siddhi CEP is a lightweight, easy-to-use Open Source Complex Event Processing Engine (CEP).
+	* WSO2: https://github.com/wso2/siddhi
 	
 Pull request flow
 ------------------
