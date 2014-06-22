@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "WSO2 Siddhi Complex Event Processor", 
+		"homepage":    "http://wso2.com/products/complex-event-processor/",
+		"license":     "Apache-2.0",
+		"filename":    "siddhi-3.0.0_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+	 	"src_uri":    "https://github.com/buildoop/siddhi.git",
+		"src_hash": "d853a7a5d033db2d22744345cef8c2c598970dfa"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}
