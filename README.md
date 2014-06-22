@@ -27,7 +27,10 @@ From the technology point of view Buildoop is based on:
 2. Packaging recipes based on **JSON**.
 3. SIT Framework: based on Groovy test scripts, and **Vagrant** for
    virtual development enviroment.
-4. Set of **Kickstart**, **Cheff** and **Puppet** files for baremetal deployment.
+4. Set of **Puppet** files for baremetal deployment. Note: this feature
+has been delegated to the project Deploop [1]
+
+[1] https://github.com/deploop
 
 Folder scheme
 -------------
