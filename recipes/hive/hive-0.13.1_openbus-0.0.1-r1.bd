@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "The Apache Hive data warehouse", 
+		"homepage":    "https://hive.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "hive-0.13.1_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://www.eu.apache.org/dist/hive/hive-0.13.1/apache-hive-0.13.1-src.tar.gz",
+		"src_md5sum": "75ee5ca0287e4aeebb7cf3f50aba2d4e"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
