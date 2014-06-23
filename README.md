@@ -73,9 +73,9 @@ The list of forked porjects are:
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila 
 2. __flume-ng-kafka-sink__: Flume to Kafka Sink
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila/flume-ng-kafka-sink
-3. __storm-kafka-0.8-plus__: Storm Spout for Kafka 
-	* Thomas Becker https://github.com/wurstmeister
-4. __Storm-0.9.1-Kafka-0.8-Test__: Storm Topology for Kafka Spout 
+3. __storm-kafka__: Storm Spout for Kafka 
+	* Marcelo Valle (Redoop) https://github.com/mvalleavila/storm-kafka-0.8-plus
+4. __Storm-0.9.1-Kafka-0.8-Test__: Storm Topology for Kafka Spout example for testing
 	* Marcelo Valle (Redoop) https://github.com/mvalleavila/Storm-0.9.1-Kafka-0.8-Test
 5. __storm-hbase__: Storm to HBase connector 
 	* P. Taylor Goetz (Hortonworks) https://github.com/ptgoetz/storm-hbase

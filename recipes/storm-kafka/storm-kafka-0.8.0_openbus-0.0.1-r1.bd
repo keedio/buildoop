@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "storm-kafka description", 
+		"homepage":    "http://www.storm-kafka.org/",
+		"license":     "Apache-2.0",
+		"filename":    "storm-kafka-0.8.0_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+	 	"src_uri":    "https://github.com/buildoop/storm-kafka.git",
+	 	"src_hash": "09ae97303d3faa0b4b837a3bbe18b996854d2733"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}

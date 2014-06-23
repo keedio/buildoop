@@ -30,6 +30,7 @@ Recipe list:
 28. __zeromq__: ZeroMQ trasnport for Storm.
 29. __zookeeper__: Zookeeper.
 29. __siddhi__: WSO2 Siddhi Complex Event Processor ready for run into Storm or Spark.
+29. __storm-kafka__: Kafka consummer from Storm event processor.
 
 
 
