@@ -31,6 +31,7 @@ Recipe list:
 29. __zookeeper__: Zookeeper.
 29. __siddhi__: WSO2 Siddhi Complex Event Processor ready for run into Storm or Spark.
 29. __storm-kafka__: Kafka consummer from Storm event processor.
+30. __flume-kafka-avro-sink__: Flume Kafka producer with Avro conversor.
 
 
 
