@@ -65,29 +65,29 @@ HowTo
 
 3. Set the enviroment:
 
-cd buildoop && source set-buildoop-env
+  cd buildoop && source set-buildoop-env
 
 4. In order to build some packages you need install some dependecies:
 
-less buildoop/doc/DEPENDENCIES
+  less buildoop/doc/DEPENDENCIES
 
 5. Usage examples:
 
-- Build the whole ecosystem for the distribution openbus-0.0.1:
+  - Build the whole ecosystem for the distribution openbus-0.0.1:
 
-buildoop openbus-0.0.1 -build
+    buildoop openbus-0.0.1 -build
 
-- Build the zookeeper package for the distribuion openbus-0.0.1:
+  - Build the zookeeper package for the distribuion openbus-0.0.1:
 
-buildoop openbus-0.0.1 zookeeper -build
+    buildoop openbus-0.0.1 zookeeper -build
 
-- List the available distributions:
+  - List the available distributions:
 
-buildoop -bom
+    buildoop -bom
 
 6. For more commands:
 
-less buildoop/doc/README
+  less buildoop/doc/README
 
 Read More
 ---------
