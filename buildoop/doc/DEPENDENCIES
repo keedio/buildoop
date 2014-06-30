@@ -3,7 +3,7 @@ RPM based:
 fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax asciidoc
 python-devel
 
-Protobuf:
+Protobuf (for hadoop native library):
 
 wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
 

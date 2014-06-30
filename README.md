@@ -53,6 +53,43 @@ Folder scheme
 * toolchain:
 	Tools for cross-compiling for diferent targets.
 
+HowTo
+-----
+
+1. Download Groovy binary:
+
+wget http://dl.bintray.com/groovy/maven/groovy-binary-2.3.3.zip
+
+2. Clone the project:
+
+git clone https://github.com/buildoop/buildoop.git
+
+3. Set the enviroment:
+
+cd buildoop && source set-buildoop-env
+
+4. In order to build some packages you need install some dependecies:
+
+less buildoop/doc/DEPENDENCIES
+
+5. Usage examples:
+
+- Build the whole ecosystem for the distribution openbus-0.0.1:
+
+buildoop openbus-0.0.1 -build
+
+- Build the zookeeper package for the distribuion openbus-0.0.1:
+
+buildoop openbus-0.0.1 zookeeper -build
+
+- List the available distributions:
+
+buildoop -bom
+
+6. For more commands:
+
+less buildoop/doc/README
+
 Read More
 ---------
 
