@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://www.eu.apache.org/dist/oozie/4.0.0/oozie-4.0.0.tar.gz",
+		"src_uri":    "http://archive.apache.org/dist/oozie/4.0.0/oozie-4.0.0.tar.gz",
 		"src_md5sum": "51d2a76b101d0d8da541ad04144b3160"
 	},
 
