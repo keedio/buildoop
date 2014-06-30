@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://www.eu.apache.org/dist/hbase/hbase-0.96.1.1/hbase-0.96.1.1-src.tar.gz",
+		"src_uri":    "http://archive.apache.org/dist/hbase/hbase-0.96.1.1/hbase-0.96.1.1-src.tar.gz",
 		"src_md5sum": "f55fe4fa13ffebced747f7874b0e2c20"
 	},
 
