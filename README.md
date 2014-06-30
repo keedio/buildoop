@@ -57,8 +57,10 @@ HowTo
 -----
 
 1. Download Groovy binary:
+
   wget http://dl.bintray.com/groovy/maven/groovy-binary-2.3.3.zip
 2. Clone the project:
+
   git clone https://github.com/buildoop/buildoop.git
 
 3. Set the enviroment:
