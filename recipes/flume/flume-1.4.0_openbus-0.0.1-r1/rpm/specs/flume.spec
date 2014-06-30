@@ -12,6 +12,7 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+
 %define etc_flume /etc/flume/conf
 %define bin_flume %{_bindir}
 %define man_flume %{_mandir}
@@ -20,7 +21,17 @@
 %define run_flume /var/run/flume
 %define vlb_flume /var/lib/flume
 
-#
+# Disable post hooks (brp-repack-jars, etc) that just take forever and sometimes cause issues
+%define __os_install_post \
+    %{!?__debug_package:/usr/lib/rpm/brp-strip %{__strip}} \
+%{nil}
+%define __jar_repack %{nil}
+%define __prelink_undo_cmd %{nil}
+
+# Disable debuginfo package, since we never need to gdb
+# our own .sos anyway
+%define debug_package %{nil}
+
 # Estas definiciones son mias para hacer independiente el SPEC
 # JAVI: flume_base_version -> esta definida en bigtop.mk
 # apache-flume-1.4.0-src.tar.gz
@@ -77,6 +88,8 @@ Source2: install_%{name}.sh
 Source3: %{name}-agent.init
 Source4: flume-agent.default
 Patch0: flume-protobuf-fail.patch
+# Fix: https://issues.apache.org/jira/browse/FLUME-2174
+Patch1: FLUME-2174-partial.patch
 Requires: /usr/sbin/useradd
 Requires: coreutils
 Requires: hadoop-hdfs
@@ -124,6 +137,7 @@ Flume is a reliable, scalable, and manageable distributed data collection applic
 %setup -n %{flume_folder}
 
 %patch0 -p1
+%patch1 -p1
 
 %build
 sh %{SOURCE1}
