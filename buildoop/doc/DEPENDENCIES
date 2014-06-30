@@ -1,7 +1,9 @@
 RPM based:
 
-fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax asciidoc
-python-devel fuse cmake
+fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax asciidoc \
+python-devel fuse cmake libxml2-devel libxslt-devel cyrus-sasl-devel \
+sqlite-devel openldap-devel mysql-devel 
+
 
 Protobuf (for hadoop native library):
 

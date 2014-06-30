@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://ftp.cixug.es/apache/kafka/0.8.0/kafka-0.8.0-src.tgz",
+		"src_uri":    "http://archive.apache.org/dist/kafka/0.8.0/kafka-0.8.0-src.tgz",
 		"src_md5sum": "46b3e65e38f1bde4b6251ea131d905f4"
 	},
 
