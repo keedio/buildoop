@@ -1,4 +1,8 @@
-TARGET=CentOS-6.x
+#
+# RHEL/CentOS 7.x R&D
+#
+
+TARGET=CentOS-7.x
 
 HADOOP_VERSION=2.2.0_openbus-0.0.1-r1
 ZOOKEEPER_VERSION=3.4.5_openbus-0.0.1-r1

@@ -26,6 +26,17 @@
 %define kafka_base_version 0.8.0
 %define kafka_release openbus0.0.1_1
 
+# Disable post hooks (brp-repack-jars, etc) that just take forever and sometimes cause issues
+%define __os_install_post \
+    %{!?__debug_package:/usr/lib/rpm/brp-strip %{__strip}} \
+%{nil}
+%define __jar_repack %{nil}
+%define __prelink_undo_cmd %{nil}
+
+# Disable debuginfo package, since we never need to gdb
+# our own .sos anyway
+%define debug_package %{nil}
+
 %if  %{?suse_version:1}0
 %define doc_kafka %{_docdir}/kafka
 %define alternatives_cmd update-alternatives

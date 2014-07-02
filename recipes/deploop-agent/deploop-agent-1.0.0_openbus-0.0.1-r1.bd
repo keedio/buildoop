@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Hadoop Deploy System Mcollective Agent", 
+		"homepage":    "http://deploop.github.io/",
+		"license":     "Apache-2.0",
+		"filename":    "deploop-agent-1.0.0_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "https://github.com/deploop/deploop.git",
+	 	"src_hash": "2b8579d59a2632548e80604cd4bca4762a3fab01"
+	},
+
+	"do_fetch": {
+		"download_cmd": "git"
+	},
+}
