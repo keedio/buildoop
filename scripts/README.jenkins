@@ -1,0 +1,19 @@
+A simple way of Jenkins configuration for
+Buildoop continuous integration.
+
+1. sudo wget -O /etc/yum.repos.d/jenkins.repo http://pkg.jenkins-ci.org/redhat/jenkins.repo
+2. sudo rpm --import http://pkg.jenkins-ci.org/redhat/jenkins-ci.org.key
+3. yum install jenkins -y
+4. service jenkins start && chkconfig jenkins on
+5. http://openbus-buildoop:8080/
+
+Configure a new project with the workspace for example in /opt. In this folder
+we clonned the buildoop project and make a project Jenkins build script:
+
+/opt/
+├── buildoop.git
+├── groovy-2.2.1
+├── run-buildoop.sh
+└── scala-2.10.3
+
+You can find the build script in this folder.
