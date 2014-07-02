@@ -1,11 +1,43 @@
-RPM based:
+CentOS 6.x based system:
+-----------------------
 
-fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax asciidoc \
+yum groupinstall "Development Tools"
+
+yum install -y fuse-devel fuse-libs lzo-devel openssl-devel ant ant-trax asciidoc \
 python-devel fuse cmake libxml2-devel libxslt-devel cyrus-sasl-devel \
 sqlite-devel openldap-devel mysql-devel 
 
 
-Protobuf (for hadoop native library):
+Protobuf (for hadoop native library): 
+------------------------------------
+(FIXME: This must be handled by the Buildoop dependency system in chroot enviroment)
 
 wget https://protobuf.googlecode.com/files/protobuf-2.5.0.tar.gz
+cd protobuf && ./configure && make && make install
+
+Maven 3.x:
+---------
+
+wget ftp://ftp.pbone.net/mirror/ftp5.gwdg.de/pub/opensuse/repositories/Application:/Geo/CentOS_6/noarch/maven-3.0.4-2.2.noarch.rpm
+yum localinstall maven-3.0.4-2.2.noarch.rpm
+
+CMake 2.8.x
+------------
+
+wget ftp://ftp.pbone.net/mirror/atrpms.net/el6-x86_64/atrpms/testing/cmake-2.8.8-4.el6.x86_64.rpm
+yum localinstall cmake-2.8.8-4.el6.x86_64.rpm
+
+
+System environment:
+------------------
+
+Before use the buildoop command you have to set up the enviroment with something simmilar to:
+
+JAVA_HOME=/usr/java/jdk1.7.0_51/
+GROOVY_HOME=/opt/groovy-2.2.1
+MAVEN_HOME=/usr/share/java/maven
+SCALA_HOME=/opt/scala-2.10.3
+
+export GRADLE_HOME GROOVY_HOME MAVEN_HOME SCALA_HOME
+export PATH=$PATH:$GROOVY_HOME/bin:$SCALA_HOME/bin:$JAVA_HOME/bin
 
