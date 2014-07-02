@@ -8,7 +8,7 @@
 	
 	"do_download": {
 		"src_uri":    "https://github.com/deploop/deploop.git",
-	 	"src_hash": "2b8579d59a2632548e80604cd4bca4762a3fab01"
+	 	"src_hash": "v1.0.1"
 	},
 
 	"do_fetch": {

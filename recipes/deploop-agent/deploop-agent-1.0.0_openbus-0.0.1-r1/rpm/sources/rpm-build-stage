@@ -16,3 +16,8 @@
 
 set -xv
 
+%{__install} -d -m0755 %{buildroot}/usr/libexec/mcollective/mcollective/agent
+
+%{__install} -m0644 usr/libexec/mcollective/mcollective/agent/deploop.rb %{buildroot}/usr/libexec/mcollective/mcollective/agent/deploop.rb
+
+
