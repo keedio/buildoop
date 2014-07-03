@@ -1,0 +1,1111 @@
+#LyX 2.1 created this file. For more info see http://www.lyx.org/
+\lyxformat 474
+\begin_document
+\begin_header
+\textclass docbook
+\begin_preamble
+<!entity header system "header.sgml">
+\end_preamble
+\use_default_options false
+\maintain_unincluded_children false
+\language english
+\language_package default
+\inputencoding default
+\fontencoding global
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_math auto
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\default_output_format default
+\output_sync 0
+\bibtex_command default
+\index_command default
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 1
+\use_package amssymb 1
+\use_package cancel 0
+\use_package esint 0
+\use_package mathdots 0
+\use_package mathtools 0
+\use_package mhchem 0
+\use_package stackrel 0
+\use_package stmaryrd 0
+\use_package undertilde 0
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification true
+\use_refstyle 0
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\paragraph_indentation default
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Title
+The Hadoop Ecosystem Builder HOWTO
+\end_layout
+
+\begin_layout Standard
+\begin_inset VSpace vfill
+\end_inset
+
+
+\end_layout
+
+\begin_layout Date
+03 July 2014
+\end_layout
+
+\begin_layout Author
+Javi Roman
+\end_layout
+
+\begin_layout Abstract
+This document is a quick start guide for build a Lambda Architecture ecosystem
+ package set using The Hadoop Ecosystem Builder - Buildoop tool.
+\end_layout
+
+\begin_layout Section
+Preface
+\end_layout
+
+\begin_layout Standard
+This document was written to help bring the system integrators a guide for
+ build a full package set using the building system Buildoop from scratch.
+ The aim of this document is make a YUM repository ready for a full Lambda
+ Architecture deployment, and a guide for deploy this system manually using
+ the YUM tool.
+\end_layout
+
+\begin_layout Standard
+The automatic deployment is out of scope of this document.
+ For this purpose the 
+\begin_inset Quotes eld
+\end_inset
+
+The Hadoop Deploy System - Deploop - HOWTO
+\begin_inset Quotes erd
+\end_inset
+
+ will soon be available.
+\end_layout
+
+\begin_layout Subsection
+Copyright
+\end_layout
+
+\begin_layout Standard
+Copyright (c) 2014 Javi Roman.
+\end_layout
+
+\begin_layout Standard
+Permission is granted to copy, distribute and/or modify this document under
+ the terms of the GNU Free Documentation License, Version 1.2 or any later
+ version published by the Free Software Foundation; with no Invariant Sections,
+ no Front-Cover Texts, and no Back-Cover Texts.
+ A copy of the license is included in the section entitled "GNU Free Documentati
+on License".
+\end_layout
+
+\begin_layout Subsection
+Disclaimer
+\end_layout
+
+\begin_layout Standard
+Use the information in this document at your own risk.
+ I disavow any potential liability for the contents of this document.
+ Use of the concepts, examples, and/or other content of this document is
+ entirely at your own risk.
+\end_layout
+
+\begin_layout Standard
+All copyrights are owned by their owners, unless specifically noted otherwise.
+  Use of a term in this document should not be regarded as affecting the
+ validity of any trademark or service mark.
+\end_layout
+
+\begin_layout Standard
+Naming of particular products or brands should not be seen as endorsements.
+\end_layout
+
+\begin_layout Standard
+You are strongly recommended to take a backup of your system before major
+ installation and backups at regular intervals.
+\end_layout
+
+\begin_layout Section
+Introduction
+\end_layout
+
+\begin_layout Subsection
+What is the Hadoop Ecosystem Builder Project?
+\end_layout
+
+\begin_layout Standard
+The Hadoop Ecosystem Builder Project (Buildoop) is an effort to create a
+ tool for Hadoop and Lambda Architecture (aka.
+ LA) system integrators .
+ With Buildoop the integrator can build a full software package set for
+ deploy a Hadoop system or a more complete LA system.
+\end_layout
+
+\begin_layout Subsection
+What is wrong with Apache BigTop?
+\end_layout
+
+\begin_layout Standard
+The Linux development community utilizes two important (some out argue most
+ important) testing techniques in its normal operations: Design and Code
+ Inspections.
+ The intent of LTP is to support this by giving developers an ever growing
+ set of tools to help identify any operational problems in their code that
+ may be missed by human review.
+ One of the toughest categories of problems to catch with inspection is
+ that of interaction of features.
+ With a continuously improving set of tests and tools, developers can get
+ an indication of whether their changes may have broken some other functionality.
+\end_layout
+
+\begin_layout Standard
+There is no such thing as a perfect test base.
+  It is only useful it if keeps up with new and changing functionality,
+ and if it actually gets used.
+\end_layout
+
+\begin_layout Subsection
+Development in progress
+\end_layout
+
+\begin_layout Standard
+Not at  this time.
+ We are more interested in functional, regression, and stress testing the
+ Linux kernel.
+ Benchmarking may be workable to compare the performance among kernel versions.
+\end_layout
+
+\begin_layout Section
+Structure
+\end_layout
+
+\begin_layout Standard
+The basic building block of the test project is a
+\series bold
+test case
+\series default
+ that consists of a single action and a verification that the action worked.
+  The result of the test case is usually restricted to PASS/FAIL.
+\end_layout
+
+\begin_layout Standard
+A
+\series bold
+test program
+\series default
+ is a runnable program that contains one or more test cases.
+ Test programs often understand command line options which alter their behavior.
+ The options could determine the amount of memory tested, the location of
+ temporary files, the type of network packet used, or any other useful parameter.
+\end_layout
+
+\begin_layout Standard
+
+\series bold
+Test tags
+\series default
+ are used to pair a unique identifier with a test program and a set of command
+ line options.
+ Test tags are the basis for test suites.
+\end_layout
+
+\begin_layout Section
+Writing Tests
+\end_layout
+
+\begin_layout Standard
+Writing a test case is a lot easier than most people think.
+  Any code that you write to examine how a part of the kernel works can
+ be adapted into a test case.
+  All that is needed is a way to report the result of the action to the
+ rest of the world.
+  There are several ways of doing this, some more involved than others.
+\end_layout
+
+\begin_layout Subsection
+Exit Style Tests
+\end_layout
+
+\begin_layout Standard
+Probably the simplest way of reporting the results of a test case is the
+ exit status of your program.
+  If your test program encounters unexpected or incorrect results, exit
+ the test program with a non-zero exit status, i.e.
+\family typewriter
+exit(1)
+\family default
+.
+ Conversely, if your program completes as expected, return a zero exit status,
+ i.e.
+\family typewriter
+exit(0)
+\family default
+.
+ Any test driver should be able to handle this type of error reporting.
+ If a test program has multiple test cases you won't know which test case
+ failed, but you will know the program that failed.
+\end_layout
+
+\begin_layout Subsection
+Formatted Output Tests
+\end_layout
+
+\begin_layout Standard
+The next easiest way of reporting the results is to write the results of
+ each test case to standard output.
+ This allows for the testing results to be more understandable to both the
+ tester and the analysis tools.
+ When the results are written in a standard way, tools can be used to analyze
+ the results.
+\end_layout
+
+\begin_layout Section
+Testing Tools
+\end_layout
+
+\begin_layout Standard
+The Linux Test Project has not yet decided on a "final" test harness.
+  We have provided a simple solution with
+\family typewriter
+ltp-pan
+\family default
+ to make due until a complete solution has been found/created that compliments
+ the Linux kernel development process.
+  Several people have said we should use such and such a test harness.
+ Until we find we need a large complex test harness, we will apply the KISS
+ concept.
+\end_layout
+
+\begin_layout Subsection
+Ltp-pan
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+ltp-pan
+\family default
+ is a simple test driver with the ability to keep track of orphaned processes
+ and capture test output.
+ It works by reading a list of test tags and command lines and runs them.
+ By default ltp-pan will select a command randomly from the list of test
+ tags, wait for it to finish.
+ Through command line options you can run through the entire list sequentially,
+ run n tests, keep n test running at all times, and buffer test output.
+ Ltp-pan can be nested to create very complex test environments.
+\end_layout
+
+\begin_layout Standard
+Ltp-pan uses an
+\emph on
+active file
+\emph default
+, also called a
+\emph on
+zoo file
+\emph default
+ to keep track of which tests are currently running.
+ This file holds the pid, tag, and a portion of the command line.
+ When you start ltp-pan it becomes a test tag in itself, thus it requires
+ a name for itself.
+ Ltp-pan updates the active file to show which test tags are currently running.
+ When a test tag exits, ltp-pan will overwrite the first character with
+ a '#'.
+ The active file can be shared between multiple instances of ltp-pan so
+ you know which tests were running when the system crashes by looking at
+ one file.
+\end_layout
+
+\begin_layout Standard
+A
+\emph on
+ltp-pan file
+\emph default
+ contains a list of test tags for ltp-pan to run.
+ The format of a ltp-pan file is as follows:
+\end_layout
+
+\begin_layout Code
+
+testtag testprogram -o one -p two other command line options
+\end_layout
+
+\begin_layout Code
+
+# This is a comment.
+ It is a good idea to describe the test
+\end_layout
+
+\begin_layout Code
+
+# tags in your ltp-pan file.
+ Tests programs can have different
+\end_layout
+
+\begin_layout Code
+
+# behaviors depending on the command line options so it is
+\end_layout
+
+\begin_layout Code
+
+# helpful to describe what each test tag is meant to verify or # provoke.
+\end_layout
+
+\begin_layout Code
+
+# Some more test cases
+\end_layout
+
+\begin_layout Code
+
+mm01 mmap001 -m 10000
+\end_layout
+
+\begin_layout Code
+
+# 40 Mb mmap() test.
+\end_layout
+
+\begin_layout Code
+
+# Creates a 10000 page mmap, touches all of the map, sync's
+\end_layout
+
+\begin_layout Code
+
+# it, and munmap()s it.
+\end_layout
+
+\begin_layout Code
+
+mm03 mmap001 -i 0 -I 1 -m 100
+\end_layout
+
+\begin_layout Code
+
+# repetitive mmapping test.
+\end_layout
+
+\begin_layout Code
+
+# Creates a one page map repetitively for one minute.
+\end_layout
+
+\begin_layout Code
+
+dup02 dup02
+\end_layout
+
+\begin_layout Code
+
+# Negative test for dup(2) with bad fd
+\end_layout
+
+\begin_layout Code
+
+kill09 kill09
+\end_layout
+
+\begin_layout Code
+
+# Basic test for kill(2)
+\end_layout
+
+\begin_layout Code
+
+fs-suite01 ltp-pan -e -a fs-suite01.zoo -n fs-suite01 -f runtest/fs
+\end_layout
+
+\begin_layout Code
+
+# run the entire set of file system tests
+\end_layout
+
+\begin_layout Standard
+The test tags are simple identifiers, no spaces are allowed.
+ The test of the line is the program to run, which is done using execvp(3).
+ Lines starting with '#' are comments and ignored by ltp-pan.
+ It is a good practice to include descriptions with your test tags so you
+ can have a reminder what a certain obscure test tag tries to do.
+\end_layout
+
+\begin_layout Subsubsection
+Examples
+\end_layout
+
+\begin_layout Standard
+The most basic way to run ltp-pan is by passing the test program and parameters
+ on the command line.
+ This will run the single program once and wrap the output.
+\end_layout
+
+\begin_layout Code
+
+$ ltp-pan -a ltp.zoo -n tutor sleep 4
+\end_layout
+
+\begin_layout Code
+
+<<<test_start>>>
+\end_layout
+
+\begin_layout Code
+
+tag=cmdln stime=971450564
+\end_layout
+
+\begin_layout Code
+
+cmdline="sleep 4"
+\end_layout
+
+\begin_layout Code
+
+contacts=""
+\end_layout
+
+\begin_layout Code
+
+analysis=exit
+\end_layout
+
+\begin_layout Code
+
+initiation_status="ok"
+\end_layout
+
+\begin_layout Code
+
+<<<test_output>>>
+\end_layout
+
+\begin_layout Code
+
+<<<execution_status>>>
+\end_layout
+
+\begin_layout Code
+
+duration=103341903 termination_type=exited termination_id=0 corefile=no
+ cutime=0 cstime=0
+\end_layout
+
+\begin_layout Code
+
+<<<test_end>>>
+\end_layout
+
+\begin_layout Code
+
+$ cat ltp.zoo
+\end_layout
+
+\begin_layout Code
+
+#9357,tutor,pan/ltp-pan -a ltp.zoo -n tutor sleep 4
+\end_layout
+
+\begin_layout Code
+
+#9358,cmdln,sleep 4
+\end_layout
+
+\begin_layout Code
+
+$
+\end_layout
+
+\begin_layout Paragraph
+How it works
+\end_layout
+
+\begin_layout Standard
+This example shows the two parameters that are always required by ltp-pan,
+ the active file and a test tag for ltp-pan.
+ The
+\begin_inset Quotes eld
+\end_inset
+
+sleep 4
+\begin_inset Quotes erd
+\end_inset
+
+ on the end of the command line is a test program and parameters that ltp-pan
+ should run.
+ This test is given the tag
+\begin_inset Quotes eld
+\end_inset
+
+cmdln.
+\begin_inset Quotes erd
+\end_inset
+
+ Ltp-pan will run one test randomly, which ends up being cmdln since it
+ is the only test that we told ltp-pan about.
+\end_layout
+
+\begin_layout Standard
+In the active file,
+\family typewriter
+ltp.zoo
+\family default
+, ltp-pan writes the pid, test tag, and part of the command line for the
+ currently running tests.
+ The command lines are truncated so each line will fit on an 80 column display.
+ When a test tag finishes, ltp-pan will place a '#' at the beginning of
+ the line to mark it as available.
+ Here you can see that cmdln and tutor, the name we gave ltp-pan, ran to
+ completion.
+ If the computer hangs, you can read this file to see which test programs
+ were running.
+\end_layout
+
+\begin_layout Standard
+We have run one test once.
+ Let's do something a little more exciting.
+ Let's run one test several times, at the same time.
+\end_layout
+
+\begin_layout Code
+
+$ ltp-pan -a ltp.zoo -n tutor -x 3 -s 3 -O /tmp sleep 1
+\end_layout
+
+\begin_layout Code
+
+<<<test_start>>>
+\end_layout
+
+\begin_layout Code
+
+tag=cmdln stime=971465653
+\end_layout
+
+\begin_layout Code
+
+cmdline="sleep 1"
+\end_layout
+
+\begin_layout Code
+
+contacts=""
+\end_layout
+
+\begin_layout Code
+
+analysis=exit
+\end_layout
+
+\begin_layout Code
+
+initiation_status="ok"
+\end_layout
+
+\begin_layout Code
+
+<<<test_output>>>
+\end_layout
+
+\begin_layout Code
+
+\end_layout
+
+\begin_layout Code
+
+<<<execution_status>>>
+\end_layout
+
+\begin_layout Code
+
+duration=103326814 termination_type=exited termination_id=0 corefile=no
+\end_layout
+
+\begin_layout Code
+
+cutime=1 cstime=0
+\end_layout
+
+\begin_layout Code
+
+<<<test_end>>>
+\end_layout
+
+\begin_layout Code
+
+<<<test_start>>>
+\end_layout
+
+\begin_layout Code
+
+tag=cmdln stime=971465653
+\end_layout
+
+\begin_layout Code
+
+cmdline="sleep 1"
+\end_layout
+
+\begin_layout Code
+
+contacts=""
+\end_layout
+
+\begin_layout Code
+
+analysis=exit
+\end_layout
+
+\begin_layout Code
+
+initiation_status="ok"
+\end_layout
+
+\begin_layout Code
+
+<<<test_output>>>
+\end_layout
+
+\begin_layout Code
+
+\end_layout
+
+\begin_layout Code
+
+<<<execution_status>>>
+\end_layout
+
+\begin_layout Code
+
+duration=103326814 termination_type=exited termination_id=0 corefile=no
+\end_layout
+
+\begin_layout Code
+
+cutime=0 cstime=1
+\end_layout
+
+\begin_layout Code
+
+<<<test_end>>>
+\end_layout
+
+\begin_layout Code
+
+<<<test_start>>>
+\end_layout
+
+\begin_layout Code
+
+tag=cmdln stime=971465653
+\end_layout
+
+\begin_layout Code
+
+cmdline="sleep 1"
+\end_layout
+
+\begin_layout Code
+
+contacts=""
+\end_layout
+
+\begin_layout Code
+
+analysis=exit
+\end_layout
+
+\begin_layout Code
+
+initiation_status="ok"
+\end_layout
+
+\begin_layout Code
+
+<<<test_output>>>
+\end_layout
+
+\begin_layout Code
+
+\end_layout
+
+\begin_layout Code
+
+<<<execution_status>>>
+\end_layout
+
+\begin_layout Code
+
+duration=103326814 termination_type=exited termination_id=0 corefile=no
+\end_layout
+
+\begin_layout Code
+
+cutime=0 cstime=0
+\end_layout
+
+\begin_layout Code
+
+<<<test_end>>>
+\end_layout
+
+\begin_layout Paragraph
+How it works
+\end_layout
+
+\begin_layout Standard
+In this example we run another fake test from the command line, but we run
+ it three times (-s 3) and keep three test tags active at the same time
+ (-x 3).
+ The -O parameter is a directory where temporary files can be created to
+ buffer the output of each test tag.
+ You can see in the output that cmdln ran three times.
+ If the -O option were omitted, your test output would be mixed, making
+ it almost worthless.
+\end_layout
+
+\begin_layout Itemize
+Using a ltp-pan file to run multiple tests
+\end_layout
+
+\begin_layout Itemize
+Nesting ltp-pan
+\end_layout
+
+\begin_layout Standard
+For more information on ltp-pan see the man page
+\family typewriter
+doc/man1/ltp-pan.1
+\family default
+.
+\end_layout
+
+\begin_layout Subsection
+Scanner
+\end_layout
+
+\begin_layout Standard
+
+\family typewriter
+Ltp-scanner
+\family default
+ is a results analysis tool that understands the
+\emph on
+rts
+\emph default
+ style output which
+\family typewriter
+ltp-pan
+\family default
+ generates by default.
+ It will produce a table summarizing which tests passed and which failed.
+\end_layout
+
+\begin_layout Subsection
+The Quick-hitter Package
+\end_layout
+
+\begin_layout Standard
+Many of the tests released use the Quick-hitter test package to perform
+ tasks like create and move to a temporary directory, handle some common
+ command line parameters, loop, run in parallel, handle signals, and clean
+ up.
+\end_layout
+
+\begin_layout Standard
+There is an example test case,
+\family typewriter
+doc/examples/quickhit.c
+\family default
+, which shows how the quick-hitter package can be used.
+ The file is meant to be a supplement to the documentation, not a working
+ test case.
+ Use any of the tests in
+\family typewriter
+tests/
+\family default
+ as a template.
+\end_layout
+
+\begin_layout Section
+To Do
+\end_layout
+
+\begin_layout Standard
+There are a lot of things that still need to be done to make this a complete
+ kernel testing system.
+ The following sections will discuss some of the to do items in detail.
+\end_layout
+
+\begin_layout Subsection
+Configuration Analysis
+\end_layout
+
+\begin_layout Standard
+While the number of configuration options for the Linux kernel is seen as
+ a strength to developers and users alike, it is a curse to testers.
+  To create a powerful automated testing system, we need to be able to determine
+ what the configuration on the booted box is and then determine which tests
+ should be run on that box.
+\end_layout
+
+\begin_layout Standard
+The Linux kernel has hundreds of configuration options that can be set to
+ compile the kernel.
+  There are more options that can be set when you boot the kernel and while
+ it is running.
+  There are also many patches that can be applied to the kernel to add functiona
+lity or change behavior.
+\end_layout
+
+\begin_layout Subsection
+Result Comparison
+\end_layout
+
+\begin_layout Standard
+A lot of testing will be done in the life of the Linux Test Project.
+ Keeping track of the results from all the testing will require some infrastruct
+ure.
+ It would be nice to take that output from a test machine, feed it to a
+ program and receive a list of items that broke since the last run on that
+ machine, or were fixed, or work on another test machine but not on this
+ one.
+\end_layout
+
+\begin_layout Section
+Contact information and updates
+\end_layout
+
+\begin_layout Literal
+
+URL: http://ltp.sourceforge.net/
+\end_layout
+
+\begin_layout Literal
+
+mailing list: ltp-list@lists.sourceforge.net
+\end_layout
+
+\begin_layout Literal
+
+list archive: https://sourceforge.net/mailarchive/forum.php?forum_name=ltp-list
+\end_layout
+
+\begin_layout Standard
+Questions and comments should be sent to the LTP mailing list at ltp-list@lists.s
+ourceforge.net.
+  To subscribe, please go to https://lists.sourceforge.net/lists/listinfo/ltp-list.
+\end_layout
+
+\begin_layout Standard
+The source is also available via CVS.
+  See the web site for a web interface and check out instructions.
+\end_layout
+
+\begin_layout Section
+Glossary
+\end_layout
+
+\begin_layout Description
+Test IEEE/ANSI
+\begin_inset Foot
+status collapsed
+
+\begin_layout Plain Layout
+Kit, Edward, Software Testing in the Real World: Improving the Process.
+ P.
+ 82.
+ ACM Press, 1995.
+\end_layout
+
+\end_inset
+
+:
+\shape italic
+
+\begin_inset Newline newline
+\end_inset
+
+(i)
+\shape default
+ An activity in which a system or component is executed under specified
+ conditions, the results are observed or record, and an evaluation is made
+ of some aspect of the system or component.
+\shape italic
+
+\begin_inset Newline newline
+\end_inset
+
+(ii)
+\shape default
+ A set of one or more test cases.
+\end_layout
+
+\begin_layout Description
+Test
+\begin_inset space ~
+\end_inset
+
+Case A test assertion with a single result that is being verified.
+ This allows designations such as PASS or FAIL to be applied to a single
+ bit of functionality.
+  A single test case may be one of many test cases for testing the complete
+ functionality of a system.
+\begin_inset Newline newline
+\end_inset
+
+IEEE/ANSI:
+\shape italic
+
+\begin_inset Newline newline
+\end_inset
+
+(i)
+\shape default
+A set of test inputs, execution conditions, and expected results developed
+ for a particular objective.
+\shape italic
+
+\begin_inset Newline newline
+\end_inset
+
+(ii)
+\shape default
+ The smallest entity that is always executed as a unit, from beginning to
+ end.
+\end_layout
+
+\begin_layout Description
+Test
+\begin_inset space ~
+\end_inset
+
+Driver A program that handles the execution of test programs.
+ It is responsible for starting the test programs, capturing their output,
+ and recording their results.
+ Ltp-pan is an example of a test driver.
+\end_layout
+
+\begin_layout Description
+Test
+\begin_inset space ~
+\end_inset
+
+Framework A mechanism for organizing a group of tests.
+  Frameworks may have complex or very simple API's, drivers and result logging
+ mechanisms.
+ Examples of frameworks are TETware and DejaGnu.
+\end_layout
+
+\begin_layout Description
+Test
+\begin_inset space ~
+\end_inset
+
+Harness A Test harness is the mechanism that connects a test program to
+ a test framework.
+  It may be a specification of exit codes,  or a set of libraries for formatting
+ messages and determining exit codes.
+  In TETware, the tet_result() API is the test harness.
+\end_layout
+
+\begin_layout Description
+Test
+\begin_inset space ~
+\end_inset
+
+Program A single invokable program.
+  A test program can contain one or more test cases.
+ The test harness's API allows for reporting/analysis of the individual
+ test cases.
+\end_layout
+
+\begin_layout Description
+Test
+\begin_inset space ~
+\end_inset
+
+Suite A collection of tests programs, assertions, cases grouped together
+ under a framework.
+\end_layout
+
+\begin_layout Description
+Test
+\begin_inset space ~
+\end_inset
+
+Tag An identifier that corresponds to a command line which runs a test.
+  The tag is a single word that matches a test program with a set of command
+ line arguments.
+\end_layout
+
+\begin_layout Section
+GNU Free Documentation License
+\end_layout
+
+\begin_layout Standard
+GNU Free Documentation License Version 1.3, 3 November 2008 in this link:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Flex URL
+status open
+
+\begin_layout Plain Layout
+
+http://www.gnu.org/licenses/fdl.html
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document
