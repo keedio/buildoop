@@ -16,25 +16,12 @@
 
 set -ex
 
-if [ "x$SCALA_HOME" = "x" ]; then
-    echo "SCALA_HOME has to be set before the build can run"
-    exit 2
-fi
-
-HADOOP_VERSION=2.2.0
-
-BUILD_OPTS="-Pyarn -Dhadoop.version=2.2.0 \
-	    -Dyarn.version=2.2.0 \
-	    -Dprotobuf.version=2.5.0 \
-	    -DskipTests"
-
-# -Dhbase.version=???
-
-export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m \
-		   -XX:PermSize=1024m -XX:MaxPermSize=1024m"
-
-# bigtop-dist profile is hardcoded in the original source code.
-mvn $BUILD_OPTS clean package
+sh make-distribution.sh \
+	--hadoop 2.2.0 \
+	--with-yarn \
+	--with-hive \
+	--tgz \
+	--skip-java-test
 
 
 

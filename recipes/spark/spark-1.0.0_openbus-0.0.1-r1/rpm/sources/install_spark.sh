@@ -129,7 +129,7 @@ install -d -m 0755 $PREFIX/var/log/spark/
 install -d -m 0755 $PREFIX/var/run/spark/
 install -d -m 0755 $PREFIX/var/run/spark/work/
 
-tar --wildcards -C $PREFIX/$LIB_DIR -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz 'lib/*'
+cp ${BUILD_DIR}/dist/
 
 for comp in core repl bagel mllib streaming; do
   install -d -m 0755 $PREFIX/$LIB_DIR/$comp/lib
