@@ -158,6 +158,7 @@ done
 %config(noreplace) %{config_spark}.dist
 %doc %{doc_spark}
 %{lib_spark}
+%{lib_spark}/ec2
 %exclude %{lib_spark}/pyspark
 %exclude %{lib_spark}/python
 %{etc_spark}
