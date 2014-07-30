@@ -8,7 +8,7 @@
 	
 	"do_download": {
 		"src_uri":    "http://www.eu.apache.org/dist/incubator/storm/apache-storm-0.9.2-incubating/apache-storm-0.9.2-incubating-src.tar.gz",
-		"src_md5sum": "780df04fab0437030ae54138347f2c5f"
+		"src_md5sum": "efeca12aa00be694ca337618286817d8"
 	},
 
 	"do_fetch": {

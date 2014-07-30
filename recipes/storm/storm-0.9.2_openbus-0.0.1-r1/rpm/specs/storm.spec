@@ -24,8 +24,8 @@
 # Only for prevention.
 %global __os_install_post %{nil}
 
-%define storm_version 0.9.1
-%define storm_base_version 0.9.1
+%define storm_version 0.9.2
+%define storm_base_version 0.9.2
 %define storm_release openbus0.0.1_1
 
 Name: %{storm_name}
@@ -131,7 +131,7 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 %dir %attr(755, root, root) %{storm_home}
 %dir %attr(755, root, root) /etc/storm
 %{storm_home}/*
-/etc/storm/storm.yaml
+/etc/storm/*
 /etc/default/storm
 /var/log/*
 /var/run/storm/
