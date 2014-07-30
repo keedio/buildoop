@@ -99,26 +99,6 @@ class MainController {
 					}
 				}
 				break
-			case "-clean":
-				if (wo["pkg"]) {
-                    clean(wo["pkg"])
-                } else {
-                    def pkgList = getPkgList(wo["bom"])
-                    for (i in pkgList) {
-                        clean(i)
-                    }
-                }
-                break
-			case "-cleanall":
-                if (wo["pkg"]) {
-                    cleanall(wo["pkg"])
-                } else {
-                    def pkgList = getPkgList(wo["bom"])
-                    for (i in pkgList) {
-                        cleanall(i)
-                    }
-                }
-                break
 			default:
 				break
 		}
@@ -449,35 +429,4 @@ class MainController {
 
         println "TODO .................."
     }
-
-	def clean(pkg) {
-		def jsonRecipe = loadJsonRecipe(pkg)
-
-		def stampFile = globalConfig.buildoop.stamps + "/" +
-                jsonRecipe.do_info.filename.split('.bd')[0] + ".done"
-
-		new File(stampFile).delete()
-	}
-
-	def cleanall(pkg) {
-		clean(pkg)
-		
-		def jsonRecipe = loadJsonRecipe(pkg)
-
-        def downloadFile = globalConfig.buildoop.downloads + "/" +
-                jsonRecipe.do_download.src_uri.tokenize('/')[-1]
-
-		if (downloadFile.tokenize('.')[-1] == "git") {
-			new AntBuilder().delete(dir: downloadFile)
-			downloadFile += ".tar.gz"
-		}
-		new File(downloadFile).delete()
-		new File(downloadFile + ".done").delete()
-
-        
-		def workPath = globalConfig.buildoop.work + "/" +
-                jsonRecipe.do_info.filename.split('.bd')[0]
-
-		new AntBuilder().delete(dir: workPath)	
-	}
 }
