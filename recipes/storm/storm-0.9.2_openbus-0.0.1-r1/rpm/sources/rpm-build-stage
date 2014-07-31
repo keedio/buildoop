@@ -16,7 +16,7 @@
 
 set -xv
 
-storm_version="apache-storm-0.9.1-incubating"
+storm_version="apache-storm-0.9.2-incubating"
 JAVA_OPTS=""
 MAVEN_OPTS="-DskipTests -Dgpg.skip"
 
