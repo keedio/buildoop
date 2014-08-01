@@ -84,7 +84,7 @@ STORM_HOME=${STORM_HOME:-$PREFIX/usr/lib/storm}
 BIN_DIR=${BIN_DIR:-$PREFIX/usr/bin}
 STORM_ETC_DIR=${STORM_ETC_DIR:-$PREFIX/etc/storm}
 
-install -d -m 755 ${STORM_HOME}
+install -d -m 755 ${STORM_HOME}/
 install    -m 644 ${BUILD_DIR}/CHANGELOG.md ${STORM_HOME}/
 install    -m 644 ${BUILD_DIR}/DISCLAIMER ${STORM_HOME}/
 install    -m 644 ${BUILD_DIR}/LICENSE ${STORM_HOME}/
@@ -100,15 +100,25 @@ install    -m 644 ${BUILD_DIR}/conf/* ${STORM_HOME}/conf
 
 install -d -m 755 ${STORM_HOME}/lib/
 install    -m 644 ${BUILD_DIR}/lib/* ${STORM_HOME}/lib/
+install    -m 644 ${BUILD_DIR}/external/storm-kafka/*.jar ${STORM_HOME}/lib 
 
 install -d -m 755 ${STORM_HOME}/logback/
 install    -m 644 $RPM_SOURCE_DIR/cluster.xml ${STORM_HOME}/logback/cluster.xml
 
+install -d -m 755 ${STORM_HOME}/public/
+install    -m 644 ${BUILD_DIR}/public/*.html ${STORM_HOME}/public/
+ 
 install -d -m 755 ${STORM_HOME}/public/css/
 install    -m 644 ${BUILD_DIR}/public/css/* ${STORM_HOME}/public/css/
 
 install -d -m 755 ${STORM_HOME}/public/js/
 install    -m 644 ${BUILD_DIR}/public/js/* ${STORM_HOME}/public/js/
+
+install -d -m 755 ${STORM_HOME}/public/templates/
+install    -m 644 ${BUILD_DIR}/public/templates/* ${STORM_HOME}/public/templates/
+
+install -d -m 755 ${STORM_HOME}/examples/
+install    -m 644 ${BUILD_DIR}/examples/storm-starter/*.jar ${STORM_HOME}/examples/
 
 install -d -m 755 ${STORM_ETC_DIR}
 install    -m 644 ${BUILD_DIR}/conf/* ${STORM_ETC_DIR}/
