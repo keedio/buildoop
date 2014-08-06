@@ -48,6 +48,7 @@ Source7: storm-drpc.init
 Source8: rpm-build-stage
 Source9: install_storm.sh
 Patch0: avoid-harcoded-paths.patch
+Patch1: storm-kafka-dependencies.patch
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires: sh-utils, textutils, /usr/sbin/useradd, /usr/sbin/usermod, /sbin/chkconfig, /sbin/service
 Provides: storm
@@ -104,10 +105,20 @@ The DRPC server coordinates receiving an RPC request, sending the request to
 the Storm topology, receiving the results from the Storm topology, and sending
 the results back to the waiting client. 
 
+%package kafka
+Summary: Storm Kafka Connector.
+Group: Libraries
+Requires: %{name} = %{version}-%{release}, jdk
+BuildArch: noarch
+%description kafka
+Storm-kafka is a connector to support the submit of topologies with
+kafka spouts 
+
 %prep
 %setup -n apache-%{storm_name}-%{storm_version}-incubating
 
 %patch0 -p1
+%patch1 -p1
 
 %build
 bash %{SOURCE8}
@@ -122,6 +133,7 @@ bash %{SOURCE9} \
 	  --build-dir=$PWD/build \
 	  --initd-dir=$RPM_BUILD_ROOT%{initd_dir} \
           --prefix=$RPM_BUILD_ROOT
+
 %pre
 getent group %{storm_group} >/dev/null || groupadd -r %{storm_group}
 getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Daemon User" --shell /sbin/nologin -M -r -g %{storm_group} --home /var/run/%{storm_name} %{storm_user}
@@ -157,6 +169,16 @@ fi
 %service_macro ui
 %service_macro supervisor
 %service_macro drpc
+
+%files kafka
+%defattr(-,%{storm_user},%{storm_group})
+%{storm_home}/external/storm-kafka/*
+
+%post kafka
+ln -s %{storm_home}/external/storm-kafka/storm-kafka-0.9.2-incubating.jar \
+	%{storm_home}/lib/storm-kafka-0.9.2-incubating.jar
+chown -h %{storm_user}:%{storm_group} %{storm_home}/lib/storm-kafka-0.9.2-incubating.jar
+  
 
 %changelog
 * Mon Jul 31 2013 Nathan Milford <nathan@milford.io> - 0.9.0-wip16-4

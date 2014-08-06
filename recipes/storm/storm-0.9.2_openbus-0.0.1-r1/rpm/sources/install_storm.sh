@@ -100,7 +100,10 @@ install    -m 644 ${BUILD_DIR}/conf/* ${STORM_HOME}/conf
 
 install -d -m 755 ${STORM_HOME}/lib/
 install    -m 644 ${BUILD_DIR}/lib/* ${STORM_HOME}/lib/
-install    -m 644 ${BUILD_DIR}/external/storm-kafka/*.jar ${STORM_HOME}/lib 
+ 
+install -d -m 755 ${STORM_HOME}/external/storm-kafka
+install    -m 644 ${BUILD_DIR}/external/storm-kafka/storm-kafka-0.9.2-incubating.jar \
+		  ${STORM_HOME}/external/storm-kafka/ 
 
 install -d -m 755 ${STORM_HOME}/logback/
 install    -m 644 $RPM_SOURCE_DIR/cluster.xml ${STORM_HOME}/logback/cluster.xml
@@ -142,12 +145,3 @@ install    -m 644 $RPM_SOURCE_DIR/storm.nofiles.conf ${PREFIX}/etc/security/limi
 
 install -d -m 755 ${PREFIX}/var/log/storm
 install -d -m 755 ${PREFIX}/var/run/storm/
-
-#install -d -m 755 %{buildroot}/usr/bin/
-#cd %{buildroot}/usr/bin
-#ln -s %{storm_home}/bin/%{storm_name} %{storm_name}
-#cd -
-#install -d -m 755 %{buildroot}/%{storm_home}/local/
-#echo 'storm.local.dir: "/opt/storm/local/"' >> %{buildroot}/%{storm_home}/conf/storm.yaml.example
-
-
