@@ -81,9 +81,4 @@ STORM_HBASE_HOME=${PREFIX}/usr/lib/storm/lib
 
 # base libraries
 install -d -m 755 ${STORM_HBASE_HOME}
-cp ${BUILD_DIR}/target/storm-hbase-*.jar ${STORM_HBASE_HOME}
-
-
-
-
-
+install    -m 644 ${BUILD_DIR}/target/storm-hbase-*.jar ${STORM_HBASE_HOME}

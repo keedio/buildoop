@@ -18,6 +18,8 @@
 %define storm_hbase_version 0.9.1.7f79e191ef
 %define storm_hbase_base_version 0.9.1.7f79e191ef
 %define storm_hbase_release openbus0.0.1_1
+%define storm_user storm
+%define storm_group storm
 
 Name: storm-hbase
 Version: %{storm_hbase_version}
@@ -50,9 +52,8 @@ bash %{SOURCE2} \
           --build-dir=. \
           --prefix=$RPM_BUILD_ROOT
 
-%files 
-%defattr(-,root,root,755)
-%attr(0755,root,root) %{lib_storm_hbase}
+%files
+%defattr(-,%{storm_user},%{storm_group})
 %{lib_storm_hbase}
 
 %changelog
