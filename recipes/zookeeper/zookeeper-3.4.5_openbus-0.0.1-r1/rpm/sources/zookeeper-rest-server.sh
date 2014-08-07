@@ -60,7 +60,7 @@ start)
     echo  "Starting ZooKeeper REST Gateway" >> $ZKREST_LOG
     echo  "===============================" >> $ZKREST_LOG
     echo "java  -cp "$CLASSPATH" $JVMFLAGS $ZKREST_MAIN" >> $ZKREST_LOG 
-    java  -cp "$CLASSPATH" $JVMFLAGS $ZKREST_MAIN >> $ZKREST_LOG 2>&1 &
+    ${JAVA_HOME}/bin/java  -cp "$CLASSPATH" $JVMFLAGS $ZKREST_MAIN >> $ZKREST_LOG 2>&1 &
     /bin/echo -n $! > "$ZKREST_PIDFILE"
     echo STARTED
     ;;
