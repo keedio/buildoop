@@ -1,0 +1,18 @@
+{
+        "do_info": {
+                "description": "Storm to Elasticsearch connector from Health Market Science",
+                "homepage":    "https://github.com/hmsonline/storm-elastic-search",
+                "license":     "Eclipse Public License - v 1.0",
+                "filename":    "storm-elasticsearch-0.1.3_openbus-0.0.1-r1.bd"
+        },
+
+        "do_download": {
+         "src_uri":    "https://github.com/mvalleavila/storm-elasticsearch.git",
+         "src_hash": "3aa7020d84dc158537eb9c95fb26697d686ebbde"
+        },
+
+        "do_fetch": {
+                "download_cmd": "git"
+        },
+}
+
