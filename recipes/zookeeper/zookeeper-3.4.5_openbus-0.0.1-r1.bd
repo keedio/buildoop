@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://www.eu.apache.org/dist/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz",
+		"src_uri":    "http://archive.apache.org/dist/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz",
 		"src_md5sum": "f64fef86c0bf2e5e0484d19425b22dcb"
 	},
 

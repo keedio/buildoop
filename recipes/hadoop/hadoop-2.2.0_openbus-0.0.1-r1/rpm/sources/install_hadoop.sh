@@ -221,7 +221,7 @@ chmod 644 ${HADOOP_DIR}/lib/*.jar ${MAPREDUCE_DIR}/lib/*.jar ${HDFS_DIR}/lib/*.j
 
 # issue [buildoop-github-#44]
 # used this link by oozie and flume, and probably other tools.
-ln -sf /usr/lib/hadoop/hadoop-auth-*.jar $RPM_BUILD_ROOT/usr/lib/hadoop/hadoop-auth.jar || true
+ln -sf /usr/lib/hadoop/hadoop-auth-2.2.0.jar $RPM_BUILD_ROOT/usr/lib/hadoop/hadoop-auth.jar || true
 
 # Install webapps
 cp -ra ${BUILD_DIR}/share/hadoop/hdfs/webapps ${HDFS_DIR}/
