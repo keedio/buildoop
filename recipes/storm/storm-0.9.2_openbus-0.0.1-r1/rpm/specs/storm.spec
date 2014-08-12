@@ -28,6 +28,8 @@
 %define storm_base_version 0.9.2
 %define storm_release openbus0.0.1_1
 
+%define kafka_version 0.8.0
+
 Name: %{storm_name}
 Version: %{storm_version}
 Release: %{storm_release}
@@ -142,7 +144,17 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 %defattr(-,%{storm_user},%{storm_group})
 %dir %attr(755, root, root) %{storm_home}
 %dir %attr(755, root, root) /etc/storm
-%{storm_home}/*
+%{storm_home}/CHANGELOG.md
+%{storm_home}/DISCLAIMER
+%{storm_home}/LICENSE
+%{storm_home}/NOTICE
+%{storm_home}/README.markdown
+%{storm_home}/RELEASE
+%{storm_home}/conf/*
+%{storm_home}/examples/*
+%{storm_home}/lib/*
+%{storm_home}/logback/*
+%{storm_home}/public/*
 /etc/storm/*
 /etc/default/storm
 /var/log/*
