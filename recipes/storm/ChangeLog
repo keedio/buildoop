@@ -1,3 +1,19 @@
+12-08-2014 Javi Roman <javiroman@redoop.org>
+
+	* Bump version to Storm 0.9.2, the new collection:
+
+	storm-nimbus-0.9.2-openbus0.0.1_1.noarch.rpm
+	storm-ui-0.9.2-openbus0.0.1_1.noarch.rpm
+	storm-supervisor-0.9.2-openbus0.0.1_1.noarch.rpm
+	storm-drpc-0.9.2-openbus0.0.1_1.noarch.rpm
+	storm-kafka-0.9.2-openbus0.0.1_1.noarch.rpm
+
+	Important the new package: storm-kafka-0.9.2-openbus0.0.1_1.noarch.rpm
+
+	This package is now integrated in the Storm core.
+
+	The UI is pretty enhanced and is RestFul capable.
+
 19-03-2014 Javi Roman <javiroman@redoop.org>
 
 	* First package collection for Storm:
