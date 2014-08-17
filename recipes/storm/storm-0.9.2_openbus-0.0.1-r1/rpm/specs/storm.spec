@@ -49,6 +49,7 @@ Source6: storm-nimbus.init
 Source7: storm-drpc.init
 Source8: rpm-build-stage
 Source9: install_storm.sh
+Source10: storm-logviewer.init
 Patch0: avoid-harcoded-paths.patch
 Patch1: storm-kafka-dependencies.patch
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
@@ -116,6 +117,23 @@ BuildArch: noarch
 Storm-kafka is a connector to support the submit of topologies with
 kafka spouts 
 
+%package logviewer
+Summary: The Storm LogViewer daemon
+Group: System/Daemons
+Requires: %{name} = %{version}-%{release}, jdk
+BuildArch: noarch
+%description logviewer
+New feature for debugging and monitoring topologies: The logviewer daemon.
+
+In earlier versions of Storm, viewing worker logs involved determining a 
+worker’s location (host/port), typically through Storm UI, then sshing 
+to that host and tailing the corresponding worker log file. With the new 
+log viewer. You can now easily access a specific worker’s log in a web 
+browser by clicking on a worker’s port number right from Storm UI.
+
+The logviewer daemon runs as a separate process on Storm supervisor nodes.
+
+
 %prep
 %setup -n apache-%{storm_name}-%{storm_version}-incubating
 
@@ -181,6 +199,7 @@ fi
 %service_macro ui
 %service_macro supervisor
 %service_macro drpc
+%service_macro logviewer
 
 %files kafka
 %defattr(-,%{storm_user},%{storm_group})

@@ -132,6 +132,7 @@ install -d -m 755 ${INITD_DIR}
 install    -m 755 $RPM_SOURCE_DIR/storm-nimbus.init     ${INITD_DIR}/storm-nimbus
 install    -m 755 $RPM_SOURCE_DIR/storm-ui.init         ${INITD_DIR}/storm-ui
 install    -m 755 $RPM_SOURCE_DIR/storm-supervisor.init ${INITD_DIR}/storm-supervisor
+install    -m 755 $RPM_SOURCE_DIR/storm-logviewer.init  ${INITD_DIR}/storm-logviewer
 install    -m 755 $RPM_SOURCE_DIR/storm-drpc.init       ${INITD_DIR}/storm-drpc
 
 install -d -m 755 ${PREFIX}/etc/sysconfig

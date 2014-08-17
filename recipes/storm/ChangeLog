@@ -1,3 +1,7 @@
+17-08-2014 Javi Roman <javiroman@redoop.org>
+
+	* storm-logviewer daemon addition.
+
 12-08-2014 Javi Roman <javiroman@redoop.org>
 
 	* Bump version to Storm 0.9.2, the new collection:
