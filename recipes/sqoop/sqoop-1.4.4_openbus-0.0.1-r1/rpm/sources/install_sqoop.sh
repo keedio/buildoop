@@ -25,12 +25,9 @@ usage: $0 <options>
      --prefix=PREFIX             path to install into
 
   Optional options:
-     --doc-dir=DIR               path to install docs into [/usr/share/doc/sqoop]
      --lib-dir=DIR               path to install sqoop home [/usr/lib/sqoop]
-     --installed-lib-dir=DIR     path where lib-dir will end up on target system
      --bin-dir=DIR               path to install bins [/usr/bin]
      --conf-dir=DIR              path to configuration files provided by the package [/etc/sqoop/conf.dist]
-     --examples-dir=DIR          path to install examples [doc-dir/examples]
      ... [ see source for more similar options ]
   "
   exit 1
@@ -40,12 +37,9 @@ OPTS=$(getopt \
   -n $0 \
   -o '' \
   -l 'prefix:' \
-  -l 'doc-dir:' \
   -l 'lib-dir:' \
   -l 'conf-dir:' \
-  -l 'installed-lib-dir:' \
   -l 'bin-dir:' \
-  -l 'examples-dir:' \
   -l 'build-dir:' -- "$@")
 
 if [ $? != 0 ] ; then
@@ -59,26 +53,17 @@ while true ; do
         --prefix)
         PREFIX=$2 ; shift 2
         ;;
-        --build-dir)
-        BUILD_DIR=$2 ; shift 2
-        ;;
-        --doc-dir)
-        DOC_DIR=$2 ; shift 2
-        ;;
         --lib-dir)
         LIB_DIR=$2 ; shift 2
+        ;;
+        --build-dir)
+        BUILD_DIR=$2 ; shift 2
         ;;
         --conf-dir)
         CONF_DIR=$2 ; shift 2
         ;;
-        --installed-lib-dir)
-        INSTALLED_LIB_DIR=$2 ; shift 2
-        ;;
         --bin-dir)
         BIN_DIR=$2 ; shift 2
-        ;;
-        --examples-dir)
-        EXAMPLES_DIR=$2 ; shift 2
         ;;
         --)
         shift ; break
@@ -98,76 +83,40 @@ for var in PREFIX BUILD_DIR ; do
   fi
 done
 
-DOC_DIR=${DOC_DIR:-/usr/share/doc/sqoop}
-LIB_DIR=${LIB_DIR:-/usr/lib/sqoop}
-BIN_DIR=${BIN_DIR:-/usr/lib/sqoop/bin}
-ETC_DIR=${ETC_DIR:-/etc/sqoop}
-MAN_DIR=${MAN_DIR:-/usr/share/man/man1}
-CONF_DIR=${CONF_DIR:-${ETC_DIR}/conf.dist}
+LIB_DIR=${LIB_DIR:-usr/lib/sqoop}
+BIN_DIR=${BIN_DIR:-$PREFIX/usr/bin}
+CONF_DIR=${CONF_DIR:-$PREFIX/etc/sqoop/conf.dist}
+SQOOP_BUILD_DIR=build/sqoop-1.4.4.bin__hadoop-2.0.4-alpha/
 
 install -d -m 0755 ${PREFIX}/${LIB_DIR}
-
-install -d -m 0755 ${PREFIX}/${LIB_DIR}
-cp ${BUILD_DIR}/sqoop*.jar ${PREFIX}/${LIB_DIR}
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/*.jar ${PREFIX}/${LIB_DIR}
 
 install -d -m 0755 ${PREFIX}/${LIB_DIR}/lib
-cp -a ${BUILD_DIR}/lib/*.jar ${PREFIX}/${LIB_DIR}/lib
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/lib/* ${PREFIX}/${LIB_DIR}/lib
 
-#install -d -m 0755 ${PREFIX}/${LIB_DIR}/shims
-#cp -a shims/*.jar ${PREFIX}/${LIB_DIR}/shims
+install -d -m 0755 ${PREFIX}/${LIB_DIR}/testdata
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/testdata/*.txt ${PREFIX}/${LIB_DIR}/testdata
 
-install -d -m 0755 $PREFIX/usr/bin
+install -d -m 0755 ${PREFIX}/${LIB_DIR}/testdata/hcatalog/conf
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/testdata/hcatalog/conf/* ${PREFIX}/${LIB_DIR}/testdata/hcatalog/conf
 
-install -d -m 0755 $PREFIX/${BIN_DIR}
-cp ${BUILD_DIR}/bin/* $PREFIX/${BIN_DIR}
+install -d -m 0755 ${PREFIX}/${LIB_DIR}/testdata/hive/bin
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/testdata/hive/bin/* ${PREFIX}/${LIB_DIR}/testdata/hive/bin
 
-install -d -m 0755 $PREFIX/${DOC_DIR}
-cp ${BUILD_DIR}/docs/*.html  $PREFIX/${DOC_DIR}
-cp ${BUILD_DIR}/docs/*.css $PREFIX/${DOC_DIR}
-cp -r ${BUILD_DIR}/docs/api $PREFIX/${DOC_DIR}
-cp -r ${BUILD_DIR}/docs/images $PREFIX/${DOC_DIR}
+install -d -m 0755 ${PREFIX}/${LIB_DIR}/testdata/hive/scripts
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/testdata/hive/scripts/* ${PREFIX}/${LIB_DIR}/testdata/hive/scripts
 
+install -d -m 0755 ${PREFIX}/${BIN_DIR}
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/bin/* ${PREFIX}/${BIN_DIR}
 
-install -d -m 0755 $PREFIX/$MAN_DIR
-for i in sqoop sqoop-codegen sqoop-export sqoop-import-all-tables sqoop-version sqoop-create-hive-table sqoop-help sqoop-list-databases sqoop-eval sqoop-import sqoop-list-tables sqoop-job sqoop-metastore sqoop-merge
-	do echo "Copying manpage $i"
-	cp ${BUILD_DIR}/docs/man/$i* $PREFIX/$MAN_DIR
-	echo "Creating wrapper for $i"
-	wrapper=$PREFIX/usr/bin/$i
-	mkdir -p `dirname $wrapper`
-	cat > $wrapper <<EOF
-#!/bin/bash
+install -d -m 0755 ${PREFIX}/${CONF_DIR}
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/conf/* ${PREFIX}/${CONF_DIR}
 
-# Autodetect JAVA_HOME if not defined
-. /usr/lib/bigtop-utils/bigtop-detect-javahome
+cd ${PREFIX}/etc/sqoop
+ln -s conf.dist conf
 
-SQOOP_JARS=\`ls /var/lib/sqoop/*.jar\`
-export HADOOP_CLASSPATH=\$(JARS=(\${SQOOP_JARS}); IFS=:; echo "\${HADOOP_CLASSPATH}:\${JARS[*]}")
-
-export SQOOP_HOME=$LIB_DIR
-exec $BIN_DIR/$i "\$@"
-EOF
-   chmod 0755 $wrapper
-done
-
-install -d -m 0755 $PREFIX/$CONF_DIR
-(cd ${BUILD_DIR}/conf && tar cf - .) | (cd $PREFIX/$CONF_DIR && tar xf -)
-
-unlink $PREFIX/$LIB_DIR/conf || /bin/true
-ln -s $ETC_DIR/conf $PREFIX/$LIB_DIR/conf
-
-# Cloudera specific
-install -d -m 0755 $PREFIX/$LIB_DIR/cloudera
-cp cloudera/cdh_version.properties $PREFIX/$LIB_DIR/cloudera/
-
-# Replace every Avro or Parquet jar with a symlink to the versionless symlinks in our distribution
-# This regex matches upstream versions, plus CDH versions, betas and snapshots if they are present
-versions='s#-[0-9].[0-9].[0-9]\(-cdh[0-9\-\.]*\)\?\(-beta-[0-9]\+\)\?\(-SNAPSHOT\)\?##'
-timestamps='s#-[0-9]\{8\}\.[0-9]\{6\}-[0-9]\{1,2\}##'
-for dir in ${PREFIX}/${LIB_DIR}/lib; do
-    for old_jar in `find $dir -maxdepth 1 -name avro*.jar -o -name parquet*.jar | grep -v 'cassandra'`; do
-        base_jar=`basename $old_jar`; new_jar=`echo $base_jar | sed -e $versions | sed -e $timestamps`
-        rm $old_jar && ln -fs /usr/lib/${base_jar/-*/}/$new_jar $dir/
-    done
-done
-
+# Metastore specific files
+install -d -m 0755 ${PREFIX}/etc/init.d
+install    -m 0644 ${BUILD_DIR}/${SQOOP_BUILD_DIR}/bin/sqoop-metastore ${PREFIX}/etc/init.d/
+install -d -m 0755 ${PREFIX}/var/lib/sqoop
+install -d -m 0755 ${PREFIX}/var/log/sqoop
