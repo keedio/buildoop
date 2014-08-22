@@ -100,11 +100,11 @@ getent passwd sqoop > /dev/null || useradd -c "Sqoop" -s /sbin/nologin \
 	-g sqoop -r -d /var/lib/sqoop sqoop 2> /dev/null || :
 
 %post
-%{alternatives_cmd} --install %{conf_sqoop} %{name}-conf %{conf_sqoop_dist} 30
+alternatives --install %{conf_sqoop} %{name}-conf %{conf_sqoop_dist} 30
 
 %preun
 if [ "$1" = 0 ]; then
-  %{alternatives_cmd} --remove %{name}-conf %{conf_sqoop_dist} || :
+  alternatives --remove %{name}-conf %{conf_sqoop_dist} || :
 fi
 
 %post metastore
