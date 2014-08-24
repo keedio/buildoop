@@ -61,7 +61,7 @@ install -d -m 0755 -o zookeeper -g zookeeper /var/run/zookeeper/
 function status_ext(){
     status -p $pidfile ${command}
     RETVAL=$?
-    listening=`/usr/sbin/lsof -nPi | grep ":${clientPort} " | tr -s ' ' | cut -d' ' -f2`
+    listening=`/usr/sbin/lsof -nPi | grep ":${clientPort} " | grep "LISTEN" | tr -s ' ' | cut -d' ' -f2`
     [ -f $pidfile ] && pid=`cat $pidfile`
     if [ $RETVAL -eq 3 ] && [ -n "$listening" ]; then
 	echo "Port ${clientPort} is being used by ${listening} but ${prog} is stopped"
