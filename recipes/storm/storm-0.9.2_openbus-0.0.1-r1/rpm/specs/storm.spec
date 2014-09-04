@@ -19,6 +19,7 @@
 %define config_storm %{etc_storm}/conf
 %define storm_user storm
 %define storm_group storm
+%define storm_user_home /var/run/%{storm_name}
 %global initd_dir %{_sysconfdir}/rc.d/init.d
 # prevent binary stripping - not necessary at all.
 # Only for prevention.
@@ -134,16 +135,16 @@ bash %{SOURCE9} \
           --build-dir=build \
 	  --build-dir=$PWD/build \
 	  --initd-dir=$RPM_BUILD_ROOT%{initd_dir} \
-          --prefix=$RPM_BUILD_ROOT
-
+	  --prefix=$RPM_BUILD_ROOT 
+	  
 %pre
 getent group %{storm_group} >/dev/null || groupadd -r %{storm_group}
-getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Daemon User" --shell /sbin/nologin -M -r -g %{storm_group} --home /var/run/%{storm_name} %{storm_user}
+getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Daemon User" --shell /sbin/nologin -M -r -g %{storm_group} --home %{storm_user_home} %{storm_user}
 
 %files
 %defattr(-,%{storm_user},%{storm_group})
-%dir %attr(755, root, root) %{storm_home}
-%dir %attr(755, root, root) /etc/storm
+%dir %attr(755, %{storm_user},%{storm_group}) %{storm_home}
+%dir %attr(755, %{storm_user},%{storm_group}) /etc/storm
 %{storm_home}/CHANGELOG.md
 %{storm_home}/DISCLAIMER
 %{storm_home}/LICENSE
@@ -154,7 +155,6 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 %{storm_home}/examples/*
 %{storm_home}/lib/*
 %{storm_home}/logback/*
-%{storm_home}/public/*
 /etc/storm/*
 /etc/default/storm
 /var/log/*
@@ -163,6 +163,8 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 /usr/bin/storm
 /etc/sysconfig/storm
 /etc/security/limits.d/storm.nofiles.conf
+%attr(644,%{storm_user},%{storm_group}) %{storm_user_home}/.bash_profile
+
 
 %define service_macro() \
 %files %1 \
@@ -178,9 +180,23 @@ if [ $1 = 0 ]; then \
 fi
 
 %service_macro nimbus
-%service_macro ui
 %service_macro supervisor
 %service_macro drpc
+
+%files ui
+%defattr(-,root,root)
+%{initd_dir}/%{storm_name}-ui
+%{storm_home}/public/*
+
+%post ui
+chkconfig --add %{storm_name}-ui
+
+%preun ui
+if [ $1 = 0 ]; then
+  service %{storm_name}-ui stop > /dev/null 2>&1
+  chkconfig --del %{storm_name}-ui
+fi
+
 
 %files kafka
 %defattr(-,%{storm_user},%{storm_group})
@@ -190,6 +206,9 @@ fi
 ln -s %{storm_home}/external/storm-kafka/storm-kafka-0.9.2-incubating.jar \
 	%{storm_home}/lib/storm-kafka-0.9.2-incubating.jar
 chown -h %{storm_user}:%{storm_group} %{storm_home}/lib/storm-kafka-0.9.2-incubating.jar
+
+%postun kafka
+rm -f %{storm_home}/lib/storm-kafka-0.9.2-incubating.jar
   
 
 %changelog

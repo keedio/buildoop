@@ -32,7 +32,6 @@ OPTS=$(getopt \
   -l 'prefix:' \
   -l 'build-dir:' \
   -l 'man-dir:' \
-  -l 'bin-dir:' \
   -l 'initd-dir:' \
   -l 'doc-dir:' \
   -- "$@")
@@ -80,6 +79,7 @@ for var in PREFIX BUILD_DIR; do
   fi
 done
 
+
 STORM_HOME=${STORM_HOME:-$PREFIX/usr/lib/storm}
 BIN_DIR=${BIN_DIR:-$PREFIX/usr/bin}
 STORM_ETC_DIR=${STORM_ETC_DIR:-$PREFIX/etc/storm}
@@ -123,8 +123,8 @@ install    -m 644 ${BUILD_DIR}/public/templates/* ${STORM_HOME}/public/templates
 install -d -m 755 ${STORM_HOME}/examples/
 install    -m 644 ${BUILD_DIR}/examples/storm-starter/*.jar ${STORM_HOME}/examples/
 
-install -d -m 755 ${STORM_ETC_DIR}
-install    -m 644 ${BUILD_DIR}/conf/* ${STORM_ETC_DIR}/
+install -d -m 755 ${STORM_ETC_DIR}/conf
+install    -m 644 ${BUILD_DIR}/conf/* ${STORM_ETC_DIR}/conf/
 
 echo ${INITD_DIR}
 install -d -m 755 ${INITD_DIR}
@@ -145,3 +145,10 @@ install    -m 644 $RPM_SOURCE_DIR/storm.nofiles.conf ${PREFIX}/etc/security/limi
 
 install -d -m 755 ${PREFIX}/var/log/storm
 install -d -m 755 ${PREFIX}/var/run/storm/
+install    -m 755 $RPM_SOURCE_DIR/storm-supervisor-bash_profile ${PREFIX}/var/run/storm/.bash_profile
+
+
+install -d -m 755 ${PREFIX}/
+
+cd ${PREFIX}/etc/storm
+ln -s conf.dist conf
