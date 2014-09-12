@@ -36,7 +36,7 @@ fi
 
 start() {
   echo "Starting $desc (storm-$stormSvc): "
-  su -s /bin/bash $stormUser -c "nohup storm $stormSvc >>$outFile 2>&1 &"
+  su -s /bin/bash - $stormUser -c "nohup storm $stormSvc >>$outFile 2>&1 &"
   RETVAL=$?
   return $RETVAL
 }
