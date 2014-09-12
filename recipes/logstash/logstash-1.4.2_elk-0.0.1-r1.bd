@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "logstash is a tool for managing events and logs", 
+		"homepage":    "http://www.logstash.net/",
+		"license":     "Apache-2.0",
+		"filename":    "logstash-1.4.2_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "https://download.elasticsearch.org/logstash/logstash/logstash-1.4.2.tar.gz",
+		"src_md5sum": "6e6be734392e8c7d6d55e23d0bd8d2b3"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
