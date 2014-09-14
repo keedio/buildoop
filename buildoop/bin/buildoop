@@ -86,8 +86,6 @@ class Buildoop {
 		new File(globalConfig.buildoop.downloads).mkdir()
 		new File(globalConfig.buildoop.work).mkdir()
 		new File(globalConfig.buildoop.bomdeploy).mkdir()
-		new File(globalConfig.buildoop.bomdeploysrc).mkdir()
-		new File(globalConfig.buildoop.bomdeploybin).mkdir()
 	}
 
     def userMessage(type, msg) {

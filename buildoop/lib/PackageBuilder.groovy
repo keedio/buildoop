@@ -29,6 +29,7 @@ import groovy.util.logging.*
 class PackageBuilder {
 	def BDROOT
 	def LOG
+	def wo
 	def globalConfig
 	def specfile
 
@@ -37,6 +38,7 @@ class PackageBuilder {
 		LOG = buildoop.log
 		BDROOT = buildoop.ROOT
 		globalConfig = buildoop.globalConfig
+		wo = buildoop.wo
         LOG.info "[PackageBuilder] constructor"
 	}
 
@@ -125,7 +127,7 @@ class PackageBuilder {
     }
 
 	def moveToDeploy(basefolders, buildoop) {
-		// RPMS folder
+		// RPMS deploy folder
 		def folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
 				"/rpmbuild/RPMS/noarch/"
 
@@ -135,20 +137,36 @@ class PackageBuilder {
 				"/rpmbuild/RPMS/x86_64/"
 		}
 
-		def folderOut = buildoop.ROOT + "/" + 
-					buildoop.globalConfig.buildoop.bomdeploybin + "/"
+        LOG.info "[PackageBuilder] moveToDeploy -> distro version: " + wo["bom"]
 
+		def distverbinpath = 
+				buildoop.globalConfig.buildoop.bomdeploybin.
+						replace("%DIST/%VER", 
+								wo["bom"].minus(".bom").split("-")[0] + "/" +
+								wo["bom"].minus(".bom").split("-")[1])
+
+        LOG.info "[PackageBuilder] moveToDeploy -> RPM deploy folder: " + distverbinpath
+
+		def folderOut = buildoop.ROOT + "/" + distverbinpath + "/"
+
+		new File(folderOut).mkdirs()
 		new File(folderIn).eachFileRecurse { 
 			new File(folderIn + "/" + it.name).
 				renameTo(new File(folderOut + "/" + it.name))
 		}
 
-		// SRPMS folder
+		// SRPMS deploy folder
 		folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
 				"/rpmbuild/SRPMS/"
 
-		folderOut = buildoop.ROOT + "/" + 
-					buildoop.globalConfig.buildoop.bomdeploysrc + "/"
+		def distversrcpath = 
+				buildoop.globalConfig.buildoop.bomdeploysrc.
+						replace("%DIST/%VER", 
+								wo["bom"].minus(".bom").split("-")[0] + "/" +
+								wo["bom"].minus(".bom").split("-")[1])
+
+		folderOut = buildoop.ROOT + "/" + distversrcpath + "/"
+		new File(folderOut).mkdirs()
 
 		new File(folderIn).eachFileRecurse { 
 			new File(folderIn + "/" + it.name).
