@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Jruby programming Languaje and libraries", 
+		"homepage":    "http://www.jruby.org/",
+		"license":     "GPL",
+		"filename":    "jruby-1.7.11_elk-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://jruby.org.s3.amazonaws.com/downloads/1.7.11/jruby-src-1.7.11.tar.gz",
+		"src_md5sum": "b84b9ed98defde5db50869b1c4bab69"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
