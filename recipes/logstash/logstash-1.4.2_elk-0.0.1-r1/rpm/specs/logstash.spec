@@ -21,7 +21,7 @@
 %define config_logstash %{etc_logstash}/conf
 %define logstash_user logstash
 %define logstash_group logstash
-%define logstash_user_home /var/run/%{logstash_name}
+%define logstash_user_home /var/lib/%{logstash_name}
 %define logstash_user logstash
 %define logstash_group logstash
 %global initd_dir %{_sysconfdir}/rc.d/init.d
@@ -45,18 +45,30 @@ Packager:	Marcelo Valle <mvalle@redoop.org>
 Source0:        %{logstash_name}-%{logstash_version}.tar.gz
 
 Patch0: 	logstash-scripts-paths.patch
+Patch1: 	elasticsearch_path.patch
 Source1:	install_logstash.sh
 BuildRoot:      %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 BuildArch:      noarch
 
+Requires: sh-utils, textutils, /usr/sbin/useradd, /usr/sbin/usermod, /sbin/chkconfig, /sbin/service, jruby-complete, elasticsearch
+Provides: logstash
 AutoReqProv: 	no
 
 %description
 Logstash is a tool for managing events and logs.
 
+%package web
+Summary: Logstash web is a Kibana web interface to see logstash activity
+Group: System Environment/Daemons
+Requires: %{name} = %{version}-%{release}, jdk, kibana
+BuildArch: noarch
+%description web
+Logstash web is a Kibana web interface to see logstash activity
+
 %prep
 %setup
 %patch0 -p1
+%patch1 -p1
 
 %build
 
@@ -91,20 +103,34 @@ if [ $1 -eq 0 ]; then
   /sbin/chkconfig --del logstash
 fi
 
+%post web
+/sbin/chkconfig --add logstash-web
+
+%preun web
+if [ $1 -eq 0 ]; then
+  /sbin/service logstash-web stop >/dev/null 2>&1
+  /sbin/chkconfig --del logstash-web
+fi
+
 %files
 %defattr(-,%{logstash_user},%{logstash_group})
 %dir %attr(755, %{logstash_user},%{logstash_group}) %{logstash_home}
 %dir %attr(755, %{logstash_user},%{logstash_group}) /etc/logstash
 /etc/logstash/conf
 %{logstash_home}
+%exclude %{logstash_home}/bin/logstash-web
+%exclude %{logstash_home}/bin/logstash.bat
 %{logstash_user_home}
-
-%attr(755,%{storm_user},%{storm_group}) /usr/bin/*
-/usr/bin/logstash
-/etc/rc.d/init.d/logstash
+%dir %attr(755, root,root) /etc/rc.d/init.d/logstash
 /var/log/logstash
+/var/lib/logstash
+/var/run/logstash
 
-
+%files web
+%{logstash_home}/bin/logstash-web
+/etc/rc.d/init.d/logstash-web
+/var/run/logstash-web
+/etc/logstash-web/conf
 
 %changelog
 * Mon Feb 06 2014 lars.francke@gmail.com 1.3.3-2

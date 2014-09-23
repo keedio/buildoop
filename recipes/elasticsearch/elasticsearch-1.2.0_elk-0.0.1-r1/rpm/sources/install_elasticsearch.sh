@@ -77,47 +77,52 @@ for var in PREFIX BUILD_DIR ; do
 done
 
 TARGET_RELEASE=target/releases/elasticsearch-1.2.0.tar.gz
-SHARE_DIR=${SHARE_DIR:-/usr/share/elasticsearch}
+ELASTICSEARCH_HOME=${ELASTICSEARCH_HOME:-/usr/lib/elasticsearch}
 SRC=${BUILD_DIR}/working/elasticsearch-1.2.0
 
 mkdir ${BUILD_DIR}/working
 tar xzf ${BUILD_DIR}/${TARGET_RELEASE} -C ${BUILD_DIR}/working
 
-mkdir -p ${PREFIX}/${SHARE_DIR}
+install -d -m 755 ${PREFIX}/${ELASTICSEARCH_HOME}
 
-mkdir -p ${PREFIX}/${SHARE_DIR}/bin
-install -p -m 755 ${SRC}/bin/elasticsearch ${PREFIX}/${SHARE_DIR}/bin
-install -p -m 644 ${SRC}/bin/elasticsearch.in.sh ${PREFIX}/${SHARE_DIR}/bin
-install -p -m 755 ${SRC}/bin/plugin ${PREFIX}/${SHARE_DIR}/bin
+install -d -m 755  ${PREFIX}/${ELASTICSEARCH_HOME}/bin
+install -m 755 ${SRC}/bin/elasticsearch ${PREFIX}/${ELASTICSEARCH_HOME}/bin
+install -m 644 ${SRC}/bin/elasticsearch.in.sh ${PREFIX}/${ELASTICSEARCH_HOME}/bin
+install -m 755 ${SRC}/bin/plugin ${PREFIX}/${ELASTICSEARCH_HOME}/bin
 
 #libs
-mkdir -p ${PREFIX}/${SHARE_DIR}/lib/sigar
-install -p -m 644 ${SRC}/lib/*.jar ${PREFIX}/${SHARE_DIR}/lib
-install -p -m 644 ${SRC}/lib/sigar/*.jar ${PREFIX}/${SHARE_DIR}/lib/sigar
-install -p -m 644 ${SRC}/lib/sigar/libsigar-amd64-linux.so ${PREFIX}/${SHARE_DIR}/lib/sigar
+install -d -m 755 ${PREFIX}/${ELASTICSEARCH_HOME}/lib/sigar
+install  -m 644 ${SRC}/lib/*.jar ${PREFIX}/${ELASTICSEARCH_HOME}/lib
+install  -m 644 ${SRC}/lib/sigar/*.jar ${PREFIX}/${ELASTICSEARCH_HOME}/lib/sigar
+install  -m 644 ${SRC}/lib/sigar/libsigar-amd64-linux.so ${PREFIX}/${ELASTICSEARCH_HOME}/lib/sigar
 
 # config
-mkdir -p ${PREFIX}/etc/elasticsearch
-install -m 644 ${SRC}/config/elasticsearch.yml ${PREFIX}/etc/elasticsearch/
-install -m 644 ${SRC}/config/logging.yml ${PREFIX}/etc/elasticsearch/
+install -d -m 755  ${PREFIX}/etc/elasticsearch/conf
+install -m 644 ${SRC}/config/elasticsearch.yml ${PREFIX}/etc/elasticsearch/conf
+install -m 644 ${SRC}/config/logging.yml ${PREFIX}/etc/elasticsearch/conf
+
+# readme and license
+install -m 644 ${SRC}/*.txt  ${PREFIX}/${ELASTICSEARCH_HOME}
+install -m 644 ${SRC}/README.textile  ${PREFIX}/${ELASTICSEARCH_HOME}/README.txt
+
 
 # data
-mkdir -p ${PREFIX}/lib/elasticsearch
-mkdir -p ${PREFIX}/${SHARE_DIR}/plugins
+install -d -m 755 ${PREFIX}/var/lib/elasticsearch
+install -d -m 755 ${PREFIX}/${ELASTICSEARCH_HOME}/plugins
 
 # logs
-mkdir -p ${PREFIX}/var/log/elasticsearch
-mkdir -p ${PREFIX}/etc/logrotate.d/
+install -d -m 755 ${PREFIX}/var/log/elasticsearch
+install -d -m 755 ${PREFIX}/etc/logrotate.d/
 install -m 644 ${RPM_SOURCE_DIR}/elasticsearch.logrotate ${PREFIX}/etc/logrotate.d/elasticsearch
 
 # sysconfig and init
-mkdir -p ${PREFIX}/etc/rc.d/init.d
-mkdir -p ${PREFIX}/etc/sysconfig
+install -d -m 755 ${PREFIX}/etc/rc.d/init.d
+install -d -m 755 ${PREFIX}/etc/sysconfig
 install -m 755 ${RPM_SOURCE_DIR}/elasticsearch.init ${PREFIX}/etc/rc.d/init.d/elasticsearch
 install -m 755 ${RPM_SOURCE_DIR}/elasticsearch.sysconfig ${PREFIX}/etc/sysconfig/elasticsearch
 
-mkdir -p ${PREFIX}/var/run/elasticsearch
-mkdir -p ${PREFIX}/var/lib/elasticsearch
-mkdir -p ${PREFIX}/lock/subsys/elasticsearch
+install -d -m 755 ${PREFIX}/var/run/elasticsearch
+install -d -m 755 ${PREFIX}/var/lib/elasticsearch
+install -d -m 755 ${PREFIX}/lock/subsys/elasticsearch
 
 

@@ -25,12 +25,13 @@ Release: %{elasticsearch_release}
 Summary: A distributed, highly available, RESTful search engine
 Vendor: The Redoop Team
 Packager: Javi Roman <javiroman@redoop.org>
-Group: System Environment/Daemons
+Group: System Environment/Libraries
 License: ASL 2.0
 URL: http://www.elasticsearch.com
 Source0: elasticsearch.git.tar.gz
 Source1: rpm-build-stage
 Source2: install_elasticsearch.sh
+Patch0: elasticsearch.yml.patch
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 Requires(post): chkconfig initscripts
 Requires(pre):  chkconfig initscripts
@@ -39,8 +40,17 @@ Requires(pre):  shadow-utils
 %description
 A distributed, highly available, RESTful search engine
 
+%package server
+Summary: Elasticsearch server
+Group: System Environment/Daemons
+BuildArch: noarch
+Requires: %{name} = %{version}-%{release}
+%description server
+Elasticsearch server
+
 %prep
 %setup -n  elasticsearch.git
+%patch0 -p1
 
 %build
 bash %{SOURCE1}
@@ -50,6 +60,7 @@ bash %{SOURCE1}
 bash %{SOURCE2} \
           --build-dir=. \
           --prefix=$RPM_BUILD_ROOT
+ 
 %pre
 # create elasticsearch group
 if ! getent group elasticsearch >/dev/null; then
@@ -58,14 +69,14 @@ fi
 
 # create elasticsearch user
 if ! getent passwd elasticsearch >/dev/null; then
-        useradd -r -g elasticsearch -d %{_javadir}/%{name} \
+        useradd -r -g elasticsearch -d /var/lib/elasticsearch \
             -s /sbin/nologin -c "You know, for search" elasticsearch
 fi
 
-%post
+%post server
 /sbin/chkconfig --add elasticsearch
 
-%preun
+%preun server
 if [ $1 -eq 0 ]; then
   /sbin/service elasticsearch stop >/dev/null 2>&1
   /sbin/chkconfig --del elasticsearch
@@ -75,20 +86,22 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(-,root,root,-)
-%{_initddir}/elasticsearch
+%defattr(-,elasticsearch,elasticsearch,-)
+/usr/lib/elasticsearch/lib
+/usr/lib/elasticsearch/*.txt
+
+
+
+%files server
+%defattr(-,elasticsearch,elasticsearch,-)
+%dir %attr(755,root,root) %{_initddir}/elasticsearch
 %config(noreplace) %{_sysconfdir}/sysconfig/elasticsearch
 %{_sysconfdir}/logrotate.d/elasticsearch
-%dir /usr/share/elasticsearch
-/usr/share/elasticsearch/bin/*
-/usr/share/elasticsearch/lib/*
-%dir /usr/share/elasticsearch/plugins
+/usr/lib/elasticsearch/bin/*
 %config(noreplace) %{_sysconfdir}/elasticsearch
-%doc LICENSE.txt  NOTICE.txt  README.textile
-%defattr(-,elasticsearch,elasticsearch,-)
-%dir %{_localstatedir}/lib/elasticsearch
-%{_localstatedir}/run/elasticsearch
-%dir %{_localstatedir}/log/elasticsearch
+/var/lib/elasticsearch
+/var/run/elasticsearch
+/var/log/elasticsearch
 
 %changelog
 * Tue Jun 03 2014 Javi Roman <javiroman@redoop.org>
