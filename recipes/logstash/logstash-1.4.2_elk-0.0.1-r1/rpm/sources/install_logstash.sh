@@ -53,9 +53,6 @@ while true ; do
         --man-dir)
         MAN_DIR=$2 ; shift 2
         ;;
-        --bin-dir)
-        BIN_DIR=$2 ; shift 2
-        ;;
         --initd-dir)
         INITD_DIR=$2 ; shift 2
         ;;
@@ -81,21 +78,17 @@ for var in PREFIX BUILD_DIR; do
 done
 
 LOGSTASH_HOME=${LOGSTASH_HOME:-$PREFIX/usr/lib/logstash}
-BIN_DIR=${BIN_DIR:-$PREFIX/usr/bin}
 LOGSTASH_ETC_DIR=${LOGSTASH_ETC_DIR:-$PREFIX/etc/logstash}
+LOGSTASH_WEB_ETC_DIR=${LOGSTASH_WEB_ETC_DIR:-$PREFIX/etc/logstash-web}
+
 
 install -d -m 755 ${LOGSTASH_HOME}
 install    -m 644 ${BUILD_DIR}/LICENSE ${LOGSTASH_HOME}
 install    -m 644 ${BUILD_DIR}/README.md ${LOGSTASH_HOME}
-
-install -d -m 755 ${BIN_DIR}
-install    -m 755 ${BUILD_DIR}/bin/logstash ${BIN_DIR}
+install    -m 755 $RPM_SOURCE_DIR/readmeExampleConf.txt ${LOGSTASH_HOME}
 
 install -d -m 755 ${LOGSTASH_HOME}/bin
-install    -m 755 ${BUILD_DIR}/bin/logstash.lib.sh ${LOGSTASH_HOME}/bin
-install    -m 755 ${BUILD_DIR}/bin/logstash-web ${LOGSTASH_HOME}/bin
-install    -m 755 ${BUILD_DIR}/bin/logstash-test ${LOGSTASH_HOME}/bin
-install    -m 755 ${BUILD_DIR}/bin/plugin ${LOGSTASH_HOME}/bin
+install    -m 755 ${BUILD_DIR}/bin/* ${LOGSTASH_HOME}/bin
 
 install -d -m 755 ${LOGSTASH_HOME}/lib
 cp -Rpd ${BUILD_DIR}/lib/* ${LOGSTASH_HOME}/lib
@@ -109,21 +102,43 @@ install    -m 644 ${BUILD_DIR}/patterns/* ${LOGSTASH_HOME}/patterns
 install -d -m 755 ${LOGSTASH_HOME}/spec
 cp -Rpd ${BUILD_DIR}/spec/* ${LOGSTASH_HOME}/spec
 
-install -d -m 755 ${LOGSTASH_HOME}/vendor
-cp -Rpd ${BUILD_DIR}/vendor/* ${LOGSTASH_HOME}/vendor
+install -d -m 755 ${LOGSTASH_HOME}/vendor/bundle
+cp -Rpd ${BUILD_DIR}/vendor/bundle/* ${LOGSTASH_HOME}/vendor/bundle
+
+install -d -m 755 ${LOGSTASH_HOME}/vendor/collectd
+cp -Rpd ${BUILD_DIR}/vendor/collectd/* ${LOGSTASH_HOME}/vendor/collectd
+
+install -d -m 755 ${LOGSTASH_HOME}/vendor/geoip
+cp -Rpd ${BUILD_DIR}/vendor/geoip/* ${LOGSTASH_HOME}/vendor/geoip
+
+install -d -m 755 ${LOGSTASH_HOME}/vendor/ua-parser
+cp -Rpd ${BUILD_DIR}/vendor/ua-parser/* ${LOGSTASH_HOME}/vendor/ua-parser
 
 # Config
 install -d -m 755 ${LOGSTASH_ETC_DIR}/conf
-install    -m 755 $RPM_SOURCE_DIR/readmeExampleConf.txt     ${LOGSTASH_ETC_DIR}/conf
 install    -m 755 $RPM_SOURCE_DIR/logstash.conf     ${LOGSTASH_ETC_DIR}/conf
+install -d -m 755 ${LOGSTASH_WEB_ETC_DIR}/conf
 
 # Init script
 echo ${INITD_DIR}
 install -d -m 755 ${INITD_DIR}
 install    -m 755 $RPM_SOURCE_DIR/logstash.init     ${INITD_DIR}/logstash
+install    -m 755 $RPM_SOURCE_DIR/logstash-web.init     ${INITD_DIR}/logstash-web
+
 
 # Logs
 install -d -m 755 ${PREFIX}/var/log/logstash
 
-# Create Home directory
+# Create daemons directory
 install -d -m 755 ${PREFIX}/var/run/logstash
+install -d -m 755 ${PREFIX}/var/run/logstash-web
+
+# Create Auxiliary directory
+install -d -m 755 ${PREFIX}/var/lib/logstash
+
+# Symbolic links to external dependencies
+ln -s /usr/share/jruby/lib ${LOGSTASH_HOME}/vendor/jar
+install -d -m 755 ${LOGSTASH_HOME}/vendor/elasticsearch
+ln -s /usr/lib/elasticsearch/lib ${LOGSTASH_HOME}/vendor/elasticsearch
+ln -s /usr/lib/kibana ${LOGSTASH_HOME}/vendor/kibana
+ln -s /usr/lib/logstash/vendor/kibana/config.js ${LOGSTASH_WEB_ETC_DIR}/conf/config.js

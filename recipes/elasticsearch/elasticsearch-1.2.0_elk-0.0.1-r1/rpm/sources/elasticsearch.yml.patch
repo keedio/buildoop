@@ -1,0 +1,54 @@
+diff -uprN elasticsearch-1.2.0-vanilla/config/elasticsearch.yml elasticsearch-1.2.0/config/elasticsearch.yml
+--- elasticsearch-1.2.0-vanilla/config/elasticsearch.yml	2014-09-15 17:08:31.659398738 +0200
++++ elasticsearch-1.2.0/config/elasticsearch.yml	2014-09-15 17:11:38.915385295 +0200
+@@ -29,7 +29,7 @@
+ # Cluster name identifies your cluster for auto-discovery. If you're running
+ # multiple clusters on the same network, make sure you're using unique names.
+ #
+-#cluster.name: elasticsearch
++cluster.name: elasticsearch
+ 
+ 
+ #################################### Node #####################################
+@@ -37,7 +37,7 @@
+ # Node names are generated dynamically on startup, so you're relieved
+ # from configuring them manually. You can tie this node to a specific name:
+ #
+-#node.name: "Franz Kafka"
++node.name: ${HOSTNAME}
+ 
+ # Every node can be configured to allow or deny being eligible as the master,
+ # and to allow or deny to store the data.
+@@ -142,11 +142,11 @@
+ 
+ # Path to directory containing configuration (this file and logging.yml):
+ #
+-#path.conf: /path/to/conf
++path.conf: /etc/elasticsearch/conf
+ 
+ # Path to directory where to store index data allocated for this node.
+ #
+-#path.data: /path/to/data
++path.data: /var/lib/elasticsearch
+ #
+ # Can optionally include more than one location, causing data to be striped across
+ # the locations (a la RAID 0) on a file level, favouring locations with most free
+@@ -156,15 +156,15 @@
+ 
+ # Path to temporary files:
+ #
+-#path.work: /path/to/work
++path.work: /var/lib/elasticsearch
+ 
+ # Path to log files:
+ #
+-#path.logs: /path/to/logs
++path.logs: /var/log/elasticsearch
+ 
+ # Path to where plugins are installed:
+ #
+-#path.plugins: /path/to/plugins
++path.plugins: /usr/lib/elasticsearch/plugins
+ 
+ 
+ #################################### Plugin ###################################

@@ -155,6 +155,8 @@ class PackageBuilder {
 
 		folderIn = buildoop.ROOT + "/" + basefolders["dest"] +
                 	"/rpmbuild/RPMS/x86_64/"
+		
+		folderExits = new File(folderIn)
 
 		if (folderExits.exists()) {
 			new File(folderIn).eachFileRecurse {
