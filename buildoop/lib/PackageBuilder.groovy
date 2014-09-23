@@ -132,12 +132,8 @@ class PackageBuilder {
 				"/rpmbuild/RPMS/noarch/"
 
 		def folderExits = new File(folderIn)
-		if (!folderExits.exists()) {
-			folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
-				"/rpmbuild/RPMS/x86_64/"
-		}
 
-        LOG.info "[PackageBuilder] moveToDeploy -> distro version: " + wo["bom"]
+		LOG.info "[PackageBuilder] moveToDeploy -> distro version: " + wo["bom"]
 
 		def distverbinpath = 
 				buildoop.globalConfig.buildoop.bomdeploybin.
@@ -145,16 +141,28 @@ class PackageBuilder {
 								wo["bom"].minus(".bom").split("-")[0] + "/" +
 								wo["bom"].minus(".bom").split("-")[1])
 
-        LOG.info "[PackageBuilder] moveToDeploy -> RPM deploy folder: " + distverbinpath
+		LOG.info "[PackageBuilder] moveToDeploy -> RPM deploy folder: " + distverbinpath
 
 		def folderOut = buildoop.ROOT + "/" + distverbinpath + "/"
-
 		new File(folderOut).mkdirs()
-		new File(folderIn).eachFileRecurse { 
-			new File(folderIn + "/" + it.name).
-				renameTo(new File(folderOut + "/" + it.name))
+
+		if (folderExits.exists()) {
+			new File(folderIn).eachFileRecurse {
+				new File(folderIn + "/" + it.name).
+					renameTo(new File(folderOut + "/" + it.name))
+			}
 		}
 
+		folderIn = buildoop.ROOT + "/" + basefolders["dest"] +
+                	"/rpmbuild/RPMS/x86_64/"
+
+		if (folderExits.exists()) {
+			new File(folderIn).eachFileRecurse {
+				new File(folderIn + "/" + it.name).
+					renameTo(new File(folderOut + "/" + it.name))
+			}
+		}
+		
 		// SRPMS deploy folder
 		folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
 				"/rpmbuild/SRPMS/"
@@ -179,20 +187,3 @@ class PackageBuilder {
 		println "createrepo --simple-md-filenames ."
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
