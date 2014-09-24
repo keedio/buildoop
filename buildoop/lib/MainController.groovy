@@ -119,6 +119,13 @@ class MainController {
 					}
 				}
 				break
+            case "-package":
+                if (wo["pkg"]) {
+                    doPackage(wo["pkg"])
+                } else {
+					println "Package command not supported for entire BOM, try single package\n"
+                }
+                break
 			default:
 				break
 		}
@@ -449,6 +456,48 @@ class MainController {
 
         println "TODO .................."
     }
+
+	def doPackage(pkg) {
+
+		 def jsonRecipe = loadJsonRecipe(pkg)
+		// defalt build package
+		def baseFolders = ["src":"", "dest":"", "srcpkg":""]
+		def s = pkg.split('.bd')[0].split("/")
+
+		baseFolders["src"] = globalConfig.buildoop.recipes + "/" +
+                                s[-2] + "/" + s[-1]
+		
+		baseFolders["dest"] = globalConfig.buildoop.work + "/" +
+								jsonRecipe.do_info.filename.split('.bd')[0]
+
+        // outFile the source package full path
+        def outFile = BDROOT + "/" +
+                    globalConfig.buildoop.downloads + "/" +
+                    jsonRecipe.do_download.src_uri.tokenize("/")[-1]
+
+        // FIXME: rework this hack, subversion?
+        if (jsonRecipe.do_fetch.download_cmd == "git") {
+            outFile = outFile + ".tar.gz"
+        }
+
+		baseFolders["srcpkg"] = outFile
+		
+		packageBuilder.makeWorkingFolders(baseFolders)
+
+		def stampFile = globalConfig.buildoop.stamps + '/' +
+							baseFolders["dest"].tokenize('/').last() + ".done"
+		def f = new File(stampFile)
+		if (!f.exists()) {
+			packageBuilder.copyBuildFiles(baseFolders)
+			packageBuilder.execRpmPackage(baseFolders, _buildoop)
+			packageBuilder.moveToDeploy(baseFolders, _buildoop)
+			packageBuilder.createRepo(baseFolders, _buildoop)
+			f.createNewFile()
+		}
+		
+		_buildoop.userMessage("OK", "[OK]")
+		println " Package built with success"
+	}
 		
 	def clean(pkg) {
 		def jsonRecipe = loadJsonRecipe(pkg)
