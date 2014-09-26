@@ -13,7 +13,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TYPE="master"
+TYPE="worker"
 DAEMON="spark-${TYPE}"
 DESC="Spark ${TYPE}"
 EXEC_PATH="/usr/lib/spark/bin/spark-class"
@@ -22,6 +22,7 @@ WORKING_DIR="/var/lib/spark"
 DAEMON_FLAGS=""
 CONF_DIR="/etc/spark/conf"
 PIDFILE="/var/run/spark/${DAEMON}.pid"
+LOCKFILE="/var/run/spark/${DAEMON}.lock"
 
 generate_start() {
 
@@ -39,8 +40,12 @@ start() {
 
     LOG_FILE=/var/log/spark/${DAEMON}.out
 
+    if [ -f $CONF_DIR/spark-env.sh ]; then
+        . $CONF_DIR/spark-env.sh
+    fi
+
     su -s /bin/bash $SVC_USER -c "nohup nice -n 0 \
-        ${EXEC_PATH} org.apache.spark.deploy.master.Master $DAEMON_FLAGS \
+        ${EXEC_PATH} org.apache.spark.deploy.worker.Worker spark://$STANDALONE_SPARK_MASTER_HOST:$SPARK_MASTER_PORT $DAEMON_FLAGS \
         > $LOG_FILE 2>&1 & "'echo $!' > "$PIDFILE"
 
     sleep 3

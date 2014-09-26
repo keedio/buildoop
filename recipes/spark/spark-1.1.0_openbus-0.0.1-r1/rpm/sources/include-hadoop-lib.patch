@@ -1,0 +1,11 @@
+diff -uprN spark-1.1.0-vanilla/assembly/src/main/assembly/assembly.xml spark-1.1.0/assembly/src/main/assembly/assembly.xml
+--- spark-1.1.0-vanilla/assembly/src/main/assembly/assembly.xml	2014-09-25 11:33:57.689200303 +0200
++++ spark-1.1.0/assembly/src/main/assembly/assembly.xml	2014-09-25 15:09:00.009852515 +0200
+@@ -82,7 +82,6 @@
+       <scope>runtime</scope>
+       <useProjectArtifact>false</useProjectArtifact>
+       <excludes>
+-        <exclude>org.apache.hadoop:*:jar</exclude>
+         <exclude>org.apache.spark:*:jar</exclude>
+         <exclude>org.apache.zookeeper:*:jar</exclude>
+         <exclude>org.apache.avro:*:jar</exclude>
