@@ -136,20 +136,26 @@ for comp in core repl bagel mllib streaming; do
   tar --wildcards -C $PREFIX/$LIB_DIR/$comp/lib -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz spark-$comp\*
 done
 ## FIXME: Spark maven assembly needs to include examples into it.
-install -d -m 0755 $PREFIX/$LIB_DIR/examples/lib
-cp ${BUILD_DIR}/examples/target/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples/lib
+install -d -m 0755 $PREFIX/$LIB_DIR/examples/target
+cp ${BUILD_DIR}/examples/target/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples/target
+cp ${BUILD_DIR}/examples/target/scala-2.10/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples/target/scala-2.10
 
 # From Cloudera
-cp -a ${BUILD_DIR}/bin/*.sh $PREFIX/$LIB_DIR/bin/
+#cp -a ${BUILD_DIR}/bin/*.sh $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/sbin/*.sh $PREFIX/$LIB_DIR/sbin/
-chmod 755 $PREFIX/$LIB_DIR/bin/*
-chmod 755 $PREFIX/$LIB_DIR/sbin/*
 
 # FIXME: executor scripts need to reside in bin
 cp -a $BUILD_DIR/bin/spark-class $PREFIX/$LIB_DIR/bin/
 cp -a $BUILD_DIR/sbin/spark-executor $PREFIX/$LIB_DIR/sbin/
 cp -a ${SOURCE_DIR}/compute-classpath.sh $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/bin/spark-shell $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/bin/beeline $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/bin/run-example $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/bin/spark-sql $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/bin/spark-submit $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/bin/utils.sh $PREFIX/$LIB_DIR/bin/
+chmod 755 $PREFIX/$LIB_DIR/bin/*
+chmod 755 $PREFIX/$LIB_DIR/sbin/*
 touch $PREFIX/$LIB_DIR/RELEASE
 
 # Copy in the configuration files
