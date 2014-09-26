@@ -30,7 +30,7 @@ class ParseOptions {
 	def arguments = ["-help", "-version", "-checkenv", 
 					"-i", "-info", "-b", "-build",
 					"-c", "-clean", "-cleanall",
-					, "-package", "-bom", "-targets"]
+					"-bom", "-targets"]
 	def packageName = ""
 	def bomName = ""
 	def validArgs = ["arg":"", "pkg":"", "bom":""]
@@ -81,7 +81,6 @@ Package Options:
  	-b, -build  Build the package from BOM
 	-c, -clean  Clean build objects form package 
 	-cleanall   Clean all staging, download and object files
-	-p -package Only package files into rpm, avoid download and build phases
 	"""
 	}
 

@@ -126,30 +126,6 @@ class PackageBuilder {
 		runCommand(["bash", "-c", command])
     }
 
-    def execRpmPackage(basefolders, buildoop) {
-		
-		def folderIn = basefolders["src"] + "/rpm/specs/"
-		new File(folderIn).eachFileRecurse {
-            specfile = it.name
-        }
-
-        def command = "rpmbuild -bi --short-circuit -D'_topdir " + buildoop.ROOT + "/" +
-                basefolders["dest"] + "/rpmbuild" + "' " +
-                basefolders["dest"] + "/rpmbuild/SPECS/" + specfile.split('/')[-1]
-
-        println "Executing: " +  command
-
-        runCommand(["bash", "-c", command])
-/*
-		command = "rpmbuild -ba --short-circuit -D'_topdir " + buildoop.ROOT + "/" +
-                basefolders["dest"] + "/rpmbuild" + "' " +
-                basefolders["dest"] + "/rpmbuild/SPECS/" + specfile.split('/')[-1]
-
-        println "Executing: " +  command
-        runCommand(["bash", "-c", command])
-*/
-    }
-
 	def moveToDeploy(basefolders, buildoop) {
 		// RPMS deploy folder
 		def folderIn = buildoop.ROOT + "/" + basefolders["dest"] + 
