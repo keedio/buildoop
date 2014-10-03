@@ -59,7 +59,9 @@ Source1: rpm-build-stage
 Source2: install_%{spark_name}.sh
 Source3: spark-master.svc
 Source4: spark-worker.svc
+Source5: spark-history-server.svc
 Patch0: include-hadoop-lib.patch
+Patch1: run-example.patch
 Requires(preun): /sbin/service
 
 %global initd_dir %{_sysconfdir}/init.d
@@ -119,6 +121,7 @@ Server for history server, comes with web user interface
 %prep
 %setup -n %{spark_name}-%{spark_base_version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 bash $RPM_SOURCE_DIR/rpm-build-stage
