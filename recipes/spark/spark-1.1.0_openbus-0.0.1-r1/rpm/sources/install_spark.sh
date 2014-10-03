@@ -173,10 +173,19 @@ for execfile in bin/spark-class bin/spark-shell sbin/spark-executor ; do
 done
 chmod 755 $PREFIX/$SPARK_BIN_DIR/compute-classpath.sh
 
+# copy default files
+install -d -m 0755 $PREFIX/etc/default/
+install    -m 0755 ${SOURCE_DIR}/spark-default.sh $PREFIX/etc/default/spark-master
+install    -m 0755 ${SOURCE_DIR}/spark-default.sh $PREFIX/etc/default/spark-worker
+install    -m 0755 ${SOURCE_DIR}/spark-default.sh $PREFIX/etc/default/spark-history-server
+
+
 # Copy in the wrappers
 install -d -m 0755 $PREFIX/$BIN_DIR
 for wrap in sbin/spark-executor bin/spark-shell ; do
   cat > $PREFIX/$BIN_DIR/`basename $wrap` <<EOF
+
+
 #!/bin/bash 
 
 # Autodetect JAVA_HOME if not defined

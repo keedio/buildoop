@@ -70,7 +70,7 @@ SVC_USER="spark"
 DAEMON_FLAGS=""
 CONF_DIR="/etc/spark/conf"
 PIDFILE="/var/run/spark/${DAEMON}.pid"
-LOCKFILE="var/run/spark/${DAEMON}.lock"
+LOCKFILE="/var/run/spark/${DAEMON}.lock"
 LOGDIR="/var/log/spark"
 
 export SPARK_HISTORY_OPTS="-Dspark.history.fs.logDirectory=$LOGDIR"
