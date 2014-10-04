@@ -150,7 +150,6 @@ rm -rf %{buildroot}
 %install
 %__rm -rf $RPM_BUILD_ROOT
 bash %{SOURCE9} \
-          --build-dir=build \
 	  --build-dir=$PWD/build \
 	  --initd-dir=$RPM_BUILD_ROOT%{initd_dir} \
 	  --prefix=$RPM_BUILD_ROOT 
