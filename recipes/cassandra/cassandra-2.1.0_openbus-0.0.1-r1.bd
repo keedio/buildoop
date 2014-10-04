@@ -1,0 +1,17 @@
+{
+	"do_info": {
+		"description": "Cassandra database", 
+		"homepage":    "http://cassandra.apache.org/",
+		"license":     "Apache-2.0",
+		"filename":    "cassandra-2.1.0_openbus-0.0.1-r1.bd"
+	},
+	
+	"do_download": {
+		"src_uri":    "http://apache.rediris.es/cassandra/2.1.0/apache-cassandra-2.1.0-src.tar.gz",
+		"src_md5sum": "459e60d111ba526feaeab18b7c0f1ab2"
+	},
+
+	"do_fetch": {
+		"download_cmd": "wget"
+	},
+}
