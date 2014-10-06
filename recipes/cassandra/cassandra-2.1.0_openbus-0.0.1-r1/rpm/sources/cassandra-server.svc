@@ -13,16 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TYPE="history-server"
-DAEMON="spark-${TYPE}"
-DESC="Spark ${TYPE}"
-EXEC_PATH="/usr/lib/spark/bin/spark-class"
-SVC_USER="spark"
-WORKING_DIR="/var/lib/spark"
+TYPE="server"
+DAEMON="cassandra-${TYPE}"
+DESC="Cassandra ${TYPE}"
+EXEC_PATH="/usr/lib/cassandra/bin/cassandra"
+SVC_USER="cassandra"
+WORKING_DIR="/var/lib/cassandra"
 DAEMON_FLAGS=""
-CONF_DIR="/etc/spark/conf"
-PIDFILE="/var/run/spark/${DAEMON}.pid"
-LOCKFILE="/var/run/spark/${DAEMON}.lock"
+CONF_DIR="/etc/cassandra/conf"
+PIDFILE="/var/run/cassandra/${DAEMON}.pid"
+LOCKFILE="/var/run/cassandra/${DAEMON}.lock"
 
 generate_start() {
 
@@ -38,11 +38,10 @@ start() {
         exit 0
     fi
 
-    LOG_FILE=/var/log/spark/${DAEMON}.out
+    LOG_FILE=/var/log/cassandra/${DAEMON}.out
 
     su -s /bin/bash $SVC_USER -c "nohup nice -n 0 \
-        ${EXEC_PATH} org.apache.spark.deploy.history.HistoryServer $DAEMON_FLAGS \
-        > $LOG_FILE 2>&1 & "'echo $!' > "$PIDFILE"
+        ${EXEC_PATH} -f > $LOG_FILE 2>&1 & "'echo $!' > "$PIDFILE"
 
     sleep 3
 

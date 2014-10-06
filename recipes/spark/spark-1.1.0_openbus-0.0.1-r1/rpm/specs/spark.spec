@@ -23,7 +23,8 @@
 %define config_spark %{etc_spark}/conf
 %define bin /usr/bin
 %define man_dir /usr/share/man
-%define spark_services master worker
+%define default_dir /etc/default
+%define spark_services master worker history-server
 
 %define spark_version 1.1.0
 %define spark_base_version 1.1.0
@@ -58,7 +59,9 @@ Source1: rpm-build-stage
 Source2: install_%{spark_name}.sh
 Source3: spark-master.svc
 Source4: spark-worker.svc
+Source5: spark-history-server.svc
 Patch0: include-hadoop-lib.patch
+Patch1: run-example.patch
 Requires(preun): /sbin/service
 
 %global initd_dir %{_sysconfdir}/init.d
@@ -118,10 +121,12 @@ Server for history server, comes with web user interface
 %prep
 %setup -n %{spark_name}-%{spark_base_version}
 %patch0 -p1
+%patch1 -p1
 
 %build
 bash $RPM_SOURCE_DIR/rpm-build-stage
 
+# FIXME: Clean install section with only install_spark.sh call
 %install
 %__rm -rf $RPM_BUILD_ROOT
 %__install -d -m 0755 $RPM_BUILD_ROOT/%{initd_dir}/
@@ -186,6 +191,7 @@ done
 %define service_macro() \
 %files -n %1 \
 %attr(0755,root,root)/%{initd_dir}/%1 \
+%attr(0755,root,root)/%{default_dir}/%1 \
 %post -n %1 \
 chkconfig --add %1 \
 \

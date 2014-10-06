@@ -1,0 +1,5 @@
+#!/bin/bash
+
+export CASSANDRA_HOME=/usr/lib/cassandra
+export CASSANDRA_CONF=/etc/cassandra/conf
+export CASSANDRA_INCLUDE=/usr/lib/cassandra/tools/bin/cassandra.in.sh
