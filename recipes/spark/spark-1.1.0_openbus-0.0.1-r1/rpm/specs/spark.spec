@@ -60,8 +60,8 @@ Source2: install_%{spark_name}.sh
 Source3: spark-master.svc
 Source4: spark-worker.svc
 Source5: spark-history-server.svc
-Patch0: include-hadoop-lib.patch
-Patch1: run-example.patch
+Patch0: run-example.patch
+Patch1: compute-classpath.patch
 Requires(preun): /sbin/service
 
 %global initd_dir %{_sysconfdir}/init.d
@@ -74,6 +74,9 @@ Requires: insserv
 %else
 # Required for init scripts
 Requires: redhat-lsb
+
+# Required for spark
+Requires: hadoop-client
 
 %global initd_dir %{_sysconfdir}/rc.d/init.d
 
@@ -170,16 +173,15 @@ done
 #######################
 %files
 %defattr(-,root,root,755)
-%config(noreplace) %{config_spark}.dist
+%config(noreplace) %{config_spark}
 %doc %{doc_spark}
-%{home_spark}
+%attr(-,spark,spark) %{home_spark}
 %exclude %{home_spark}/pyspark
 %exclude %{home_spark}/python
 %{etc_spark}
-%attr(0755,spark,spark) %{var_lib_spark}
-%attr(0755,spark,spark) %{var_run_spark}
-%attr(0755,spark,spark) %{var_log_spark}
-%attr(0755,root,root) %{bin_spark}
+%attr(-,spark,spark) %{var_lib_spark}
+%attr(-,spark,spark) %{var_run_spark}
+%attr(-,spark,spark) %{var_log_spark}
 %{bin}
 
 %files -n spark-python
@@ -207,4 +209,3 @@ fi
 %service_macro spark-master
 %service_macro spark-worker
 %service_macro spark-history-server
-
