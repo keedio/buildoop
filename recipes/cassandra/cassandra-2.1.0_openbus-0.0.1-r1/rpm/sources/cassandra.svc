@@ -13,9 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-TYPE="server"
-DAEMON="cassandra-${TYPE}"
-DESC="Cassandra ${TYPE}"
+DAEMON="cassandra"
+DESC="Cassandra Server"
 EXEC_PATH="/usr/lib/cassandra/bin/cassandra"
 SVC_USER="cassandra"
 WORKING_DIR="/var/lib/cassandra"

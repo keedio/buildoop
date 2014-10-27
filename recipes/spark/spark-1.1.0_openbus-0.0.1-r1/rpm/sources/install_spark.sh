@@ -114,7 +114,7 @@ SPARK_BIN_DIR=${BIN_DIR:-/usr/lib/spark/bin}
 INSTALLED_LIB_DIR=${INSTALLED_LIB_DIR:-/usr/lib/spark}
 EXAMPLES_DIR=${EXAMPLES_DIR:-$DOC_DIR/examples}
 BIN_DIR=${BIN_DIR:-/usr/bin}
-CONF_DIR=${CONF_DIR:-/etc/spark/conf.dist}
+CONF_DIR=${CONF_DIR:-/etc/spark/conf}
 SCALA_HOME=${SCALA_HOME:-/usr/share/scala}
 PYSPARK_PYTHON=${PYSPARK_PYTHON:-python}
 
@@ -128,32 +128,43 @@ install -d -m 0755 $PREFIX/var/lib/spark/
 install -d -m 0755 $PREFIX/var/log/spark/
 install -d -m 0755 $PREFIX/var/run/spark/
 install -d -m 0755 $PREFIX/var/run/spark/work/
+ln -s /usr/lib/spark/logs $PREFIX/var/log/spark/logs
 
-tar --wildcards -C $PREFIX/$LIB_DIR -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz 'lib/*'
+#tar --wildcards -C $PREFIX/$LIB_DIR -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz 'lib/*'
 
-for comp in core repl bagel mllib streaming; do
-  install -d -m 0755 $PREFIX/$LIB_DIR/$comp/lib
-  tar --wildcards -C $PREFIX/$LIB_DIR/$comp/lib -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz spark-$comp\*
-done
+#for comp in core repl bagel mllib streaming; do
+#  install -d -m 0755 $PREFIX/$LIB_DIR/$comp/lib
+#  tar --wildcards -C $PREFIX/$LIB_DIR/$comp/lib -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz spark-$comp\*
+#done
+install   -m 0644  ${BUILD_DIR}/assembly/target/scala-2.10/spark-assembly*.jar \
+		   $PREFIX/$LIB_DIR/lib
+
+install   -m 0644  ${BUILD_DIR}/lib_managed/jars/datanucleus-*.jar $PREFIX/$LIB_DIR/lib
+
 ## FIXME: Spark maven assembly needs to include examples into it.
-install -d -m 0755 $PREFIX/$LIB_DIR/examples/target
-cp ${BUILD_DIR}/examples/target/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples/target
-cp ${BUILD_DIR}/examples/target/scala-2.10/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples/target/scala-2.10
+install -d -m 0755 $PREFIX/$LIB_DIR/examples
+cp ${BUILD_DIR}/examples/target/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples
+cp ${BUILD_DIR}/examples/target/scala-2.10/spark-examples*${SPARK_VERSION}.jar $PREFIX/$LIB_DIR/examples
+
+# ec2 files
+install -d -m 0755 $PREFIX/$LIB_DIR/ec2
+cp -r ${BUILD_DIR}/ec2/* $PREFIX/$LIB_DIR/ec2
+
+# python files
+install -d -m 0755 $PREFIX/$LIB_DIR/python
+cp -r ${BUILD_DIR}/python/* $PREFIX/$LIB_DIR/python
 
 # From Cloudera
-#cp -a ${BUILD_DIR}/bin/*.sh $PREFIX/$LIB_DIR/bin/
+cp -a ${BUILD_DIR}/bin/*.sh $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/sbin/*.sh $PREFIX/$LIB_DIR/sbin/
 
-# FIXME: executor scripts need to reside in bin
 cp -a $BUILD_DIR/bin/spark-class $PREFIX/$LIB_DIR/bin/
 cp -a $BUILD_DIR/sbin/spark-executor $PREFIX/$LIB_DIR/sbin/
-cp -a ${SOURCE_DIR}/compute-classpath.sh $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/bin/spark-shell $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/bin/beeline $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/bin/run-example $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/bin/spark-sql $PREFIX/$LIB_DIR/bin/
 cp -a ${BUILD_DIR}/bin/spark-submit $PREFIX/$LIB_DIR/bin/
-cp -a ${BUILD_DIR}/bin/utils.sh $PREFIX/$LIB_DIR/bin/
 chmod 755 $PREFIX/$LIB_DIR/bin/*
 chmod 755 $PREFIX/$LIB_DIR/sbin/*
 touch $PREFIX/$LIB_DIR/RELEASE
@@ -165,7 +176,7 @@ cp  $PREFIX/$CONF_DIR/spark-env.sh.template $PREFIX/$CONF_DIR/spark-env.sh
 ln -s /etc/spark/conf $PREFIX/$LIB_DIR/conf
 
 # Unpack static UI resources into install_dir/spark where it is expected to be
-tar --wildcards -C $PREFIX/$LIB_DIR -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz ui-resources/\*
+#tar --wildcards -C $PREFIX/$LIB_DIR -zxf ${BUILD_DIR}/assembly/target/spark-assembly*-dist.tar.gz ui-resources/\*
 
 # set correct permissions for exec. files
 for execfile in bin/spark-class bin/spark-shell sbin/spark-executor ; do
@@ -178,7 +189,6 @@ install -d -m 0755 $PREFIX/etc/default/
 install    -m 0755 ${SOURCE_DIR}/spark-default.sh $PREFIX/etc/default/spark-master
 install    -m 0755 ${SOURCE_DIR}/spark-default.sh $PREFIX/etc/default/spark-worker
 install    -m 0755 ${SOURCE_DIR}/spark-default.sh $PREFIX/etc/default/spark-history-server
-
 
 # Copy in the wrappers
 install -d -m 0755 $PREFIX/$BIN_DIR
