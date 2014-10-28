@@ -7,7 +7,7 @@
 	},
 	
 	"do_download": {
-		"src_uri":    "http://apache.rediris.es/cassandra/2.1.0/apache-cassandra-2.1.0-src.tar.gz",
+		"src_uri":    "http://archive.apache.org/dist/cassandra/2.1.0/apache-cassandra-2.1.0-src.tar.gz",
 		"src_md5sum": "459e60d111ba526feaeab18b7c0f1ab2"
 	},
 
