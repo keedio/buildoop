@@ -92,6 +92,7 @@ install    -m 755 ${BUILD_DIR}/bin/stop-server ${CASSANDRA_HOME}/bin
 
 install -d -m 755 ${CASSANDRA_HOME}/lib
 install    -m 644 ${BUILD_DIR}/lib/*.jar ${CASSANDRA_HOME}/lib
+install    -m 644 ${BUILD_DIR}/lib/*.zip ${CASSANDRA_HOME}/lib
 install    -m 644 ${BUILD_DIR}/build/apache-cassandra-thrift-2.1.0-SNAPSHOT.jar ${CASSANDRA_HOME}/lib/apache-cassandra-thrift-2.1.0.jar
 install    -m 644 ${BUILD_DIR}/build/apache-cassandra-clientutil-2.1.0-SNAPSHOT.jar ${CASSANDRA_HOME}/lib/apache-cassandra-clientutil-2.1.0.jar
 install    -m 644 ${BUILD_DIR}/build/apache-cassandra-2.1.0-SNAPSHOT.jar ${CASSANDRA_HOME}/lib/apache-cassandra-2.1.0.jar
@@ -153,4 +154,4 @@ install    -m 644 ${BUILD_DIR}/conf/triggers/README.txt ${PREFIX}/etc/cassandra/
 install -d -m 755 ${PREFIX}/etc/rc.d/init.d
 
 install -d -m 755 ${PREFIX}/etc/default
-install    -m 644 ${SOURCE_DIR}/cassandra-default ${PREFIX}/etc/default/cassandra-server
+install    -m 644 ${SOURCE_DIR}/cassandra-default ${PREFIX}/etc/default/cassandra

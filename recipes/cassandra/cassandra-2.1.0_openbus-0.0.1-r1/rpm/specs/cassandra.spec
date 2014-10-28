@@ -20,7 +20,7 @@
 %define cassandra_group cassandra
 %define cassandra_user_home /var/lib/%{cassandra_name}
 %define cassandra_daemon_run /var/run/%{cassandra_name}
-%define cassandra_service cassandra-server
+%define cassandra_service cassandra
 
 %global initd_dir %{_sysconfdir}/rc.d/init.d
 # prevent binary stripping - not necessary at all.
@@ -86,10 +86,19 @@ bash %{SOURCE2}\
 getent group %{cassandra_group} >/dev/null || groupadd -r %{cassandra_group}
 getent passwd %{cassandra_user} >/dev/null || /usr/sbin/useradd --comment "Cassandra Daemon User" --shell /sbin/nologin -M -r -g %{cassandra_group} --home %{cassandra_user_home} %{cassandra_user}
 
+%preun
+  /sbin/service %{cassandra_name} status > /dev/null 2>&1
+  if [ $? -eq 0 ]; then
+    /sbin/service %{cassandra_name} stop > /dev/null 2>&1
+  fi
+done
+
 %files
 %defattr(-,%{cassandra_user},%{cassandra_group})
 %dir %attr(755, %{cassandra_user},%{cassandra_group}) %{cassandra_home}
 %dir %attr(755, %{cassandra_user},%{cassandra_group}) /etc/cassandra
+%config(noreplace) /etc/cassandra
+%dir %attr(755, %{cassandra_user},%{cassandra_group}) /var/lib/cassandra
 %dir %attr(755, root,root) /%{initd_dir}
 %dir %attr(755, root,root) /etc/default
 %attr(0755,root,root)/%{initd_dir}/%{cassandra_service}

@@ -34,7 +34,7 @@ export MAVEN_OPTS="-Xmx2g -XX:ReservedCodeCacheSize=512m \
 		   -XX:PermSize=1024m -XX:MaxPermSize=1024m"
 
 # bigtop-dist profile is hardcoded in the original source code.
-mvn -Pbigtop-dist $BUILD_OPTS clean package
+mvn -Phadoop-provided $BUILD_OPTS clean package
 
 
 

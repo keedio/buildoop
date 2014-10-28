@@ -10,7 +10,7 @@ diff -uprN spark-1.1.0-vanilla/bin/run-example spark-1.1.0/bin/run-example
 -elif [ -e "$EXAMPLES_DIR"/target/scala-$SCALA_VERSION/spark-examples-*hadoop*.jar ]; then
 -  export SPARK_EXAMPLES_JAR=`ls "$EXAMPLES_DIR"/target/scala-$SCALA_VERSION/spark-examples-*hadoop*.jar`
 -fi
-+export SPARK_EXAMPLES_JAR=`ls "$EXAMPLES_DIR"/target/scala-$SCALA_VERSION/spark-examples-*hadoop*.jar`
++export SPARK_EXAMPLES_JAR=`ls "$EXAMPLES_DIR"/spark-examples-*hadoop*.jar`
  
  if [[ -z $SPARK_EXAMPLES_JAR ]]; then
    echo "Failed to find Spark examples assembly in $FWDIR/lib or $FWDIR/examples/target" 1>&2
