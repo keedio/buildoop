@@ -80,10 +80,10 @@ class PackageBuilder {
   		println " )"
 
   		if (proc.exitValue()) {
-    	println "gave the following error: "
-    	println "[ERROR] ${proc.getErrorStream()}"
+	    	println "gave the following error: "
+    		println "[ERROR] ${proc.getErrorStream()}"
+			throw new Exception()
   		}
-  		assert !proc.exitValue()
 	}
 
 	/**
