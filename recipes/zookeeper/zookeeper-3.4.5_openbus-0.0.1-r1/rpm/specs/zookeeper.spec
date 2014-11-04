@@ -85,6 +85,7 @@ Source6: zoo.cfg
 Source7: zookeeper-rest-server.sh
 BuildArch: noarch
 BuildRequires: autoconf, automake
+Requires: lsof
 Requires(pre): coreutils, /usr/sbin/groupadd, /usr/sbin/useradd
 Requires(post): %{alternatives_dep}
 Requires(preun): %{alternatives_dep}
