@@ -90,8 +90,20 @@ class MainController {
 				break
 
 			case "-build":
+				def maxRetries = globalConfig.buildoop.buildRetries
+				def retries = 0
+				def success = 0
 				if (wo["pkg"]) {
-					makePhases(wo["pkg"])
+					while (!success && retries < maxRetries) {
+						try {
+							makePhases(wo["pkg"])
+							success = 1
+						}
+						catch (e){
+							println e
+							retries++
+						}
+					}
 				} else {
 					def pkgList = getPkgList(wo["bom"])
 					for (i in pkgList) {
@@ -381,7 +393,7 @@ class MainController {
                 		_buildoop.userMessage("ERROR",
                     			"From recipe: $jsonRecipe.do_download.src_md5sum\n")
                 		_buildoop.userMessage("ERROR", "Aborting program!\n")
-                		System.exit(1)
+                	  	throw new Exception()
             		}
 					break
 
@@ -439,7 +451,7 @@ class MainController {
             	packageBuilder.execRpmBuild(baseFolders, _buildoop)
             	packageBuilder.moveToDeploy(baseFolders, _buildoop)
             	packageBuilder.createRepo(baseFolders, _buildoop)
-            	f.createNewFile() 
+             	f.createNewFile()
         	}
         	_buildoop.userMessage("OK", "[OK]")
         	println " Package built with success"
