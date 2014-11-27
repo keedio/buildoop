@@ -19,7 +19,7 @@
 %define config_storm %{etc_storm}/conf
 %define storm_user storm
 %define storm_group storm
-%define storm_user_home /var/run/%{storm_name}
+%define storm_user_home /var/lib/%{storm_name}
 %global initd_dir %{_sysconfdir}/rc.d/init.d
 # prevent binary stripping - not necessary at all.
 # Only for prevention.
