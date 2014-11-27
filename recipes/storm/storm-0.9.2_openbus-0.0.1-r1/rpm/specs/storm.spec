@@ -51,8 +51,8 @@ Source7: storm-drpc.init
 Source8: rpm-build-stage
 Source9: install_storm.sh
 Source10: storm-logviewer.init
-Patch0: avoid-harcoded-paths.patch
-Patch1: storm-kafka-dependencies.patch
+Patch0: storm-kafka-dependencies.patch
+Patch1: storm-bin.patch
 Buildroot: %{_tmppath}/%{name}-%{version}-%{release}-%(%{__id_u} -n)
 Requires: sh-utils, textutils, /usr/sbin/useradd, /usr/sbin/usermod, /sbin/chkconfig, /sbin/service
 Provides: storm
@@ -175,7 +175,7 @@ getent passwd %{storm_user} >/dev/null || /usr/sbin/useradd --comment "Storm Dae
 /etc/storm/*
 /etc/default/storm
 /var/log/*
-/var/run/storm/
+/var/lib/storm/
 %attr(755,%{storm_user},%{storm_group}) /usr/bin/*
 /usr/bin/storm
 /etc/sysconfig/storm

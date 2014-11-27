@@ -145,8 +145,8 @@ install -d -m 755 ${PREFIX}/etc/security/limits.d/
 install    -m 644 $RPM_SOURCE_DIR/storm.nofiles.conf ${PREFIX}/etc/security/limits.d/storm.nofiles.conf
 
 install -d -m 755 ${PREFIX}/var/log/storm
-install -d -m 755 ${PREFIX}/var/run/storm/
-install    -m 755 $RPM_SOURCE_DIR/storm-supervisor-bash_profile ${PREFIX}/var/run/storm/.bash_profile
+install -d -m 755 ${PREFIX}/var/lib/storm/
+install    -m 755 $RPM_SOURCE_DIR/storm-supervisor-bash_profile ${PREFIX}/var/lib/storm/.bash_profile
 
 
 install -d -m 755 ${PREFIX}/
