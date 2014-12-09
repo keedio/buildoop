@@ -30,10 +30,10 @@ class ParseOptions {
 	def arguments = ["-help", "-version", "-checkenv", 
 					"-i", "-info", "-b", "-build",
 					"-c", "-clean", "-cleanall",
-					"-bom", "-targets"]
+					"-bom", "-targets", "-remoterepo"]
 	def packageName = ""
 	def bomName = ""
-	def validArgs = ["arg":"", "pkg":"", "bom":""]
+	def validArgs = ["arg":"", "pkg":"", "bom":"", "url":""]
 	def BDROOT
 	def LOG
 	def globalConfig
@@ -69,8 +69,9 @@ Options:
 	-help       this help
  	-version    version information
  	-bom 		list available BOM files
- 	-target    list available platform targets
+ 	-target		list available platform targets
  	-checkenv   check minimal enviroment and host tools
+	-remoterepo	list available BOM files in remote repository
 BOM Options:
  	-i, -info   Show information about the BOM file
  	-b, -build  Buuild all package of the BOM file
@@ -161,68 +162,102 @@ Package Options:
 		}
 	}
 
+	def remoteRepo(url) {
+		if  (url.length() < 19) {
+			retrun false
+		}
+		
+		def domain = url.substring(0,19)
+		if (domain == "https://github.com/") {
+			return true
+		}
+		else 
+			return false
+		}
+	}
+
     def parseOpt(args) {
 		LOG.info "[parseOpt] parseOpt method invoked"
 		if (args.size() == 0) {
-			usage()
-			System.exit(1)
+			parseError("You have to put an option parameter")
 		}
 			
-		if (args.size() > 3) {
-			parseError("Wrong numer of arguments")
-			System.exit(1)
-		}
-
 		// option validation
 		for (i in args) {
 			if (arguments.contains(i)) {
 				validArgs["arg"] = i
 			}
 		}
-
+		
 		if (validArgs["arg"] == "") {
-			parseError("You have to put an option parameter")
+			parseError("Option not supported");
 		}
 
-		// bom file validation
-		for (i in args) {
-			if (!arguments.contains(i)) {
-				if (bomFile(i)) {
-					validArgs["bom"] = i + ".bom"
-					break;
-				}
-			}
-	    }
-
-		// package file validation
-		for (i in args) {
-			if (!arguments.contains(i)) {
-				if (validArgs["bom"]) {
-					if (validArgs["bom"] != i+".bom") {
-						// we have a valid BOM file, check if the pkg file is
-						// consistent.
-						validArgs["pkg"] = packageBomFile(i, validArgs["bom"])
-						if (!validArgs["pkg"]) {
-							parseError("Package name '$i' doesn't exists in " +
-											validArgs["bom"])
+		switch (validArgs["arg"]){
+			case "-b":
+			case "-build":
+			case "-c":
+			case "-clean":
+			case "-cleanall":
+				// bom file validation
+				for (i in args) {
+					if (!arguments.contains(i)) {
+						if (bomFile(i)) {
+							validArgs["bom"] = i + ".bom"
+							break;
 						}
+					}
+			    }
+
+				// package file validation
+				for (i in args) {
+					if (!arguments.contains(i)) {
+						if (validArgs["bom"]) {
+							if (validArgs["bom"] != i+".bom") {
+								// we have a valid BOM file, check if the pkg file is
+								// consistent.
+								validArgs["pkg"] = packageBomFile(i, validArgs["bom"])
+									parseError("Package name '$i' doesn't exists in " +
+													validArgs["bom"])
+								}
+								break
+							}
+					} else {
+						// we don't have BOM file, only pkg file
+						validArgs["pkg"] = packageDirectFile(i)
+						// FIXME: we need a target for this function.
+						parseError("This function is not yet implemented")
 						break
 					}
-				} else {
-					// we don't have BOM file, only pkg file
-					validArgs["pkg"] = packageDirectFile(i)
-					// FIXME: we need a target for this function.
-					parseError("This function is not yet implemented")
-					break
 				}
-			}
-		}
-
-
-		if (validArgs["bom"] == "" && validArgs["pkg"] == "") {
-			if (!validArgs["arg"] in ["-targets", "-bom", 
-										"-version", "-info", "-checkenv"])
-			parseError("You have to put BOM file and/or package name file")
+		
+				if (validArgs["bom"] == "" && validArgs["pkg"] == "") {
+					parseError("You have to put BOM file and/or package name file")
+				}
+				break;
+			case "-remoterepo":
+				// remote url validation
+				for (i in args) {
+					if (!arguments.contains(i)) {
+						if (remoteRepo(i)) {
+							validArgs["url"] = i
+						}
+					}
+				}
+				if (validArgs["url"] == "") {
+					parseError("You have to put a github.com repository url")
+				}
+				break;
+			case "-checkenv":
+			case "-i":
+			case "-info":
+			case "-bom":
+			case "-targets":
+			case "-help":
+			case "-version":
+				break;
+			default:
+				break;
 		}
 
 		return validArgs
