@@ -51,12 +51,12 @@ class RepositoryDownloader {
 		def repositoryFolder =  BDROOT + "/" + globalConfig.buildoop.remoterepodata +
 						"/" + url.split('/')[-2] + "/" + url.split('/')[-1] 
 		
-		//downloadMetadata(url, repositoryFolder)
+		downloadMetadata(url, repositoryFolder)
 
 		println "YEEEEEEEHAAA --> " + repositoryFolder	
 	}
 
-	def downloadMetada(url, repositoryFolder) {
+	def downloadMetadata(url, repositoryFolder) {
 	
 		new File(repositoryFolder).mkdir()
 
