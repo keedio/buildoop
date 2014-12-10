@@ -63,7 +63,7 @@ class RepositoryDownloader {
 		showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
 
 		// Get current branches in github repository (development branches)
-		showVersionsOutput += userMessage("OK", "\nRepository developmet versions:\n")
+		showVersionsOutput += userMessage("OK", "\nRepository development versions:\n")
 
 		command = "git --git-dir " + repositoryFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
 		 showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
