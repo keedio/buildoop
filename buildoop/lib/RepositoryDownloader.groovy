@@ -102,6 +102,8 @@ class RepositoryDownloader {
 		while ( !versionExists && i < versionsList.size() ){
 			if (versionsList[i] == version){
 				versionExists = true
+				command = "git --git-dir " + repositoryMetaFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
+				runCommand.runCommand(["bash", "-c", command])
 			}
 			i++
 		}
@@ -123,13 +125,20 @@ class RepositoryDownloader {
 
 		if (!versionExists) {
 			println userMessage("ERROR", "\nRepository version '" + version + "' not exits, " +
-								"use -remoterepo to ensure you are choosing a correct one")	
+								"use -remoterepo to ensure you are choosing a correct one")
+			return
 		}
+		
+		
 	}
 
 	def getRepositoryMetaFolder(url){
         return  BDROOT + "/" + globalConfig.buildoop.remoterepodata +
                          "/" + url.split('/')[-2] + "/" + url.split('/')[-1]
+	}
+
+	def getRecipesFolder(){
+		return BDROOT + "/" + globalConfig.buildoop.recipes
 	}
 
     def userMessage(type, msg) {
