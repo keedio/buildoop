@@ -48,10 +48,28 @@ class RepositoryDownloader {
 	}
 
 	def showVersions(url) {
+
+		def showVersionsOutput = ""		
+
 		def repositoryFolder =  BDROOT + "/" + globalConfig.buildoop.remoterepodata +
 						"/" + url.split('/')[-2] + "/" + url.split('/')[-1] 
 		
 		downloadMetadata(url, repositoryFolder)
+
+		// Get current tags in github repository
+		showVersionsOutput += userMessage("OK", "\nRepository release versions:\n")
+
+		def command = "git --git-dir " + repositoryFolder + "/.git tag"
+		showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
+
+		// Get current branches in github repository (development branches)
+		showVersionsOutput += userMessage("OK", "\nRepository developmet versions:\n")
+
+		command = "git --git-dir " + repositoryFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
+		 showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
+
+		println showVersionsOutput
+		return 0
 	}
 
 	def downloadMetadata(url, repositoryFolder) {
@@ -64,14 +82,6 @@ class RepositoryDownloader {
 
 		println "Cloning repository metadata: " +  command
 		println runCommand.runCommand(["bash", "-c", command])
-
-		command = "git --git-dir " + repositoryFolder + "/.git " + "tag"
-		def commandOutput = runCommand.runCommand(["bash", "-c", command])
-
-		userMessage("INFO", "\nRepository current releases:");
-		println commandOutput
-
-		return 0
 	}
 
     def userMessage(type, msg) {
@@ -87,7 +97,7 @@ class RepositoryDownloader {
                       "ERROR":ANSI_RED,
                       "WARNING":ANSI_YELLOW,
                       "INFO":ANSI_BLUE]
-        println CSI + colors[type] + msg + CSI + ANSI_RESET
+        return CSI + colors[type] + msg + CSI + ANSI_RESET
     }
 
 }
