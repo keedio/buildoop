@@ -33,7 +33,7 @@ class RepositoryDownloader {
 	def BDROOT
 	def LOG
 	def globalConfig
-	def runCommand
+	def runCommandInstance
 
 	def RepositoryDownloader(buildoop) {
 		LOG = buildoop.log
@@ -44,7 +44,7 @@ class RepositoryDownloader {
 		String[] roots = [globalConfig.buildoop.classfolder]
 		def engine = new GroovyScriptEngine(roots)
 		def RunCommandClass = engine.loadScriptByName('RunCommand.groovy')
-		runCommand = RunCommandClass.newInstance(buildoop.log)
+		runCommandInstance = RunCommandClass.newInstance(buildoop.log)
 	}
 
 	def showVersions(url) {
@@ -59,13 +59,13 @@ class RepositoryDownloader {
 		showVersionsOutput += userMessage("OK", "\nRepository release versions:\n")
 
 		def command = "git --git-dir " + repositoryMetaFolder + "/.git tag"
-		showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
+		showVersionsOutput += runCommand(command)
 
 		// Get current branches in github repository (development branches)
 		showVersionsOutput += userMessage("OK", "\nRepository development versions:\n")
 
 		command = "git --git-dir " + repositoryMetaFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
-		showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
+		showVersionsOutput += runCommand(command)
 
 		println showVersionsOutput
 		return 0
@@ -81,11 +81,12 @@ class RepositoryDownloader {
 		new AntBuilder().delete(dir: repositoryMetaFolder)
 
 		println "Cloning repository metadata: " +  command
-		println runCommand.runCommand(["bash", "-c", command])
+		println runCommand(command)
 	}
 	
 	def downloadRepo(url, version) {
-		
+
+		def inTags = true	
 		def repositoryMetaFolder = getRepositoryMetaFolder(url)
 		
 		// downloadMetadata
@@ -93,43 +94,41 @@ class RepositoryDownloader {
 
 		// check if version exists in tags
 		def command = "git --git-dir " + repositoryMetaFolder + "/.git tag"
-        def versions = runCommand.runCommand(["bash", "-c", command])
-		
-		def versionExists = false
-		def versionsList = versions.readLines()
 
-		def i = 0
-		while ( !versionExists && i < versionsList.size() ){
-			if (versionsList[i] == version){
-				versionExists = true
-				command = "git --git-dir " + repositoryMetaFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
-				runCommand.runCommand(["bash", "-c", command])
-			}
-			i++
-		}
-		
-		if (!versionExists) {
-			command = "git --git-dir " + repositoryMetaFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
-			versions = runCommand.runCommand(["bash", "-c", command])
+		if (!versionExists(version, command)) {
+			// if not exists in  tags check if version exists in branches
+			command = "git --git-dir " + repositoryMetaFolder + 
+						"/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
 
-			versionsList = versions.readLines()
-
-		    i = 0
-	        while ( !versionExists && i < versionsList.size() ){
-    	        if (versionsList[i] == version){
-        	        versionExists = true
-            	}
-            	i++
-			}
-        }
-
-		if (!versionExists) {
-			println userMessage("ERROR", "\nRepository version '" + version + "' not exits, " +
+			if (!versionExists(version, command)) {
+				println userMessage("ERROR", "\nRepository version '" + version + "' not exits, " +
 								"use -remoterepo to ensure you are choosing a correct one")
-			return
+				return
+			}
+			else{
+				inTags = false
+			}
 		}
+
+		if (inTags){
+			command = "git clone " + url + " " + getRecipesFolder() + "/" + version
+			runCommand(command)
+		}
+		else{
+			
+		}
+
+	}
+
+	def versionExists(version, command) {
+ 		def versionsList = runCommand(command).readLines()
 		
-		
+		for (i in versionsList){
+			if (i == version){
+				return true
+			}
+		}
+		return false;
 	}
 
 	def getRepositoryMetaFolder(url){
@@ -139,6 +138,10 @@ class RepositoryDownloader {
 
 	def getRecipesFolder(){
 		return BDROOT + "/" + globalConfig.buildoop.recipes
+	}
+
+	def runCommand(command){
+		runCommandInstance.runCommand(["bash", "-c", command])
 	}
 
     def userMessage(type, msg) {
