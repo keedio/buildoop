@@ -51,37 +51,85 @@ class RepositoryDownloader {
 
 		def showVersionsOutput = ""		
 
-		def repositoryFolder =  BDROOT + "/" + globalConfig.buildoop.remoterepodata +
-						"/" + url.split('/')[-2] + "/" + url.split('/')[-1] 
-		
-		downloadMetadata(url, repositoryFolder)
+		def repositoryMetaFolder = getRepositoryMetaFolder(url)		
+
+		downloadMetadata(url, repositoryMetaFolder)
 
 		// Get current tags in github repository
 		showVersionsOutput += userMessage("OK", "\nRepository release versions:\n")
 
-		def command = "git --git-dir " + repositoryFolder + "/.git tag"
+		def command = "git --git-dir " + repositoryMetaFolder + "/.git tag"
 		showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
 
 		// Get current branches in github repository (development branches)
 		showVersionsOutput += userMessage("OK", "\nRepository development versions:\n")
 
-		command = "git --git-dir " + repositoryFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
-		 showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
+		command = "git --git-dir " + repositoryMetaFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
+		showVersionsOutput += runCommand.runCommand(["bash", "-c", command])
 
 		println showVersionsOutput
 		return 0
 	}
 
-	def downloadMetadata(url, repositoryFolder) {
+	def downloadMetadata(url, repositoryMetaFolder) {
 	
-		new File(repositoryFolder).mkdir()
+		new File(repositoryMetaFolder).mkdir()
 
-		def command = "git clone -n " + url + " " + repositoryFolder
+		// download only metadata information from github
+		def command = "git clone -n " + url + " " + repositoryMetaFolder
                 
-		new AntBuilder().delete(dir: repositoryFolder)
+		new AntBuilder().delete(dir: repositoryMetaFolder)
 
 		println "Cloning repository metadata: " +  command
 		println runCommand.runCommand(["bash", "-c", command])
+	}
+	
+	def downloadRepo(url, version) {
+		
+		def repositoryMetaFolder = getRepositoryMetaFolder(url)
+		
+		// downloadMetadata
+		downloadMetadata(url, repositoryMetaFolder)
+
+		// check if version exists in tags
+		def command = "git --git-dir " + repositoryMetaFolder + "/.git tag"
+        def versions = runCommand.runCommand(["bash", "-c", command])
+		
+		def versionExists = false
+		def versionsList = versions.readLines()
+
+		def i = 0
+		while ( !versionExists && i < versionsList.size() ){
+			if (versionsList[i] == version){
+				versionExists = true
+			}
+			i++
+		}
+		
+		if (!versionExists) {
+			command = "git --git-dir " + repositoryMetaFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
+			versions = runCommand.runCommand(["bash", "-c", command])
+
+			versionsList = versions.readLines()
+
+		    i = 0
+	        while ( !versionExists && i < versionsList.size() ){
+    	        if (versionsList[i] == version){
+        	        versionExists = true
+            	}
+            	i++
+			}
+        }
+
+		if (!versionExists) {
+			println userMessage("ERROR", "\nRepository version '" + version + "' not exits, " +
+								"use -remoterepo to ensure you are choosing a correct one")	
+		}
+	}
+
+	def getRepositoryMetaFolder(url){
+        return  BDROOT + "/" + globalConfig.buildoop.remoterepodata +
+                         "/" + url.split('/')[-2] + "/" + url.split('/')[-1]
 	}
 
     def userMessage(type, msg) {

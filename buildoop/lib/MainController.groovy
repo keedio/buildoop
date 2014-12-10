@@ -137,6 +137,10 @@ class MainController {
 				break
 			case "-remoterepo":
 				showRepoVersions(wo["url"])
+				break
+			case "-downloadrepo":
+				downloadRepo(wo["url"], wo["ver"])
+				break
 			default:
 				break
 		}
@@ -499,7 +503,11 @@ class MainController {
 	}
 
 	def showRepoVersions(url) {
-		return repositoryDownloader.showVersions(url)		
+		repositoryDownloader.showVersions(url)		
+	}
+
+	def downloadRepo(url, ver) {
+		repositoryDownloader.downloadRepo(url, ver) 
 	}
 
 	def userMessage(type, msg) {
