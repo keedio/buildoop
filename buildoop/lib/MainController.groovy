@@ -38,6 +38,7 @@ class MainController {
     def globalConfig
     def fileDownloader
     def packageBuilder
+	def repositoryDownloader
 	def hasDoPackage
 
     def MainController(buildoop) {
@@ -58,6 +59,9 @@ class MainController {
 
 		def PackageBuilderClass = engine.loadScriptByName('PackageBuilder.groovy')
 		packageBuilder = PackageBuilderClass.newInstance(buildoop)
+
+		def RepositoryDownloaderClass = engine.loadScriptByName('RepositoryDownloader.groovy')
+		repositoryDownloader = RepositoryDownloaderClass.newInstance(buildoop)
 
 		switch (wo["arg"]) {
 			case "-version":
@@ -131,6 +135,8 @@ class MainController {
 					}
 				}
 				break
+			case "-remoterepo":
+				showRepoVersions(wo["url"])
 			default:
 				break
 		}
@@ -490,5 +496,9 @@ class MainController {
 				jsonRecipe.do_info.filename.split('.bd')[0]
 
 		new AntBuilder().delete(dir: workPath)	
+	}
+
+	def showRepoVersions(url) {
+		return repositoryDownloader.showVersions(url)		
 	}
 }

@@ -171,7 +171,7 @@ Package Options:
 		if (domain == "https://github.com/") {
 			return true
 		}
-		else 
+		else { 
 			return false
 		}
 	}
@@ -204,7 +204,7 @@ Package Options:
 					if (!arguments.contains(i)) {
 						if (bomFile(i)) {
 							validArgs["bom"] = i + ".bom"
-							break;
+							break
 						}
 					}
 			    }
@@ -234,7 +234,7 @@ Package Options:
 				if (validArgs["bom"] == "" && validArgs["pkg"] == "") {
 					parseError("You have to put BOM file and/or package name file")
 				}
-				break;
+				break
 			case "-remoterepo":
 				// remote url validation
 				for (i in args) {
@@ -247,7 +247,7 @@ Package Options:
 				if (validArgs["url"] == "") {
 					parseError("You have to put a github.com repository url")
 				}
-				break;
+				break
 			case "-checkenv":
 			case "-i":
 			case "-info":
@@ -255,9 +255,9 @@ Package Options:
 			case "-targets":
 			case "-help":
 			case "-version":
-				break;
+				break
 			default:
-				break;
+				break
 		}
 
 		return validArgs
