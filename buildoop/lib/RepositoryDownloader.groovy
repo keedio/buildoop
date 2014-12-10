@@ -52,8 +52,6 @@ class RepositoryDownloader {
 						"/" + url.split('/')[-2] + "/" + url.split('/')[-1] 
 		
 		downloadMetadata(url, repositoryFolder)
-
-		println "YEEEEEEEHAAA --> " + repositoryFolder	
 	}
 
 	def downloadMetadata(url, repositoryFolder) {
@@ -62,11 +60,34 @@ class RepositoryDownloader {
 
 		def command = "git clone -n " + url + " " + repositoryFolder
                 
-		//new AntBuilder().delete(dir: repositoryFolder)
+		new AntBuilder().delete(dir: repositoryFolder)
 
 		println "Cloning repository metadata: " +  command
-		runCommand.runCommand(["bash", "-c", command])
+		println runCommand.runCommand(["bash", "-c", command])
+
+		command = "git --git-dir " + repositoryFolder + "/.git " + "tag"
+		def commandOutput = runCommand.runCommand(["bash", "-c", command])
+
+		userMessage("INFO", "\nRepository current releases:");
+		println commandOutput
 
 		return 0
 	}
+
+    def userMessage(type, msg) {
+        def ANSI_RESET = "0m"
+        def ANSI_RED = "31;1m"
+        def ANSI_GREEN = "32;1m"
+        def ANSI_YELLOW = "33;1m"
+        def ANSI_PURPLE = "35;1m"
+        def ANSI_CYAN = "36;1m"
+        def ANSI_BLUE = "34;1m"
+        def CSI="\u001B["
+        def colors = ["OK":ANSI_GREEN,
+                      "ERROR":ANSI_RED,
+                      "WARNING":ANSI_YELLOW,
+                      "INFO":ANSI_BLUE]
+        println CSI + colors[type] + msg + CSI + ANSI_RESET
+    }
+
 }

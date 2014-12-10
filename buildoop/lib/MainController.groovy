@@ -501,4 +501,21 @@ class MainController {
 	def showRepoVersions(url) {
 		return repositoryDownloader.showVersions(url)		
 	}
+
+	def userMessage(type, msg) {
+		def ANSI_RESET = "0m"
+		def ANSI_RED = "31;1m"
+		def ANSI_GREEN = "32;1m"
+		def ANSI_YELLOW = "33;1m"
+		def ANSI_PURPLE = "35;1m"
+		def ANSI_CYAN = "36;1m"
+		def ANSI_BLUE = "34;1m"
+		def CSI="\u001B["
+		def colors = ["OK":ANSI_GREEN,
+					  "ERROR":ANSI_RED,
+					  "WARNING":ANSI_YELLOW,
+					  "INFO":ANSI_BLUE]
+		println CSI + colors[type] + msg + CSI + ANSI_RESET
+	}
+
 }
