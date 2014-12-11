@@ -440,10 +440,11 @@ class MainController {
 		 if (!hasDoPackage) {
 			// defalt build package
          	def baseFolders = ["src":"", "dest":"", "srcpkg":""]
+
             def s = pkg.split('.bd')[0].split("/")
 
          	baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
-								s[-2] + "/" + s[-1]
+								s[-3] + "/" + s[-2] + "/" + s[-1]
 
          	baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
                 jsonRecipe.do_info.filename.split('.bd')[0]

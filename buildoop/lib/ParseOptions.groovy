@@ -136,18 +136,21 @@ Remote Repository Options:
 		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
 							   "/" + bom
 
+		def bomname = bom.substring(0,bom.size()-4)
+
 		LOG.info "[ParseOptions:packageBomFile] checking -$pkg- in $bomfile"
 
 		def recipe = ""
-		new File(bomfile).eachLine { 
-			line -> 
-			if ((line.split("_VERSION")[0]) == (pkg.toUpperCase())) {
-				recipe = BDROOT + "/" + 
-							globalConfig.buildoop.recipes +	"/" +
-							pkg + "/" + pkg + "-" + 
-							line.split("=")[1].trim() + ".bd"
-			} 
-		}
+		new File(bomfile).eachLine {
+            line ->
+            if ((line.split("_VERSION")[0]) == (pkg.toUpperCase())) {
+                recipe = BDROOT + "/" +
+                            globalConfig.buildoop.recipes + "/" +
+                            bomname + "/" + pkg + "/" + pkg + "-" +
+                            line.split("=")[1].trim() + ".bd"
+            }
+        }
+		
 		return recipe
 	}
 
@@ -224,17 +227,19 @@ Remote Repository Options:
 								// we have a valid BOM file, check if the pkg file is
 								// consistent.
 								validArgs["pkg"] = packageBomFile(i, validArgs["bom"])
+								if (!validArgs["pkg"]) {
 									parseError("Package name '$i' doesn't exists in " +
 													validArgs["bom"])
 								}
 								break
 							}
-					} else {
-						// we don't have BOM file, only pkg file
-						validArgs["pkg"] = packageDirectFile(i)
-						// FIXME: we need a target for this function.
-						parseError("This function is not yet implemented")
-						break
+						} else {
+							// we don't have BOM file, only pkg file
+							validArgs["pkg"] = packageDirectFile(i)
+							// FIXME: we need a target for this function.
+							parseError("This function is not yet implemented")
+							break
+						}
 					}
 				}
 		

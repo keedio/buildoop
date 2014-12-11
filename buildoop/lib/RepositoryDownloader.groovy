@@ -111,7 +111,7 @@ class RepositoryDownloader {
 		}
 
 		def recipesDir = getRecipesFolder() + "/" + version
-		def bomsDir = getRecipesFolder()
+		def bomsDir = getBomsFolder()
 		def ant = new AntBuilder();
 		File bomFile = new File(recipesDir + "/" + version + ".bom")
 
@@ -129,7 +129,14 @@ class RepositoryDownloader {
 								".bom' file doesn't exists in repository project, check your project!!")
 			return
 		}
-			
+		
+		// copy bom file to buildoop conf bom directory
+		ant.copy(file: recipesDir + "/" + version + ".bom", todir: bomsDir)
+
+		// if release version is downloaded	.git directory is deleted to avoid commits
+		if (release == "release"){
+			ant.delete(dir: recipesDir + "/.git")
+		}
 		println userMessage("OK", "\nRecipes " + release + " version '" + version + "' correctly download!!")
 
 	}

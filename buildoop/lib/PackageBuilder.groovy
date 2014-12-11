@@ -24,6 +24,7 @@ import groovy.util.logging.*
  *
  *
  * @author Javi Roman <javiroman@redoop.org>
+ * @author Marcelo Valle <mvalle@keedio.com>
  *
  */
 class PackageBuilder {
