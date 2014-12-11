@@ -1,5 +1,0 @@
-TARGET=CentOS-6.x
-
-HADOOP_VERSION=2.2.0
-FLUME_VERSION=1.4.0_bigtop-r1
-
