@@ -1,4 +1,0 @@
-13-03-2014 Javi Roman <javiroman@redoop.org>
-
-	* Package tested with Apache Storm v0.9.1 and 
-	HBase v0.96.1.1

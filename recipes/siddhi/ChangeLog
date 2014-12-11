@@ -1,5 +1,0 @@
-22-06-2014 Javi Roman <javiroman@redoop.org>
-
-	* The github repository from WSO2 of Siddhi is not
-	properly taged, the 3.0.0 version is the master branch,
-	so we have to clone a hash in order to donwload it.

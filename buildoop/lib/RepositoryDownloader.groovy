@@ -110,8 +110,14 @@ class RepositoryDownloader {
 			}
 		}
 
+		def recipesDir = getRecipesFolder() + "/" + version
+		println "holaaaa: " + recipesDir
+
 		if (inTags){
-			command = "git clone " + url + " " + getRecipesFolder() + "/" + version
+			new AntBuilder().delete(dir: recipesDir)
+			command = "git clone " + url + " " + recipesDir
+			runCommand(command)
+			command = "git --git-dir " + recipesDir + "/.git tag"
 			runCommand(command)
 		}
 		else{

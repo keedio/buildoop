@@ -1,4 +1,0 @@
-13-03-2014 Javi Roman <javiroman@redoop.org>
-
-	* Version based on Cloudera CDH 5.0.0b. This package
-	is a requirement of Hbase.
