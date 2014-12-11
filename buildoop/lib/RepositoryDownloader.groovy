@@ -86,7 +86,7 @@ class RepositoryDownloader {
 	
 	def downloadRepo(url, version) {
 
-		def inTags = true	
+		def release = "release" 	
 		def repositoryMetaFolder = getRepositoryMetaFolder(url)
 		
 		// downloadMetadata
@@ -106,23 +106,31 @@ class RepositoryDownloader {
 				return
 			}
 			else{
-				inTags = false
+				release = "development"
 			}
 		}
 
 		def recipesDir = getRecipesFolder() + "/" + version
-		println "holaaaa: " + recipesDir
+		def bomsDir = getRecipesFolder()
+		def ant = new AntBuilder();
+		File bomFile = new File(recipesDir + "/" + version + ".bom")
 
-		if (inTags){
-			new AntBuilder().delete(dir: recipesDir)
-			command = "git clone " + url + " " + recipesDir
-			runCommand(command)
-			command = "git --git-dir " + recipesDir + "/.git tag"
-			runCommand(command)
+		println userMessage("INFO", "\nDownloading recipes " + release + " '" + version + "'......")
+		
+		ant.delete(dir: recipesDir)
+		command = "git clone " + url + " " + recipesDir
+		runCommand(command)
+		command = "git --work-tree " + recipesDir + " --git-dir " + recipesDir + "/.git checkout " + version
+		runCommand(command)
+
+		if (!bomFile.exists()){
+			ant.delete(dir: recipesDir)
+			println userMessage("ERROR", "\n'" + version + 
+								".bom' file doesn't exists in repository project, check your project!!")
+			return
 		}
-		else{
 			
-		}
+		println userMessage("OK", "\nRecipes " + release + " version '" + version + "' correctly download!!")
 
 	}
 
@@ -144,6 +152,10 @@ class RepositoryDownloader {
 
 	def getRecipesFolder(){
 		return BDROOT + "/" + globalConfig.buildoop.recipes
+	}
+
+	def getBomsFolder(){
+		return BDROOT + "/" + globalConfig.buildoop.bomfiles
 	}
 
 	def runCommand(command){
