@@ -26,6 +26,7 @@ import groovy.util.logging.*
  * This class 
  *
  * @author Javi Roman <javiroman@redoop.org>
+ * @author Marcelo Valle <mvalle@keedio.com>
  *
  */
 class RunCommand {
@@ -39,6 +40,8 @@ class RunCommand {
 	def runCommand(strList)  { 
 		assert (strList instanceof String ||
             (strList instanceof List && strList.each{ it instanceof String }))
+
+		def commandOutput = ""
 
         /*
          * -string.execute- currently make use of java.lang.Process 
@@ -57,7 +60,9 @@ class RunCommand {
 		 * associated with the stream will be released anyway.
          */ 
 		try {
-  			proc.in.eachLine { line -> println line }
+	  			proc.in.eachLine { 
+					line -> commandOutput += line + "\n"
+				}
 		} catch (e) {
 			println "Stream closed"	 
 		} finally {
@@ -84,48 +89,63 @@ class RunCommand {
     	println "[ERROR] ${proc.getErrorStream()}"
   		}
   		assert !proc.exitValue()
+	
+		return commandOutput
 	}
 
-	def runCommand2(strList) throws IOException {
+	def runCommandGetOutput(strList)  { 
+		assert (strList instanceof String ||
+            (strList instanceof List && strList.each{ it instanceof String }))
 
-		Process process = null	
+        /*
+         * -string.execute- currently make use of java.lang.Process 
+         * under the covers, the deficiencies of that class must 
+         * currently be taken into consideration.
+         * http://groovy.codehaus.org/Process+Management
+		 *
+		 * java.lang.Process: in/out/err streams and exit code.
+         */
+  		def proc = strList.execute()
+
+		/* 
+		 * print InputStream of proc line at a line. This gobble the stdout of
+		 * the executed command. The try-catch is the recommended way to use 
+		 * the streams in Java. This will make sure, that the system resources 
+		 * associated with the stream will be released anyway.
+         */ 
 		try {
-  			process = strList.execute()
-    		def out = new StringBuffer()
-    		def err = new StringBuffer()
-    		process.consumeProcessOutput(out, err)
-
-  	    	process.in.eachLine { line -> println line }
-    		if(out.size() > 0) {
-				println "[INFO] Std Out ---------------------------"
-				println out
+			def salidaComando = ""
+			proc.in.eachLine {
+				line -> salidaComando += line +"\n"
 			}
-    		if(err.size() > 0) {
-				println "[INFO] Std Err ---------------------------"
- 				println err
-			}
-    		process.waitFor()
-			print "[INFO runCommand2] ( "
-			print "command: " + strList
-  			println " )"
+		} catch (e) {
+			println "Stream closed"	 
 		} finally {
-			if (process.in != null) {
-				try {
-					println "[INFO] Clossing inputStream"
-					process.in.close()
-				} catch(IOException ignored) {
-					println "[INFO] catch IOException"
-					// failsafe
-				}
-			}
-		}
-			
+            proc.in.close()
+        }
 
-  		if (process.exitValue()) {
-    	    println "[ERROR] "
+        /* 
+		 * Causes the current thread to wait, if necessary, until the 
+         * process represented by this Process object has terminated.
+		 */
+		println "waitFor process"
+        proc.waitFor()
+
+  		print "[INFO] ( "
+  		if(strList instanceof List) {
+    		strList.each { print "${it} " }
+  		} else {
+    		print "command: " + strList
   		}
+  		println " )"
 
-  		assert !process.exitValue()
+  		if (proc.exitValue()) {
+    	println "gave the following error: "
+    	println "[ERROR] ${proc.getErrorStream()}"
+  		}
+  		assert !proc.exitValue()
+
+		return salidaC
 	}
 }
 

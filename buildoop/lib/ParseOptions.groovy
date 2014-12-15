@@ -30,10 +30,11 @@ class ParseOptions {
 	def arguments = ["-help", "-version", "-checkenv", 
 					"-i", "-info", "-b", "-build",
 					"-c", "-clean", "-cleanall",
-					"-bom", "-targets", "-remoterepo"]
+					"-bom", "-targets", "-remoterepo",
+					"-downloadrepo"]
 	def packageName = ""
 	def bomName = ""
-	def validArgs = ["arg":"", "pkg":"", "bom":"", "url":""]
+	def validArgs = ["arg":"", "pkg":"", "bom":"", "url":"", "ver":""]
 	def BDROOT
 	def LOG
 	def globalConfig
@@ -64,24 +65,30 @@ class ParseOptions {
 	 */
 	def usage() {
         LOG.warn "[usage] Printing usage info"
-		println """usage: buildoop [options] | <bom-name> <[options]> 
+		println """
+usage: buildoop [options] | <bom-name> <[options]> | 
+                <pkg-name> <bom-name> <[options]> | 
+                <repo-url> <recipes-version> <[options]>
+
 Options: 
-	-help       this help
- 	-version    version information
- 	-bom 		list available BOM files
- 	-target		list available platform targets
- 	-checkenv   check minimal enviroment and host tools
-	-remoterepo	list available BOM files in remote repository
+	-help          this help
+ 	-version       version information
+ 	-bom           list available BOM files
+ 	-targets        list available platform targets
+ 	-checkenv      check minimal enviroment and host tools
 BOM Options:
- 	-i, -info   Show information about the BOM file
- 	-b, -build  Buuild all package of the BOM file
-	-c, -clean  Clean build object of all packages of BOM file
-	-cleanall   Clean all staging, download and object files
+ 	-i, -info      Show information about the BOM file
+ 	-b, -build     Build all package of the BOM file
+	-c, -clean     Clean build object of all packages of BOM file
+	-cleanall      Clean all staging, download and object files
 Package Options:
- 	-i, -info   Show info about package from BOM
- 	-b, -build  Build the package from BOM
-	-c, -clean  Clean build objects form package 
-	-cleanall   Clean all staging, download and object files
+ 	-i, -info      Show info about package from BOM
+ 	-b, -build     Build the package from BOM
+	-c, -clean     Clean build objects from package 
+	-cleanall      Clean all staging, download and object files
+Remote Repository Options:
+	-remoterepo    list available BOM files in remote repository
+	-downloadrepo  download BOM and recipes from the repository
 	"""
 	}
 
@@ -106,7 +113,7 @@ Package Options:
 	 * @param msg The error message to display user.
 	 */
 	def parseError(msg) {
-        _buildoop.userMessage("ERROR", "ERROR: " + msg + "\n")
+        println _buildoop.userMessage("ERROR", "ERROR: " + msg + "\n")
 		LOG.error "ERROR: " + msg
 		usage()
 		System.exit(1)
@@ -129,18 +136,21 @@ Package Options:
 		def bomfile = BDROOT + "/" + globalConfig.buildoop.bomfiles + 
 							   "/" + bom
 
+		def bomname = bom.substring(0,bom.size()-4)
+
 		LOG.info "[ParseOptions:packageBomFile] checking -$pkg- in $bomfile"
 
 		def recipe = ""
-		new File(bomfile).eachLine { 
-			line -> 
-			if ((line.split("_VERSION")[0]) == (pkg.toUpperCase())) {
-				recipe = BDROOT + "/" + 
-							globalConfig.buildoop.recipes +	"/" +
-							pkg + "/" + pkg + "-" + 
-							line.split("=")[1].trim() + ".bd"
-			} 
-		}
+		new File(bomfile).eachLine {
+            line ->
+            if ((line.split("_VERSION")[0]) == (pkg.toUpperCase())) {
+                recipe = BDROOT + "/" +
+                            globalConfig.buildoop.recipes + "/" +
+                            bomname + "/" + pkg + "/" + pkg + "-" +
+                            line.split("=")[1].trim() + ".bd"
+            }
+        }
+		
 		return recipe
 	}
 
@@ -164,7 +174,7 @@ Package Options:
 
 	def remoteRepo(url) {
 		if  (url.length() < 19) {
-			retrun false
+			return false
 		}
 		
 		def domain = url.substring(0,19)
@@ -199,6 +209,8 @@ Package Options:
 			case "-c":
 			case "-clean":
 			case "-cleanall":
+			case "-info":
+			case "-i":
 				// bom file validation
 				for (i in args) {
 					if (!arguments.contains(i)) {
@@ -217,17 +229,19 @@ Package Options:
 								// we have a valid BOM file, check if the pkg file is
 								// consistent.
 								validArgs["pkg"] = packageBomFile(i, validArgs["bom"])
+								if (!validArgs["pkg"]) {
 									parseError("Package name '$i' doesn't exists in " +
 													validArgs["bom"])
 								}
 								break
 							}
-					} else {
-						// we don't have BOM file, only pkg file
-						validArgs["pkg"] = packageDirectFile(i)
-						// FIXME: we need a target for this function.
-						parseError("This function is not yet implemented")
-						break
+						} else {
+							// we don't have BOM file, only pkg file
+							validArgs["pkg"] = packageDirectFile(i)
+							// FIXME: we need a target for this function.
+							parseError("This function is not yet implemented")
+							break
+						}
 					}
 				}
 		
@@ -236,11 +250,15 @@ Package Options:
 				}
 				break
 			case "-remoterepo":
+				if (args.size() != 2) {
+		          parseError("usage: buildoop <repository-url> -remoterepo")
+		        }
 				// remote url validation
 				for (i in args) {
 					if (!arguments.contains(i)) {
 						if (remoteRepo(i)) {
 							validArgs["url"] = i
+							break
 						}
 					}
 				}
@@ -248,15 +266,36 @@ Package Options:
 					parseError("You have to put a github.com repository url")
 				}
 				break
+			case "-downloadrepo":
+				if (args.size() != 3) {
+		          parseError("usage: buildoop <repository-url> <version> -downloadrepo")
+		        }
+				// remote repository url and version
+				for (i in args) {
+					if (!arguments.contains(i)) {
+						if (remoteRepo(i)) {
+							validArgs["url"] = i
+						}
+						else {
+							validArgs["ver"] = i
+						} 
+					}
+				}
+                if (validArgs["url"] == "") {
+                    parseError("You have to put a github.com repository url")
+                }
+				break
+			case "-help":
+				usage()
+				break
 			case "-checkenv":
 			case "-i":
-			case "-info":
+
 			case "-bom":
 			case "-targets":
-			case "-help":
 			case "-version":
-				break
 			default:
+				//no validation needed for this options
 				break
 		}
 

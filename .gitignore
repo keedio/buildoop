@@ -6,3 +6,6 @@ cscope.out
 tags
 .vagrant
 *~
+remote
+recipes
+conf/bom

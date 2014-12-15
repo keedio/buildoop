@@ -40,6 +40,7 @@ class MainController {
     def packageBuilder
 	def repositoryDownloader
 	def hasDoPackage
+	def buildSummary
 
     def MainController(buildoop) {
         _buildoop = buildoop
@@ -49,6 +50,7 @@ class MainController {
 		globalConfig = buildoop.globalConfig
 	    // custom package by default
 		hasDoPackage = true
+		buildSummary = []
 
 		String[] roots = [globalConfig.buildoop.classfolder]
 		def engine = new GroovyScriptEngine(roots)
@@ -81,10 +83,8 @@ class MainController {
 				break
 
 			case "-info":
-				if ((wo["bom"] == "") && (wo["pkg"] == "")) {
-					// info for the buildoop in general
-					getInfo()
-				} else if ((wo["bom"] != "") && (wo["pkg"] == "")) {
+			case "-i":
+				if ((wo["bom"] != "") && (wo["pkg"] == "")) {
 					// info for the BOM file
 					getBomInfo(wo["bom"])
 				} else {
@@ -94,6 +94,7 @@ class MainController {
 				break
 
 			case "-build":
+			case "-b":
 				def maxRetries = globalConfig.buildoop.buildRetries
 				def retries = 0
 				def success = 0
@@ -110,12 +111,32 @@ class MainController {
 					}
 				} else {
 					def pkgList = getPkgList(wo["bom"])
+					def packageName
 					for (i in pkgList) {
-						makePhases(i)
+						retries = 0
+						success = 0
+						packageName = (i.split("/")[-1]).split("\\.bd")[0]
+					 	while (!success && retries < maxRetries) {
+                        	try {
+                            	makePhases(i)
+	                            success = 1
+	                        }
+	                        catch (e){
+    	                        println e
+        	                    retries++
+            	            }
+                	    }
+						if (success){
+							buildSummaryOk(packageName)
+						} else {
+							buildSummaryError(packageName)
+						}
 					}
+					printSummary()				
 				}
 				break
 			case "-clean":
+			case "-c":
 				if (wo["pkg"]) {
 					clean(wo["pkg"])
 				} else {
@@ -137,6 +158,10 @@ class MainController {
 				break
 			case "-remoterepo":
 				showRepoVersions(wo["url"])
+				break
+			case "-downloadrepo":
+				downloadRepo(wo["url"], wo["ver"])
+				break
 			default:
 				break
 		}
@@ -162,9 +187,10 @@ class MainController {
                 case {line.contains("#")}:
                     break
                 case {line.contains("VERSION")}:
-                    def capitalname = line.split("_VERSION")[0]
-                    def name = capitalname.toLowerCase()
-                    list << globalConfig.buildoop.recipes + "/" + name + "/" + name + 
+                    def name = line.split("_VERSION")[0].toLowerCase()
+					def version = bom.split(".bom")[0]
+                    //def name = capitalname.toLowerCase()
+                    list << globalConfig.buildoop.recipes + "/" + version + "/" + name + "/" + name + 
                             "-" + line.split("=")[1].trim() + ".bd"
                     break
                 default:
@@ -375,7 +401,7 @@ class MainController {
             println "Downloaded: $size bytes"
             long end = System.currentTimeMillis()
 
-            _buildoop.userMessage("OK", "[OK] ")
+            println _buildoop.userMessage("OK", "[OK] ")
             println "Elapsed time: " + ((end - start) / 1000) + " seconds ";
 
 		    switch (jsonRecipe.do_fetch.download_cmd) {
@@ -392,13 +418,13 @@ class MainController {
                 		LOG.error "[makePhases] md5sum fails!!!"
                 		LOG.error "[makePhases] md5sum calculated: $md5Calculated" 
                 		LOG.error "[makePhases] md5sum from recipe: $jsonRecipe.do_download.src_md5sum"
-                		_buildoop.userMessage("ERROR",
+                		println _buildoop.userMessage("ERROR",
                     			"ERROR: md5sum for $jsonRecipe.do_download.src_uri failed:\n")
-                		_buildoop.userMessage("ERROR",
+                		println _buildoop.userMessage("ERROR",
                     			"Calculated : $md5Calculated\n")
-                		_buildoop.userMessage("ERROR",
+                		println _buildoop.userMessage("ERROR",
                     			"From recipe: $jsonRecipe.do_download.src_md5sum\n")
-                		_buildoop.userMessage("ERROR", "Aborting program!\n")
+                		println _buildoop.userMessage("ERROR", "Aborting program!\n")
                 	  	throw new Exception()
             		}
 					break
@@ -408,7 +434,7 @@ class MainController {
 			}
 
         } else {
-            _buildoop.userMessage("OK", "[OK]")
+            println _buildoop.userMessage("OK", "[OK]")
             println " Recipe: " + outFile.tokenize('/').last() + " ready to build "
             LOG.info "[makePhases] download .done file exits skipped" 
         }
@@ -436,10 +462,11 @@ class MainController {
 		 if (!hasDoPackage) {
 			// defalt build package
          	def baseFolders = ["src":"", "dest":"", "srcpkg":""]
+
             def s = pkg.split('.bd')[0].split("/")
 
          	baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
-								s[-2] + "/" + s[-1]
+								s[-3] + "/" + s[-2] + "/" + s[-1]
 
          	baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
                 jsonRecipe.do_info.filename.split('.bd')[0]
@@ -459,13 +486,10 @@ class MainController {
             	packageBuilder.createRepo(baseFolders, _buildoop)
              	f.createNewFile()
         	}
-        	_buildoop.userMessage("OK", "[OK]")
-        	println " Package built with success"
+        	println _buildoop.userMessage("OK", "[OK]") + " Package built with success"
 		} else {
 			println "Custom package building processing"
 		}
-
-        println "TODO .................."
     }
 		
 	def clean(pkg) {
@@ -479,7 +503,6 @@ class MainController {
 
 	def cleanall(pkg) {
 		clean(pkg)
-		
 		def jsonRecipe = loadJsonRecipe(pkg)
 
 		def downloadFile = globalConfig.buildoop.downloads + "/" +
@@ -499,6 +522,28 @@ class MainController {
 	}
 
 	def showRepoVersions(url) {
-		return repositoryDownloader.showVersions(url)		
+		repositoryDownloader.showVersions(url)		
 	}
+
+	def downloadRepo(url, ver) {
+		repositoryDownloader.downloadRepo(url, ver) 
+	}
+
+	def buildSummaryOk(packageName){
+		buildSummary.add(_buildoop.userMessage("OK", "[OK]") + "\tPackage '" + packageName + "' build succes")
+	}
+
+	def buildSummaryError(packageName){
+		LOG.error "Package " + packageName + " build process fails"
+		buildSummary.add(_buildoop.userMessage("ERROR", "[ERROR]") + "\tPackage '" + packageName + "' build fails")
+	}
+
+	def printSummary(){
+		println _buildoop.userMessage("INFO", "\nBuild Summary: ")
+		buildSummary.each {	
+			line ->
+			println "${line}"
+		}
+	}
+
 }

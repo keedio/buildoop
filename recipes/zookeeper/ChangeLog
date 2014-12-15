@@ -1,4 +1,0 @@
-22-02-2014 Javi Roman <javiroman@redoop.org>
-
-	* Remove bigtop dependecy in init scripts for JAVA_HOME automatic detection.
-

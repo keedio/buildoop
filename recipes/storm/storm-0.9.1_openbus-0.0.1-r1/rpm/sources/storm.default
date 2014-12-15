@@ -1,4 +1,0 @@
-export STORM_DIR=/usr/lib/storm
-export USER_CONF_DIR=
-export CLUSTER_CONF_DIR=/etc/storm
-

@@ -1,6 +1,0 @@
-22-03-2014 Javi Roman <javiroman@redoop.org>
-
-	* I'm going to work with the old version of BigTop
-	(HBASE_BASE_VERSION=0.94.12) and the branch new package from Cloudera
-	CDH5.0.0b2 hbase-0.96.1.1+cdh5.0.0+23-0.cdh5b2.p0.20.src.rpm.
-

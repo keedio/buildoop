@@ -1,8 +1,0 @@
-23-06-2014 Javi Roman <javiroman@redoop.org>
-
-	* Kafka consummer for Storm. This code is forked
-	Thomas Becker https://github.com/wurstmeister. Buldoop 
-	uses this Storm spout for connect kafka (bus layer) with
-	the speed layer (in this case with Storm).
-	This first package version is based on the master branch,
-	freeze with a commit hash.
