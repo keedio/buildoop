@@ -74,7 +74,7 @@ Options:
 	-help          this help
  	-version       version information
  	-bom           list available BOM files
- 	-target        list available platform targets
+ 	-targets        list available platform targets
  	-checkenv      check minimal enviroment and host tools
 BOM Options:
  	-i, -info      Show information about the BOM file
@@ -113,7 +113,7 @@ Remote Repository Options:
 	 * @param msg The error message to display user.
 	 */
 	def parseError(msg) {
-        _buildoop.userMessage("ERROR", "ERROR: " + msg + "\n")
+        println _buildoop.userMessage("ERROR", "ERROR: " + msg + "\n")
 		LOG.error "ERROR: " + msg
 		usage()
 		System.exit(1)
@@ -209,6 +209,8 @@ Remote Repository Options:
 			case "-c":
 			case "-clean":
 			case "-cleanall":
+			case "-info":
+			case "-i":
 				// bom file validation
 				for (i in args) {
 					if (!arguments.contains(i)) {
@@ -283,15 +285,17 @@ Remote Repository Options:
                     parseError("You have to put a github.com repository url")
                 }
 				break
+			case "-help":
+				usage()
+				break
 			case "-checkenv":
 			case "-i":
-			case "-info":
+
 			case "-bom":
 			case "-targets":
-			case "-help":
 			case "-version":
-				break
 			default:
+				//no validation needed for this options
 				break
 		}
 

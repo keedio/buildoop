@@ -34,8 +34,10 @@ class RepositoryDownloader {
 	def LOG
 	def globalConfig
 	def runCommandInstance
+	def _buildoop
 
 	def RepositoryDownloader(buildoop) {
+		_buildoop = buildoop
 		LOG = buildoop.log
 		BDROOT = buildoop.ROOT
 		globalConfig = buildoop.globalConfig
@@ -56,13 +58,13 @@ class RepositoryDownloader {
 		downloadMetadata(url, repositoryMetaFolder)
 
 		// Get current tags in github repository
-		showVersionsOutput += userMessage("OK", "\nRepository release versions:\n")
+		showVersionsOutput += _buildoop.userMessage("OK", "\nRepository release versions:\n")
 
 		def command = "git --git-dir " + repositoryMetaFolder + "/.git tag"
 		showVersionsOutput += runCommand(command)
 
 		// Get current branches in github repository (development branches)
-		showVersionsOutput += userMessage("OK", "\nRepository development versions:\n")
+		showVersionsOutput += _buildoop.userMessage("OK", "\nRepository development versions:\n")
 
 		command = "git --git-dir " + repositoryMetaFolder + "/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
 		showVersionsOutput += runCommand(command)
@@ -101,7 +103,7 @@ class RepositoryDownloader {
 						"/.git/ branch -a | cut -f 3 -d '/' | tail -n +3"
 
 			if (!versionExists(version, command)) {
-				println userMessage("ERROR", "\nRepository version '" + version + "' not exits, " +
+				println _buildoop.userMessage("ERROR", "\nRepository version '" + version + "' not exits, " +
 								"use -remoterepo to ensure you are choosing a correct one")
 				return
 			}
@@ -115,7 +117,7 @@ class RepositoryDownloader {
 		def ant = new AntBuilder();
 		File bomFile = new File(recipesDir + "/" + version + ".bom")
 
-		println userMessage("INFO", "\nDownloading recipes " + release + " '" + version + "'......")
+		println _buildoop.userMessage("INFO", "\nDownloading recipes " + release + " '" + version + "'......")
 		
 		ant.delete(dir: recipesDir)
 		command = "git clone " + url + " " + recipesDir
@@ -125,7 +127,7 @@ class RepositoryDownloader {
 
 		if (!bomFile.exists()){
 			ant.delete(dir: recipesDir)
-			println userMessage("ERROR", "\n'" + version + 
+			println _buildoop.userMessage("ERROR", "\n'" + version + 
 								".bom' file doesn't exists in repository project, check your project!!")
 			return
 		}
@@ -137,7 +139,7 @@ class RepositoryDownloader {
 		if (release == "release"){
 			ant.delete(dir: recipesDir + "/.git")
 		}
-		println userMessage("OK", "\nRecipes " + release + " version '" + version + "' correctly download!!")
+		println _buildoop.userMessage("OK", "\nRecipes " + release + " version '" + version + "' correctly download!!")
 
 	}
 
@@ -168,21 +170,4 @@ class RepositoryDownloader {
 	def runCommand(command){
 		runCommandInstance.runCommand(["bash", "-c", command])
 	}
-
-    def userMessage(type, msg) {
-        def ANSI_RESET = "0m"
-        def ANSI_RED = "31;1m"
-        def ANSI_GREEN = "32;1m"
-        def ANSI_YELLOW = "33;1m"
-        def ANSI_PURPLE = "35;1m"
-        def ANSI_CYAN = "36;1m"
-        def ANSI_BLUE = "34;1m"
-        def CSI="\u001B["
-        def colors = ["OK":ANSI_GREEN,
-                      "ERROR":ANSI_RED,
-                      "WARNING":ANSI_YELLOW,
-                      "INFO":ANSI_BLUE]
-        return CSI + colors[type] + msg + CSI + ANSI_RESET
-    }
-
 }
