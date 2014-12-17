@@ -13,7 +13,18 @@ $ buildoop -t, -targets
 	List availables targets.
 
 $ buildoop -b, -bom
-	List all BOM files availables
+	List all BOM files availables (previously downloaded with -downloadrepo)
+	
+Remote recipes repository commands:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+$ buildoop -remoterepo <github-recipes-repository-url>
+
+	List all available distributions and its versions in the external repository
+	
+$ buildoop -downloadrepo <github-recipes-repository-url> <distribution-version>
+	
+	Download the distribution chosen to start building 
 
 BOM and package level commands:
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -36,9 +47,6 @@ $ buildoop <bom name> [package name] -cleanall
 	Clean all "build objects", metadata, and download files of packages 
 	listed in BOM. Or the same only for the package name.
 
-$ buildoop <bom name> <package-name> -listtasks 
-
-	List tasks availables in the package name.
 
 Examples:
 
@@ -58,7 +66,7 @@ $ buildoop stable hadoop -build
 $ buildoop stable hadoop -clean
 
 
-Integration Tests level commands:
+Integration Tests level commands (Currently not implemented):
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Examples:
