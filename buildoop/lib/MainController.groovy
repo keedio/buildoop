@@ -97,12 +97,12 @@ class MainController {
 			case "-b":
 				def maxRetries = globalConfig.buildoop.buildRetries
 				def retries = 0
-				def success = 0
+				def success = false
 				if (wo["pkg"]) {
 					while (!success && retries < maxRetries) {
 						try {
 							makePhases(wo["pkg"])
-							success = 1
+							success = true
 						}
 						catch (e){
 							println e
