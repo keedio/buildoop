@@ -114,12 +114,12 @@ class MainController {
 					def packageName
 					for (i in pkgList) {
 						retries = 0
-						success = 0
+						success = false
 						packageName = (i.split("/")[-1]).split("\\.bd")[0]
 					 	while (!success && retries < maxRetries) {
                         	try {
                             	makePhases(i)
-	                            success = 1
+	                            success = true
 	                        }
 	                        catch (e){
     	                        println e
@@ -486,6 +486,7 @@ class MainController {
             	packageBuilder.createRepo(baseFolders, _buildoop)
              	f.createNewFile()
         	}
+			LOG.info ("Package built with succes")
         	println _buildoop.userMessage("OK", "[OK]") + " Package built with success"
 		} else {
 			println "Custom package building processing"
@@ -543,6 +544,7 @@ class MainController {
 		buildSummary.each {	
 			line ->
 			println "${line}"
+			LOG.info ("${line}")
 		}
 	}
 

@@ -139,10 +139,12 @@ Remote Repository Options:
 		def bomname = bom.substring(0,bom.size()-4)
 
 		LOG.info "[ParseOptions:packageBomFile] checking -$pkg- in $bomfile"
+		println ("[INFO] Checking " + pkg + " in " + bom)
 
 		def recipe = ""
 		new File(bomfile).eachLine {
             line ->
+
             if ((line.split("_VERSION")[0]) == (pkg.toUpperCase())) {
                 recipe = BDROOT + "/" +
                             globalConfig.buildoop.recipes + "/" +
