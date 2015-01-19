@@ -117,7 +117,6 @@ class FileDownloader {
 
 		def file = new FileOutputStream(outFile)
 		def out = new BufferedOutputStream(file)
-
 		out << new URL(address).openStream()
 
 		out.close()

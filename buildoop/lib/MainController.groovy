@@ -28,6 +28,7 @@ import groovy.json.JsonSlurper;
  * user and runs the real buildoop commands.
  *
  * @author Javi Roman <javiroman@redoop.org>
+ * @author Marcelo Valle <mvalle@keedio.com>
  *
  */
 class MainController {
@@ -98,6 +99,11 @@ class MainController {
 				def maxRetries = globalConfig.buildoop.buildRetries
 				def retries = 0
 				def success = false
+				new File(globalConfig.buildoop.downloads + "/" +
+                wo["bom"].split("\\.bom")[0]).mkdirs()
+				new File(globalConfig.buildoop.stamps + "/" +
+                wo["bom"].split("\\.bom")[0]).mkdirs()
+
 				if (wo["pkg"]) {
 					while (!success && retries < maxRetries) {
 						try {
@@ -373,8 +379,12 @@ class MainController {
          *    do_fetch
          */
         // outFile the source package full path
+
+        def s = pkg.split('.bd')[0].split("/")
+        def distVersion = s[-3]
+
         def outFile = BDROOT + "/" + 
-                    globalConfig.buildoop.downloads + "/" +
+                    globalConfig.buildoop.downloads + "/" + distVersion + "/" +
                     jsonRecipe.do_download.src_uri.tokenize("/")[-1]
 
 		// FIXME: rework this hack, subversion?
@@ -394,10 +404,10 @@ class MainController {
 			}
 
             long start = System.currentTimeMillis()
+
             def size = downloadSourceFile(jsonRecipe.do_download.src_uri,
 											git_hash,
 										  	outFile)
-
             println "Downloaded: $size bytes"
             long end = System.currentTimeMillis()
 
@@ -463,22 +473,21 @@ class MainController {
 			// defalt build package
          	def baseFolders = ["src":"", "dest":"", "srcpkg":""]
 
-            def s = pkg.split('.bd')[0].split("/")
-
          	baseFolders["src"] = globalConfig.buildoop.recipes + "/" + 
-								s[-3] + "/" + s[-2] + "/" + s[-1]
+								distVersion + "/" + s[-2] + "/" + s[-1]
 
-         	baseFolders["dest"] = globalConfig.buildoop.work + "/" + 
-                jsonRecipe.do_info.filename.split('.bd')[0]
+         	baseFolders["dest"] = globalConfig.buildoop.work + "/" + distVersion + "/" +
+               jsonRecipe.do_info.filename.split('.bd')[0]
 
          	baseFolders["srcpkg"] = outFile
 
          	packageBuilder.makeWorkingFolders(baseFolders)
         
          	// build/stamps/pig-0.11.1_openbus0.0.1-r1.done
-         	def stampFile = globalConfig.buildoop.stamps + '/' +
+         	def stampFile = globalConfig.buildoop.stamps + "/" + distVersion + "/" +
                 baseFolders["dest"].tokenize('/').last() + ".done"
          	f = new File(stampFile)
+			
          	if (!f.exists()) {
             	packageBuilder.copyBuildFiles(baseFolders)
             	packageBuilder.execRpmBuild(baseFolders, _buildoop)
@@ -486,6 +495,7 @@ class MainController {
             	packageBuilder.createRepo(baseFolders, _buildoop)
              	f.createNewFile()
         	}
+
 			LOG.info ("Package built with succes")
         	println _buildoop.userMessage("OK", "[OK]") + " Package built with success"
 		} else {
@@ -496,7 +506,10 @@ class MainController {
 	def clean(pkg) {
 		def jsonRecipe = loadJsonRecipe(pkg)
 
-		def stampFile = globalConfig.buildoop.stamps + "/" +
+		def s = pkg.split('.bd')[0].split("/")
+        def distVersion = s[-3]
+
+		def stampFile = globalConfig.buildoop.stamps + "/" + distVersion + "/" +
 				jsonRecipe.do_info.filename.split('.bd')[0] + ".done"
 
 		new File(stampFile).delete()
@@ -506,7 +519,10 @@ class MainController {
 		clean(pkg)
 		def jsonRecipe = loadJsonRecipe(pkg)
 
-		def downloadFile = globalConfig.buildoop.downloads + "/" +
+        def s = pkg.split('.bd')[0].split("/")
+        def distVersion = s[-3]
+
+		def downloadFile = globalConfig.buildoop.downloads + "/" + distVersion + "/" +
 				jsonRecipe.do_download.src_uri.tokenize('/')[-1]
 
 		if (downloadFile.tokenize('.')[-1] == "git") {
@@ -516,7 +532,7 @@ class MainController {
 		new File(downloadFile).delete()
 		new File(downloadFile + ".done").delete()
         
-		def workPath = globalConfig.buildoop.work + "/" +
+		def workPath = globalConfig.buildoop.work + "/" + distVersion + "/" +
 				jsonRecipe.do_info.filename.split('.bd')[0]
 
 		new AntBuilder().delete(dir: workPath)	
@@ -526,8 +542,8 @@ class MainController {
 		repositoryDownloader.showVersions(url)		
 	}
 
-	def downloadRepo(url, ver) {
-		repositoryDownloader.downloadRepo(url, ver) 
+	def downloadRepo(url, distVersion) {
+		repositoryDownloader.downloadRepo(url, distVersion) 
 	}
 
 	def buildSummaryOk(packageName){
