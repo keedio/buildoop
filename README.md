@@ -150,4 +150,4 @@ Roadmap
 
 --
 Javi Roman <javiroman@redoop.org>  
-Marcelo Valle <mvalle@keedio.org>
+Marcelo Valle <mvalle@keedio.com>
