@@ -139,10 +139,12 @@ Remote Repository Options:
 		def bomname = bom.substring(0,bom.size()-4)
 
 		LOG.info "[ParseOptions:packageBomFile] checking -$pkg- in $bomfile"
+		println ("[INFO] Checking " + pkg + " in " + bom)
 
 		def recipe = ""
 		new File(bomfile).eachLine {
             line ->
+
             if ((line.split("_VERSION")[0]) == (pkg.toUpperCase())) {
                 recipe = BDROOT + "/" +
                             globalConfig.buildoop.recipes + "/" +
@@ -211,20 +213,37 @@ Remote Repository Options:
 			case "-cleanall":
 			case "-info":
 			case "-i":
-				// bom file validation
-				for (i in args) {
-					if (!arguments.contains(i)) {
-						if (bomFile(i)) {
-							validArgs["bom"] = i + ".bom"
-							break
-						}
-					}
-			    }
+				// chek arguments number
+				if (args.size() < 2 )
+				{
+					parseError("Specify at least bom name\nUsage: buildoop <bom-name> [pkg-name] " + validArgs["arg"])
+				}
+				if (args.size() > 3 )
+				{
+					parseError("Incorrect arguments number \nUsage: buildoop <bom-name> [pkg-name] " + validArgs["arg"])
+				}
+				if (args.size() == 2 || args.size() == 3)
+				{
+					// bom file validation
+					for (i in args) {
+						if (!arguments.contains(i)) {
+							if (bomFile(i)) {
+								validArgs["bom"] = i + ".bom"
+								break
+							}
+						}	
+				    }
+				}
 
-				// package file validation
-				for (i in args) {
-					if (!arguments.contains(i)) {
-						if (validArgs["bom"]) {
+				if (validArgs["bom"] == "") {
+                    parseError("BOM file name not found")
+                }
+
+				if (args.size() == 3 && validArgs["bom"])
+				{
+					// package file validation
+					for (i in args) {
+						if (!arguments.contains(i)) {
 							if (validArgs["bom"] != i+".bom") {
 								// we have a valid BOM file, check if the pkg file is
 								// consistent.
@@ -235,18 +254,8 @@ Remote Repository Options:
 								}
 								break
 							}
-						} else {
-							// we don't have BOM file, only pkg file
-							validArgs["pkg"] = packageDirectFile(i)
-							// FIXME: we need a target for this function.
-							parseError("This function is not yet implemented")
-							break
 						}
 					}
-				}
-		
-				if (validArgs["bom"] == "" && validArgs["pkg"] == "") {
-					parseError("You have to put BOM file and/or package name file")
 				}
 				break
 			case "-remoterepo":
