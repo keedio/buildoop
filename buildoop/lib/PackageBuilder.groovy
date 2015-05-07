@@ -138,10 +138,8 @@ class PackageBuilder {
 
 		def distverbinpath = 
 				buildoop.globalConfig.buildoop.bomdeploybin.
-						replace("%DIST/%VER", 
-								wo["bom"].minus(".bom").split("-")[0] + "/" +
-								wo["bom"].minus(".bom").split("-")[1])
-
+						replace("%DIST", 
+								wo["bom"].minus(".bom"))
 		LOG.info "[PackageBuilder] moveToDeploy -> RPM deploy folder: " + distverbinpath
 
 		def folderOut = buildoop.ROOT + "/" + distverbinpath + "/"
@@ -172,9 +170,9 @@ class PackageBuilder {
 
 		def distversrcpath = 
 				buildoop.globalConfig.buildoop.bomdeploysrc.
-						replace("%DIST/%VER", 
-								wo["bom"].minus(".bom").split("-")[0] + "/" +
-								wo["bom"].minus(".bom").split("-")[1])
+						replace("%DIST",
+								wo["bom"].minus(".bom"))
+								
 
 		folderOut = buildoop.ROOT + "/" + distversrcpath + "/"
 		new File(folderOut).mkdirs()

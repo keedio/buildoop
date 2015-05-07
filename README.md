@@ -149,5 +149,5 @@ Roadmap
 | SIT | System Integration Tests  |  Pending |
 
 --
-Javi Roman <jromanes@redhat.com>  
+Javi Roman <jromanes@redhat.com>
 Marcelo Valle <mvalle@keedio.com>
