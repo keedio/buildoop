@@ -140,6 +140,11 @@ class MainController {
 					}
 					printSummary()				
 				}
+
+				if (!success){
+					System.exit(1)
+				}
+
 				break
 			case "-clean":
 			case "-c":
