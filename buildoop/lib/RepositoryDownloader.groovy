@@ -155,11 +155,11 @@ class RepositoryDownloader {
 	}
 
 	def getRepositoryMetaFolder(url){
-		if (url.startsWith("https:"))
+		if (url.startsWith("https://"))
         	return  BDROOT + "/" + globalConfig.buildoop.remoterepodata +
                          "/" + url.split('/')[-2] + "/" + url.split('/')[-1]
-		if (url.startsWith("git@"))
-			return BDROOT + "/" + globalConfig.buildoop.remoterepodata +
+        if (url.startsWith("git@"))
+            return  BDROOT + "/" + globalConfig.buildoop.remoterepodata +
                          "/" + url.split(':')[1].split('/')[0] + "/" + url.split(':')[1].split('/')[1]
 	}
 

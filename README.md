@@ -13,7 +13,7 @@ baremetal deployment.
 NEW VERSION 1.0 NOTES
 --------------------
 Buildoop have receive a reestructuration of the code to isolate the core (builder and packager) and the recipes.
-The previous recipes has been moved to https://github.com/buildoop/buildoopRecipes
+The previous recipes has been moved to https://github.com/keedio/buildoopRecipes
 With these detachment we obtain an easier recipes versions maintenance. 
 Also brings to the project the possibility to be used for build no-hadoop tools.
 
@@ -34,10 +34,7 @@ From the technology point of view Buildoop is based on:
 2. Packaging recipes based on **JSON**.
 3. SIT Framework: based on Groovy test scripts, and **Vagrant** for
    virtual development enviroment.
-4. Set of **Puppet** files for baremetal deployment. Note: this feature
-has been delegated to the project Deploop [1]
 
-[1] https://github.com/deploop
 
 Folder scheme
 -------------
@@ -66,7 +63,7 @@ HowTo
   
 2. Clone the project:  
 
-  `git clone https://github.com/buildoop/buildoop.git`
+  `git clone https://github.com/keedio/buildoop.git`
 
 3. Set the enviroment:  
 
@@ -80,10 +77,10 @@ HowTo
 5. Usage examples:
 
   - List available distributions-versions in the external repository  
-  `buildoop -remoterepo https://github.com/buildoop/buildoopRecipes`
+  `buildoop -remoterepo https://github.com/keedio/buildoopRecipes`
 
   - Select a distribution-version and download it  
-  `buildoop -downloadrepo https://github.com/buildoop/buildoopRecipes openbus-v1.0`
+  `buildoop -downloadrepo https://github.com/keedio/buildoopRecipes openbus-v1.0`
   
   - Build the whole ecosystem for the distribution openbus-v1.0:  
   `buildoop openbus-v1.0 -build`
@@ -105,7 +102,7 @@ Pull request flow
 
 Clone the repository from your project fork:  
 
-`$ git clone https://github.com/buildoop/buildoop.git`
+`$ git clone https://github.com/keedio/buildoop.git`
 
 The clone has as default active branch "buildoop-v1-dev"  
 
