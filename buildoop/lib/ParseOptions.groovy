@@ -175,17 +175,10 @@ Remote Repository Options:
 	}
 
 	def remoteRepo(url) {
-		if  (url.length() < 19) {
-			return false
-		}
-		
-		def domain = url.substring(0,19)
-		if (domain == "https://github.com/") {
+		if (url.startsWith("https://") || url.startsWith("git@") )
 			return true
-		}
-		else { 
+		else
 			return false
-		}
 	}
 
     def parseOpt(args) {
