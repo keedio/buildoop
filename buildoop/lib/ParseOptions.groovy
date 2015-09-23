@@ -175,6 +175,11 @@ Remote Repository Options:
 	}
 
 	def remoteRepo(url) {
+		if (url.startsWith("https://") || url.startsWith("git@"))
+			return true
+		else
+			return false
+
 		if  (url.length() < 19) {
 			return false
 		}
